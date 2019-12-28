@@ -260,7 +260,7 @@ class Auth extends CI_Controller
                                           <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Halo, ' . $data['name'] . '
                                               <p></p>
                                           </p>
-                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sebelum kamu dapat menggunakan akunmu pada web praktikum.b401telematics.com, Konfirmasi emailmu terlebih dahulu untuk mendaftarkan dirimu di Praktikum Rangkaian Digital. </p>
+                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sebelum kamu dapat menggunakan akunmu pada web praktikum.b401telematics.com, konfirmasi emailmu terlebih dahulu untuk mendaftarkan dirimu di Praktikum Rangkaian Digital. </p>
                                           <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
                                               <tbody>
                                                   <tr>
@@ -281,8 +281,7 @@ class Auth extends CI_Controller
                                                   </tr>
                                               </tbody>
                                           </table>
-                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Bila mengalami masalah, gunakan link alternatif <var id="altlink">' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '</var></p>
-                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 0;">Selamat Bergabung,</p>
+                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 0;">Selamat Bergabung!</p>
                                           <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 0;">Praktikum Rangkaian Digital</p>
                                           <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 0;">Lab B401 Komputasi Multimedia</p>
                                           <div style="text-align: center; border-bottom: 4px solid gray; padding-bottom: 5px; margin-bottom: 10px;">
