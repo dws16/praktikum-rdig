@@ -274,7 +274,7 @@ class Auth extends CI_Controller
                                                                           <var id="nrp">' . $data['nrp'] . '</var>
                                                                       </div>
                                                                   </tr>
-                                                                  <tr align="center">
+                                                                  <tr>
                                                                     <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '" target="_blank" style="display: inline-block; color: #ffffff; background-color: #3498db; border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #3498db; ">Konfirmasi</a>                                                                        </td>
                                                                   </tr>
                                                               </tbody>
@@ -283,9 +283,8 @@ class Auth extends CI_Controller
                                                   </tr>
                                               </tbody>
                                           </table>
-                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 0;">Selamat Bergabung!</p>
-                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 0;">Praktikum Rangkaian Digital</p>
-                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 0;">Lab B401 Komputasi Multimedia</p>
+                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 0;">Best regards,</p>
+                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 0;">B401 Multimedia Computing Laboratory</p>
                                           <div style="text-align: center; border-bottom: 4px solid gray; padding-bottom: 5px; margin-bottom: 10px;">
                                           </div>
                                       </td>
@@ -302,7 +301,7 @@ class Auth extends CI_Controller
                       <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
                           <tr>
                               <td class="content-block" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;">
-                                  <span class="" style="color: #999999; font-size: 12px; text-align: center;">This Email Sent By B401 Multimedia Computing Laboratory Assistant
+                                  <span class="" style="color: #999999; font-size: 12px; text-align: center;">This Email Sent by B401 Multimedia Computing Laboratory Assistant
                                   <br>Computer Engineering Department, Faculty of Electrical Technology, B Building 4th Floor, ITS Campus Sukolilo, Surabaya 60111</span>
                                   <br> Something\'s wrong? <a href="https://line.me/R/ti/p/%40zfn9202g" style="text-decoration: underline; color: #999999; font-size: 12px; text-align: center;">contact us</a>.
                               </td>
