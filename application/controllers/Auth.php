@@ -220,10 +220,10 @@ class Auth extends CI_Controller
   {
     $config = [
       'protocol' => 'smtp',
-      'smtp_host' => 'smtp.hostinger.co.id',
-      'smtp_user' => 'praktikum@b401telematics.com',
+      'smtp_host' => 'ssl://smtp.googlemail.com',
+      'smtp_user' => 'b401dev@gmail.com',
       'smtp_pass' => 'informatikadigital',
-      'smtp_port' => 587,
+      'smtp_port' => 465,
       'mailtype' => 'html',
       'charset' => 'utf-8',
       'newline' => "\r\n"
