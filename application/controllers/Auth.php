@@ -232,7 +232,7 @@ class Auth extends CI_Controller
     $this->load->library('email', $config);
     $this->email->initialize($config);
 
-    $this->email->from('praktikum@b401telematics.com', 'Praktikum Rangkaian Digital B401 ITS');
+    $this->email->from('praktikum@b401telematics.com', 'B401 ITS');
     $this->email->to($this->input->post('email', true));
 
     if ($type == 'verify') {
