@@ -362,25 +362,25 @@ class Auth extends CI_Controller
     }
   }
 
-  // public function logout()
-  // {
-  //   $this->session->unset_userdata('email');
-  //   $this->session->unset_userdata('nrp');
-  //   $this->session->unset_userdata('id');
-  //   $this->session->unset_userdata('role_id');
+  public function logout()
+  {
+    $this->session->unset_userdata('email');
+    $this->session->unset_userdata('nrp');
+    $this->session->unset_userdata('id');
+    $this->session->unset_userdata('role_id');
 
-  //   $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-  //           You have been logged out!
-  //           </div>');
-  //   redirect(base_url('auth'));
-  // }
+    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+            You have been logged out!
+            </div>');
+    redirect(base_url('auth'));
+  }
 
-  // public function denied()
-  // {
-  //   $data['title'] = 'Access Denied';
-  //   $this->load->view('templates/header', $data);
-  //   $this->load->view('auth/denied');
-  // }
+  public function denied()
+  {
+    $data['title'] = 'Access Denied';
+    $this->load->view('templates/header', $data);
+    $this->load->view('auth/denied');
+  }
 
   public function forgotPassword()
   {
