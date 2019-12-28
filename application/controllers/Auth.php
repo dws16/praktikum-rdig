@@ -196,8 +196,6 @@ class Auth extends CI_Controller
         'date_created' => time()
       ];
 
-
-
       // token
       $token = base64_encode(random_bytes(32));
       $user_token = [
@@ -209,7 +207,7 @@ class Auth extends CI_Controller
       $this->db->insert('user', $data);
       $this->db->insert('user_token', $user_token);
 
-      $this->_sendEmail($token, 'verify');
+      $this->_sendEmail($token, 'verify', $data);
 
       $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
             Congratulations! Your account has been created. Please check your email to activate!
@@ -218,7 +216,7 @@ class Auth extends CI_Controller
     }
   }
 
-  private function _sendEmail($token, $type)
+  private function _sendEmail($token, $type, $data)
   {
     $config = [
       'protocol' => 'smtp',
@@ -239,7 +237,86 @@ class Auth extends CI_Controller
 
     if ($type == 'verify') {
       $this->email->subject('Account Verification');
-      $this->email->message('Click this link to verify your account : <a href="' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Activate</a>');
+      $this->email->message('<table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;">
+      <tr>
+          <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td>
+          <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;">
+              <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;">
+  
+                  <!-- START CENTERED WHITE CONTAINER -->
+                  <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">Sebelum kamu dapat menggunakan akun mu pada web b401telematics.com, </span>
+                  <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;">
+  
+                      <!-- START MAIN CONTENT AREA -->
+                      <tr>
+                          <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;">
+                              <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
+                                  <tr>
+  
+                                      <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-left: 30px;">
+                                          <div style="text-align: center; border-bottom: 4px solid gray; padding-bottom: 5px; margin-bottom: 10px;">
+                                              <img src="http://b401telematics.com/wp-content/uploads/2017/08/logo-262x300-1.png" style="width: 180px;" alt="logob401">
+                                          </div>
+                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Halo, ' . $data['name'] . '
+                                              <p></p>
+                                          </p>
+                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sebelum kamu dapat menggunakan akun mu pada web b401telematics.com, Konfirmasi emailmu terlebih dahulu untuk mendaftarkan dirimu di Praktikum Rangkaian Digital. </p>
+                                          <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
+                                              <tbody>
+                                                  <tr>
+                                                      <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;">
+                                                          <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
+                                                              <tbody>
+                                                                  <tr>
+                                                                      <div class="profil" style="background-color: #f2f2f2; border-left: 4px solid black; padding: 10px; width: 300px; margin: 4px 0 10px 0;">
+                                                                          <var id="name"><' . $data['name'] . '</var>
+                                                                          <br>
+                                                                          <var id="nrp"><' . $data['nrp'] . '</var>
+                                                                      </div>
+                                                                      <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '" target="_blank" style="display: inline-block; color: #ffffff; background-color: #3498db; border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #3498db; ">Konfirmasi</a>                                                                        </td>
+                                                                  </tr>
+                                                              </tbody>
+                                                          </table>
+                                                      </td>
+                                                  </tr>
+                                              </tbody>
+                                          </table>
+                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Bila mengalami masalah, gunakan link alternatif <var id="altlink"><?=' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . ' ?></var></p>
+                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 0;">Selamat Bergabung,</p>
+                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 0;">Praktikum Rangkaian Digital</p>
+                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 0;">Lab B401 Komputasi Multimedia</p>
+                                          <div style="text-align: center; border-bottom: 4px solid gray; padding-bottom: 5px; margin-bottom: 10px;">
+                                          </div>
+                                      </td>
+                                  </tr>
+                              </table>
+                          </td>
+                      </tr>
+  
+                      <!-- END MAIN CONTENT AREA -->
+                  </table>
+  
+                  <!-- START FOOTER -->
+                  <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;">
+                      <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
+                          <tr>
+                              <td class="content-block" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;">
+                                  <span class="" style="color: #999999; font-size: 12px; text-align: center;">This Email Sended By B401 Multimedia Computing Laboratory Assistant
+                                  <br>Computer Engineering Department, Faculty of Electrical Technology, B Building 4th Floor, ITS Campus Sukolilo, Surabaya 60111</span>
+                                  <br> Something\'s wrong? <a href="https://line.me/R/ti/p/%40zfn9202g" style="text-decoration: underline; color: #999999; font-size: 12px; text-align: center;">contact us</a>.
+                              </td>
+                          </tr>
+  
+                      </table>
+                  </div>
+                  <!-- END FOOTER -->
+  
+                  <!-- END CENTERED WHITE CONTAINER -->
+              </div>
+          </td>
+          <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td>
+      </tr>
+  </table>');
     } else if ($type == 'forgot') {
       $this->email->subject('Reset Password');
       $this->email->message('Click this link to reset your password : <a href="' . base_url() . 'auth/resetpassword?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Reset Password</a>');
