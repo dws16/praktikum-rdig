@@ -269,9 +269,9 @@ class Auth extends CI_Controller
                                                               <tbody>
                                                                   <tr>
                                                                       <div class="profil" style="background-color: #f2f2f2; border-left: 4px solid black; padding: 10px; width: 300px; margin: 4px 0 10px 0;">
-                                                                          <var id="name"><' . $data['name'] . '</var>
+                                                                          <var id="name">' . $data['name'] . '</var>
                                                                           <br>
-                                                                          <var id="nrp"><' . $data['nrp'] . '</var>
+                                                                          <var id="nrp">' . $data['nrp'] . '</var>
                                                                       </div>
                                                                       <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '" target="_blank" style="display: inline-block; color: #ffffff; background-color: #3498db; border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #3498db; ">Konfirmasi</a>                                                                        </td>
                                                                   </tr>
