@@ -3,10 +3,10 @@
 
   <!-- Sidebar - Brand -->
   <a class="sidebar-brand d-flex align-items-center justify-content-center mb-4" href="<?= base_url('profile') ?>">
-    <div class="sidebar-brand-icon rotate-n-15">
+    <div class="sidebar-brand-icon rotate-n-30">
       <i class="fas fa-circle-notch"></i>
     </div>
-    <div class="sidebar-brand-text mx-3">Portal Praktikum</div>
+    <div class="sidebar-brand-text mx-3">Portal Praktikum Rangkaian Digital</div>
   </a>
 
   <?php
