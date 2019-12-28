@@ -281,7 +281,7 @@ class Auth extends CI_Controller
                                                   </tr>
                                               </tbody>
                                           </table>
-                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Bila mengalami masalah, gunakan link alternatif <var id="altlink"><?=' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . ' ?></var></p>
+                                          <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Bila mengalami masalah, gunakan link alternatif <var id="altlink">' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '</var></p>
                                           <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 0;">Selamat Bergabung,</p>
                                           <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 0;">Praktikum Rangkaian Digital</p>
                                           <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 0;">Lab B401 Komputasi Multimedia</p>
