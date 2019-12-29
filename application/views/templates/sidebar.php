@@ -3,8 +3,8 @@
 
   <!-- Sidebar - Brand -->
   <a class="sidebar-brand d-flex align-items-center justify-content-center mb-4" href="<?= base_url('profile') ?>">
-    <div class="sidebar-brand-icon rotate-30">
-      <i class="fas fa-circle-notch"></i>
+    <div class="sidebar-brand-icon">
+      <i class="fas fa-circle-notch fa-rotate-30"></i>
     </div>
     <div class="sidebar-brand-text mx-3">B401</div>
   </a>
