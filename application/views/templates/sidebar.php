@@ -1,12 +1,12 @@
 <!-- Sidebar -->
-<ul class="navbar-nav sidebar sidebar-dark accordion" style="background-color:#70B9B0;" id="accordionSidebar">
+<ul class="navbar-nav sidebar sidebar-dark accordion" style="background-color:#961B1B;" id="accordionSidebar">
 
   <!-- Sidebar - Brand -->
   <a class="sidebar-brand d-flex align-items-center justify-content-center mb-4" href="<?= base_url('profile') ?>">
-    <div class="sidebar-brand-icon rotate-n-30">
+    <div class="sidebar-brand-icon rotate-30">
       <i class="fas fa-circle-notch"></i>
     </div>
-    <div class="sidebar-brand-text mx-3">Portal Praktikum Rangkaian Digital</div>
+    <div class="sidebar-brand-text mx-3">B401</div>
   </a>
 
   <?php
