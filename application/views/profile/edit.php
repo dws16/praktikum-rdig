@@ -5,9 +5,9 @@
 
   <div class="div row justify-content-center">
     <div class="div col-lg-8">
-      <div class="card shadow mb-4 border-left-primary">
+      <div class="card shadow mb-4 border-left-warning">
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary"><?= $title; ?></h6>
+          <h6 class="m-0 font-weight-bold text-warning"><?= $title; ?></h6>
         </div>
         <div class="card-body ">
           <?= form_open_multipart(base_url('profile/edit')); ?>
@@ -33,7 +33,7 @@
           </div>
           <div class="form-group row justify-content-end">
             <div class="col-sm-10">
-              <button type="submit" class="btn btn-primary">Edit</button>
+              <button type="submit" class="btn btn-warning">Edit</button>
             </div>
           </div>
           </form>

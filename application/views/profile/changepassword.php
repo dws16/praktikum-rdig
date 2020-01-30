@@ -10,9 +10,9 @@
 
   <div class="row justify-content-center mt-5">
     <div class="col-lg-6">
-      <div class="card shadow mb-4 border-left-primary">
+      <div class="card shadow mb-4 border-left-warning">
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary"><?= $title; ?></h6>
+          <h6 class="m-0 font-weight-bold text-warning"><?= $title; ?></h6>
         </div>
         <div class="card-body ">
           <form action="<?= base_url('profile/changepassword') ?>" method="post">
@@ -32,7 +32,7 @@
               <?= form_error('new_password2', '<small class="text-danger">', '</small>'); ?>
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-primary">Change Password</button>
+              <button type="submit" class="btn btn-warning">Change Password</button>
             </div>
           </form>
         </div>
