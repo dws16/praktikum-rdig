@@ -21,11 +21,12 @@
           <tbody>
             <tr>
               <td>Tata Tertib</td>
-            </tr>
-            <tr>
               <td> <a href="#" class="btn btn-danger btn-circle">
                   <i class="fas fa-fw fa-arrow-down"></i>
                 </a></td>
+            </tr>
+            <tr>
+
             </tr>
           </tbody>
         </table>
