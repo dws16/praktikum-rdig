@@ -21,12 +21,7 @@
           <tbody>
             <tr>
               <td>Tata Tertib</td>
-              <td> <a href="#" class="btn btn-danger btn-sm btn-icon-split">
-                  <span class="icon text-white-50">
-                    <i class="fas fa-fw fa-arrow-down"></i>
-                  </span>
-                  <span class="text">Download</span>
-                </a></td>
+              <td> <a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
             </tr>
             <tr>
 
