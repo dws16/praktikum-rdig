@@ -15,11 +15,11 @@ class Auth extends CI_Controller
     if ($this->session->userdata('nrp')) {
       if ($this->session->userdata('role_id') == 1) {
         redirect(base_url('admin'));
-      } else if ($$this->session->userdata('role_id') == 2) {
+      } else if ($this->session->userdata('role_id') == 2) {
         redirect(base_url('koor'));
-      } else if ($$this->session->userdata('role_id') == 3) {
+      } else if ($this->session->userdata('role_id') == 3) {
         redirect(base_url('aslab'));
-      } else if ($$this->session->userdata('role_id') == 4) {
+      } else if ($this->session->userdata('role_id') == 4) {
         redirect(base_url('praktikan'));
       }
     } else {
@@ -35,11 +35,11 @@ class Auth extends CI_Controller
     if ($this->session->userdata('nrp')) {
       if ($this->session->userdata('role_id') == 1) {
         redirect(base_url('admin'));
-      } else if ($$this->session->userdata('role_id') == 2) {
+      } else if ($this->session->userdata('role_id') == 2) {
         redirect(base_url('koor'));
-      } else if ($$this->session->userdata('role_id') == 3) {
+      } else if ($this->session->userdata('role_id') == 3) {
         redirect(base_url('aslab'));
-      } else if ($$this->session->userdata('role_id') == 4) {
+      } else if ($this->session->userdata('role_id') == 4) {
         redirect(base_url('praktikan'));
       }
     }
