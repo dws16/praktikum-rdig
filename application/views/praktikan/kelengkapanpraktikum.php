@@ -23,10 +23,31 @@
               <tbody>
                 <tr>
                   <td>Tata Tertib</td>
-                  <td> <a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
                 </tr>
                 <tr>
-
+                  <td>SOP</td>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
+                </tr>
+                </tr>
+                <tr>
+                  <td>Technical Guide</td>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
+                </tr>
+                </tr>
+                <tr>
+                  <td>Modul</td>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
+                </tr>
+                </tr>
+                <tr>
+                  <td>Cover dan Lembar Monitoring</td>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
+                </tr>
+                </tr>
+                <tr>
+                  <td>Surat Pergantian Shift</td>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
                 </tr>
               </tbody>
             </table>
