@@ -12,10 +12,22 @@ class Auth extends CI_Controller
 
   public function index()
   {
-    $data['title'] = "Portal Praktikum Rangkaian Digital B401 ITS";
-    $this->load->view('templates/auth_header', $data);
-    $this->load->view('auth/index', $data);
-    $this->load->view('templates/auth_footer', $data);
+    if ($this->session->userdata('nrp')) {
+      if ($this->session->userdata('role_id') == 1) {
+        redirect(base_url('admin'));
+      } else if ($$this->session->userdata('role_id') == 2) {
+        redirect(base_url('koor'));
+      } else if ($$this->session->userdata('role_id') == 3) {
+        redirect(base_url('aslab'));
+      } else if ($$this->session->userdata('role_id') == 4) {
+        redirect(base_url('praktikan'));
+      }
+    } else {
+      $data['title'] = "Portal Praktikum Rangkaian Digital B401 ITS";
+      $this->load->view('templates/auth_header', $data);
+      $this->load->view('auth/index', $data);
+      $this->load->view('templates/auth_footer', $data);
+    }
   }
 
   public function login()
@@ -114,11 +126,11 @@ class Auth extends CI_Controller
     if ($this->session->userdata('nrp')) {
       if ($this->session->userdata('role_id') == 1) {
         redirect(base_url('admin'));
-      } else if ($$this->session->userdata('role_id') == 2) {
+      } else if ($this->session->userdata('role_id') == 2) {
         redirect(base_url('koor'));
-      } else if ($$this->session->userdata('role_id') == 3) {
+      } else if ($this->session->userdata('role_id') == 3) {
         redirect(base_url('aslab'));
-      } else if ($$this->session->userdata('role_id') == 4) {
+      } else if ($this->session->userdata('role_id') == 4) {
         redirect(base_url('praktikan'));
       }
     }
