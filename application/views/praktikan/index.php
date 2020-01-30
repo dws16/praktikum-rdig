@@ -79,7 +79,7 @@
       </div>
     </div>
 
-    <div class="col-xl-5 col-md-7 mb-6">
+    <div class="col-xl-3 col-md-6 mb-4">
       <div class="card shadow mb-4">
         <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-danger">Nama Kelompok</h6>
