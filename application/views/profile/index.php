@@ -22,6 +22,7 @@
                      <p class="card-text">Name :<?= ' ' . $user['name']; ?></p>
                      <p class="card-text">NRP :<?= ' ' . $user['nrp']; ?></p>
                      <p class="card-text">Email :<?= ' ' . $user['email']; ?></p>
+                     <hr>
                      <p class="card-text"><small class="text-muted">Member since <?= date('d F Y', $user['date_created']); ?></small></p>
                   </div>
                </div>
