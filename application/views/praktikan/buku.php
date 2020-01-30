@@ -23,21 +23,21 @@
               <tbody>
                 <tr>
                   <td>Cover Buku</td>
-                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down" disabled></i>Download</a>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
                 </tr>
                 <tr>
                   <td>Pembatas Modul</td>
-                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down" disabled></i>Download</a>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
                 </tr>
                 </tr>
                 <tr>
                   <td>Foto Aslab</td>
-                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down" disabled></i>Download</a>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
                 </tr>
                 </tr>
                 <tr>
                   <td>Petunjuk Pembukuan</td>
-                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down" disabled></i>Download</a>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
                 </tr>
                 </tr>
                 <tr>
