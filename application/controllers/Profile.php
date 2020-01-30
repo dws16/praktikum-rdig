@@ -42,18 +42,18 @@ class Profile extends CI_Controller
         $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
                 Wrong current password!
                 </div>');
-        redirect(base_url('user/changepassword'));
+        redirect(base_url('profile/changepassword'));
       } else {
         if ($current_password == $new_password) {
           $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
                     New password cannot be the same as current password!
                     </div>');
-          redirect(base_url('user/changepassword'));
+          redirect(base_url('profile/changepassword'));
         } else {
           $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
           $this->db->set('password', $password_hash);
           $this->db->where('email', $this->session->userdata('email'));
-          $this->db->update('user');
+          $this->db->update('profile');
 
           $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
                     Password changed!
