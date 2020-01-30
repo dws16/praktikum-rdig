@@ -32,7 +32,7 @@ class Profile extends CI_Controller
       $this->load->view('templates/header', $data);
       $this->load->view('templates/sidebar', $data);
       $this->load->view('templates/topbar', $data);
-      $this->load->view('user/edit', $data);
+      $this->load->view('profile/edit', $data);
       $this->load->view('templates/footer');
     } else {
       $name = $this->input->post('name');
