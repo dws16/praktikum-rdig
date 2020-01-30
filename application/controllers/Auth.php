@@ -13,15 +13,7 @@ class Auth extends CI_Controller
   public function index()
   {
     if ($this->session->userdata('nrp')) {
-      if ($this->session->userdata('role_id') == 1) {
-        redirect(base_url('admin'));
-      } else if ($this->session->userdata('role_id') == 2) {
-        redirect(base_url('koor'));
-      } else if ($this->session->userdata('role_id') == 3) {
-        redirect(base_url('aslab'));
-      } else if ($this->session->userdata('role_id') == 4) {
-        redirect(base_url('praktikan'));
-      }
+      redirect(base_url('profile'));
     } else {
       $data['title'] = "Portal Praktikum Rangkaian Digital B401 ITS";
       $this->load->view('templates/auth_header', $data);
@@ -33,15 +25,7 @@ class Auth extends CI_Controller
   public function login()
   {
     if ($this->session->userdata('nrp')) {
-      if ($this->session->userdata('role_id') == 1) {
-        redirect(base_url('admin'));
-      } else if ($this->session->userdata('role_id') == 2) {
-        redirect(base_url('koor'));
-      } else if ($this->session->userdata('role_id') == 3) {
-        redirect(base_url('aslab'));
-      } else if ($this->session->userdata('role_id') == 4) {
-        redirect(base_url('praktikan'));
-      }
+      redirect(base_url('profile'));
     }
 
     #Rules form
@@ -124,15 +108,7 @@ class Auth extends CI_Controller
   public function registration()
   {
     if ($this->session->userdata('nrp')) {
-      if ($this->session->userdata('role_id') == 1) {
-        redirect(base_url('admin'));
-      } else if ($this->session->userdata('role_id') == 2) {
-        redirect(base_url('koor'));
-      } else if ($this->session->userdata('role_id') == 3) {
-        redirect(base_url('aslab'));
-      } else if ($this->session->userdata('role_id') == 4) {
-        redirect(base_url('praktikan'));
-      }
+      redirect(base_url('profile'));
     }
 
     $this->form_validation->set_rules('name', 'Name', 'required|trim');
