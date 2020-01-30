@@ -4,7 +4,58 @@
   <!-- Page Heading -->
   <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
 
-
+  <!-- DataTales Example -->
+  <div class="row justify-content-center mt-5">
+    <div class="col-lg-7">
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-danger">Kelengkapan Praktikum</h6>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Modul</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Cover Buku</td>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down" disabled></i>Download</a>
+                </tr>
+                <tr>
+                  <td>Pembatas Modul</td>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down" disabled></i>Download</a>
+                </tr>
+                </tr>
+                <tr>
+                  <td>Foto Aslab</td>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down" disabled></i>Download</a>
+                </tr>
+                </tr>
+                <tr>
+                  <td>Petunjuk Pembukuan</td>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down" disabled></i>Download</a>
+                </tr>
+                </tr>
+                <tr>
+                  <td>Cover dan Lembar Monitoring</td>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
+                </tr>
+                </tr>
+                <tr>
+                  <td>Surat Pergantian Shift</td>
+                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
 <!-- /.container-fluid -->
