@@ -57,6 +57,7 @@ class Admin extends CI_Controller
     $data = [
       "name" => $this->input->post('name', true),
       "email" => $this->input->post('email', true),
+      "nrp" => $this->input->post('nrp', true),
       "role_id" => $this->input->post('role_id', true)
     ];
 
