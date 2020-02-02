@@ -180,6 +180,7 @@
             <div class="col-lg-8">
               <h5 id="name1" class="card-title">Nama :</h5>
               <p id="email1" class="card-text">Email :</p>
+              <p id="nrp1" class="card-text">NRP :</p>
               <p id="role_id1" class="card-text">Role ID :</p>
               <p id="date_created1" class="card-text">Date Created :</p>
             </div>

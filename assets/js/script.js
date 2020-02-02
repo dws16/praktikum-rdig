@@ -18,6 +18,7 @@ $(function () {
 				$('.card-img').attr('src', 'http://praktikum.b401telematics.com/assets/img/profile/' + String(data.image));
 				$('#name1').html('Name :' + data.name);
 				$('#email1').html('Email :' + data.email);
+				$('#nrp1').html('NRP :' + data.nrp);
 				$('#role_id1').html('Role ID :' + data.role_id);
 				$('#date_created1').html('Date Created :' + tanggal);
 			}
