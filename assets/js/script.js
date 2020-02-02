@@ -39,6 +39,7 @@ $(function () {
 			success: function (data) {
 				console.log(data);
 				$('#name').val(data.name);
+				$('#nrp').val(data.nrp);
 				$('#email').val(data.email);
 				$('#role_id').val(data.role_id);
 				$('#id').val(data.id);
