@@ -18,6 +18,7 @@ $(function () {
 				$('#nrp').val(data.nrp);
 				$('#email').val(data.email);
 				$('#role_id').val(data.role_id);
+				$('#is_active').val(data.is_active);
 				$('#id').val(data.id);
 			}
 		})
