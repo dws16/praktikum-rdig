@@ -39,7 +39,7 @@ class Admin extends CI_Controller
     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
         User has been deleted!
         </div>');
-    redirect(base_url('admin/user_list'));
+    redirect(base_url('admin'));
   }
 
   public function getdetail()
@@ -66,7 +66,7 @@ class Admin extends CI_Controller
     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
         User data has been edited!
         </div>');
-    redirect(base_url('admin/user_list'));
+    redirect(base_url('admin'));
   }
   #USER END#
 
