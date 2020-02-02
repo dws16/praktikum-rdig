@@ -1,29 +1,5 @@
 $(function () {
 
-	$('.tampilModalDetail').on('click', function () {
-		const id = $(this).data('id');
-		console.log(id);
-		$.ajax({
-			url: 'http://praktikum.b401telematics.com/admin/getdetail',
-			data: {
-				id: id
-			},
-			method: 'post',
-			dataType: 'json',
-			success: function (data) {
-				var date = data.date_created;
-				var time = parseInt(date);
-				var time2 = time * 1000;
-				var tanggal = new Date(time2)
-				$('.card-img').attr('src', 'http://praktikum.b401telematics.com/assets/img/profile/' + String(data.image));
-				$('#name1').html('Name :' + data.name);
-				$('#email1').html('Email :' + data.email);
-				$('#nrp1').html('NRP :' + data.nrp);
-				$('#role_id1').html('Role ID :' + data.role_id);
-				$('#date_created1').html('Date Created :' + tanggal);
-			}
-		})
-	});
 
 	$('.tampilModalUbah').on('click', function () {
 
