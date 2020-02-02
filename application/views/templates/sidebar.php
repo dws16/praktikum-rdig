@@ -4,9 +4,9 @@
   <!-- Sidebar - Brand -->
   <a class="sidebar-brand d-flex align-items-center justify-content-center mb-4" href="<?= base_url('profile') ?>">
     <div class="sidebar-brand-icon">
-      <i class="fas fa-circle-notch fa-rotate-30"></i>
+      <i class="fas fa-fw fa-microchip fa-rotate-30"></i>
     </div>
-    <div class="sidebar-brand-text mx-3">B401</div>
+    <div class="sidebar-brand-text mx-3">RDIG</div>
   </a>
 
   <?php
