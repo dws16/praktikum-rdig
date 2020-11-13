@@ -1,12 +1,11 @@
 $(function () {
 
-
 	$('.tampilModalUbah').on('click', function () {
 
 		const id = $(this).data('id');
 
 		$.ajax({
-			url: 'http://praktikum.b401telematics.com/admin/getubah',
+			url: base+ '/admin/getubah',
 			data: {
 				id: id
 			},
@@ -27,12 +26,12 @@ $(function () {
 	$('.TampilEditMenu').on('click', function () {
 		$('#NewMenuModalLabel').html('Edit Menu');
 		$('.modal-footer button[type=submit]').html('Edit')
-		$('.modal-body form').attr('action', 'http://praktikum.b401telematics.com/menu/edit');
+		$('.modal-body form').attr('action', base+ '/menu/edit');
 
 		const id = $(this).data('id');
 
 		$.ajax({
-			url: 'http://praktikum.b401telematics.com/menu/getubah',
+			url: base+ '/menu/getubah',
 			data: {
 				id: id
 			},
@@ -49,19 +48,19 @@ $(function () {
 	$('.tombolTambahMenu').on('click', function () {
 		$('#NewMenuModalLabel').html('Add New Menu');
 		$('.modal-footer button[type=submit]').html('Add');
-		$('.modal-body form').attr('action', 'http://praktikum.b401telematics.com/menu');
+		$('.modal-body form').attr('action', base+ '/menu');
 
 	});
 
 	$('.TampilEditSubmenu').on('click', function () {
 		$('#NewSubmenuModalLabel').html('Edit Submenu');
 		$('.modal-footer button[type=submit]').html('Edit');
-		$('.modal-body form').attr('action', 'http://praktikum.b401telematics.com/menu/editsub');
+		$('.modal-body form').attr('action', base+ '/menu/editsub');
 
 		const id = $(this).data('id');
 
 		$.ajax({
-			url: 'http://praktikum.b401telematics.com/menu/getubahsub',
+			url: base+ '/menu/getubahsub',
 			data: {
 				id: id
 			},
@@ -82,19 +81,19 @@ $(function () {
 	$('.tombolTambahSubmenu').on('click', function () {
 		$('#NewSubmenuModalLabel').html('Add New Submenu');
 		$('.modal-footer button[type=submit]').html('Add');
-		$('.modal-body form').attr('action', 'http://praktikum.b401telematics.com/menu/submenu');
+		$('.modal-body form').attr('action', base+ '/menu/submenu');
 
 	});
 
 	$('.TampilEditRole').on('click', function () {
 		$('#NewRoleModalLabel').html('Edit Role');
 		$('.modal-footer button[type=submit]').html('Edit');
-		$('.modal-body form').attr('action', 'http://praktikum.b401telematics.com/admin/editrole');
+		$('.modal-body form').attr('action', base+ '/admin/editrole');
 
 		const id = $(this).data('id');
 
 		$.ajax({
-			url: 'http://praktikum.b401telematics.com/admin/getubahrole',
+			url: base+ '/admin/getubahrole',
 			data: {
 				id: id
 			},
@@ -111,7 +110,7 @@ $(function () {
 	$('.tombolTambahRole').on('click', function () {
 		$('#NewRoleModalLabel').html('Add New Role');
 		$('.modal-footer button[type=submit]').html('Add');
-		$('.modal-body form').attr('action', 'http://praktikum.b401telematics.com/admin/role');
+		$('.modal-body form').attr('action', base+ '/admin/role');
 
 	});
 

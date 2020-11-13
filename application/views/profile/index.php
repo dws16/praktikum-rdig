@@ -2,7 +2,6 @@
 <div class="container-fluid">
 
    <!-- Page Heading -->
-   <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
 
    <div class="col">
       <div class="row-lg-6">
@@ -12,9 +11,9 @@
 
    <div class="row justify-content-center mt-5">
       <div class="col-lg-7">
-         <div class="card shadow mb-4 border-left-warning">
+         <div class="card shadow mb-4 border-left-danger">
             <div class="card-header py-3">
-               <h6 class="m-0 font-weight-bold text-warning">User Profile</h6>
+               <h6 class="m-0 font-weight-bold text-danger">User Profile</h6>
             </div>
             <div class="card-body">
                <div class="row">
