@@ -114,4 +114,31 @@ $(function () {
 
 	});
 
+	$('.tambahFilePraktikum').on('click', function(){
+		$('#filePraktikumEditLabel').html('Tambah Kelengkapan Praktikum');
+		$('.modal-footer button[type=submit]').html('Tambah');
+		$('.modal-body form').attr('action', base+ '/koordinator/addfilepraktikum');
+	});
+
+	$('.editFilePraktikum').on('click', function(){
+		$('#filePraktikumEditLabel').html('Edit Kelengkapan Praktikum');
+		$('.modal-footer button[type=submit]').html('Edit');
+		$('.modal-body form').attr('action', base+ '/koordinator/editfilepraktikum');
+
+		const id = $(this).data('id');
+
+		$.ajax({
+			url: base + 'koordinator/geteditfilepraktikum',
+			data: {
+				id: id
+			},
+			method: "post",
+			dataType: "json",
+			success: function(data){
+				$('#namafile').val(data.name);
+				$('#id').val(data.id);
+			}
+		});
+	});
+
 });
