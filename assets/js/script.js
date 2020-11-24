@@ -141,4 +141,31 @@ $(function () {
 		});
 	});
 
+	$('.tambahFileBuku').on('click', function(){
+		$('#fileBukuEditLabel').html('Tambah Kelengkapan Buku');
+		$('.modal-footer button[type=submit]').html('Tambah');
+		$('.modal-body form').attr('action', base+ '/koordinator/addfilebuku');
+	});
+
+	$('.editFileBuku').on('click', function(){
+		$('#fileBukuEditLabel').html('Edit Kelengkapan Buku');
+		$('.modal-footer button[type=submit]').html('Edit');
+		$('.modal-body form').attr('action', base+ '/koordinator/editfilebuku');
+
+		const id = $(this).data('id');
+
+		$.ajax({
+			url: base + 'koordinator/geteditfilebuku',
+			data: {
+				id: id
+			},
+			method: "post",
+			dataType: "json",
+			success: function(data){
+				$('#namafile').val(data.name);
+				$('#id').val(data.id);
+			}
+		});
+	});
+
 });
