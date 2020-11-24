@@ -33,6 +33,7 @@ class Koordinator extends CI_Controller
     $this->load->view('templates/footer');
   }
 
+  // Controller Kelengkapan Praktikum
   public function praktikum()
   {
     $data['file'] = $this->db->get('filepraktikum')->result_array();
@@ -123,7 +124,9 @@ class Koordinator extends CI_Controller
     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">File berhasil dihapus!</div>');
     redirect(base_url('koordinator/praktikum'));
   }
+  // End of Controller Kelengkapan Praktikum
 
+  // Controller Kelengkapan Buku
   public function buku()
   {
     $data['file'] = $this->db->get('filebuku')->result_array();
@@ -214,6 +217,7 @@ class Koordinator extends CI_Controller
     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">File berhasil dihapus!</div>');
     redirect(base_url('koordinator/buku'));
   }
+  // End of Controller Kelengkapan Buku
 
   public function penjadwalan()
   {
