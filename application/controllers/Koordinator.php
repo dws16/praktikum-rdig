@@ -11,6 +11,8 @@ class Koordinator extends CI_Controller
 
   public function kelompok()
   {
+    $this->load->model('Koordinator_model');
+    $data['kelompok'] = $this->Koordinator_model->listkelompok();
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['title'] = 'Pembagian Kelompok';
 
@@ -19,6 +21,32 @@ class Koordinator extends CI_Controller
     $this->load->view('templates/topbar', $data);
     $this->load->view('koordinator/kelompok', $data);
     $this->load->view('templates/footer');
+  }
+
+  public function checknamakelompok()
+  {
+    $name = $this->input->post('namakelompok', true);
+    $cek = $this->db->get_where('kelompok', ['name' => $name])->row_array();
+
+    if ($cek) {
+      echo json_encode("ada");
+    } else {
+      echo json_encode("tidak");
+    }
+  }
+
+  public function addkelompok()
+  {
+    $data = [
+      'name' => $this->input->post('kelompok')
+    ];
+    if ($this->db->insert('kelompok', $data)) {
+      $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Kelompok berhasil ditambahkan!</div>');
+      redirect(base_url('koordinator/kelompok'));
+    } else {
+      $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Kelompok gagal ditambahkan!</div>');
+      redirect(base_url('koordinator/kelompok'));
+    }
   }
 
   public function asisten()

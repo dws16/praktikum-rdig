@@ -19,10 +19,6 @@ class Admin extends CI_Controller
     if ($this->db->get_where('praktikan', ['id' => $id])) {
       $data['praktikan'] = $this->db->get_where('praktikan', ['id' => $id])->row_array();
     }
-
-    if ($this->input->post('keyword')) {
-      $data['list'] = $this->User_model->CariUser();
-    }
     $data['title'] = 'User List';
 
     $this->load->view('templates/header', $data);
