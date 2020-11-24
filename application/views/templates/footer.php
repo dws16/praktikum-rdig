@@ -51,8 +51,15 @@
   const base = "<?= base_url(); ?>";
 </script>
 <script src="<?= base_url(); ?>assets/js/script.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 
 <script>
+  $(document).ready(function() {
+    $('#dataTable').DataTable();
+  });
+
   $('.custom-file-input').on('change', function() {
     let fileName = $(this).val().split('\\').pop();
     $(this).next('.custom-file-label').addClass("selected").html(fileName);
