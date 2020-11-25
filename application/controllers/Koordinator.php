@@ -9,6 +9,7 @@ class Koordinator extends CI_Controller
     is_logged_in();
   }
 
+  //Controller Pembagian Kelompok
   public function kelompok()
   {
     $this->load->model('Koordinator_model');
@@ -22,7 +23,6 @@ class Koordinator extends CI_Controller
     $this->load->view('koordinator/kelompok', $data);
     $this->load->view('templates/footer');
   }
-
   public function checknamakelompok()
   {
     $name = $this->input->post('namakelompok', true);
@@ -34,7 +34,6 @@ class Koordinator extends CI_Controller
       echo json_encode("tidak");
     }
   }
-
   public function addkelompok()
   {
     $data = [
@@ -62,7 +61,6 @@ class Koordinator extends CI_Controller
       redirect(base_url('koordinator/kelompok'));
     }
   }
-
   public function checknrpkelompok()
   {
     $this->load->model('Koordinator_model');
@@ -70,7 +68,7 @@ class Koordinator extends CI_Controller
     if ($cek) {
       echo json_encode("Sudah masuk");
     } else {
-      $ada = $this->db->get_where('user', ['nrp' => $this->input->post('nrp')])->row_array();
+      $ada = $this->db->get_where('user', ['nrp' => $this->input->post('nrp'), 'role_id' => 4])->row_array();
       if ($ada) {
         echo json_encode($ada['name']);
       } else {
@@ -78,13 +76,11 @@ class Koordinator extends CI_Controller
       }
     }
   }
-
   public function getdetailkelompok()
   {
     $this->load->model('Koordinator_model');
     echo json_encode($this->Koordinator_model->detailkelompok($this->input->post('id')));
   }
-
   public function editkelompok()
   {
     $data = [
@@ -109,7 +105,9 @@ class Koordinator extends CI_Controller
     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Kelompok berhasil diubah!</div>');
     redirect(base_url('koordinator/kelompok'));
   }
+  //End of Controller Pembagian Kelompok
 
+  //Controller Pembagian Asisten
   public function asisten()
   {
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
@@ -119,6 +117,20 @@ class Koordinator extends CI_Controller
     $this->load->view('templates/sidebar', $data);
     $this->load->view('templates/topbar', $data);
     $this->load->view('koordinator/asisten', $data);
+    $this->load->view('templates/footer');
+  }
+
+  public function praktikan()
+  {
+    $this->load->model('Koordinator_model');
+    $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+    $data['title'] = 'Data Praktikan';
+    $data['list'] = $this->Koordinator_model->listpraktikan();
+
+    $this->load->view('templates/header', $data);
+    $this->load->view('templates/sidebar', $data);
+    $this->load->view('templates/topbar', $data);
+    $this->load->view('koordinator/praktikan', $data);
     $this->load->view('templates/footer');
   }
 
