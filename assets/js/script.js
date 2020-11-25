@@ -168,4 +168,143 @@ $(function () {
 		});
 	});
 
+	$('.tambahkelompok').on('click', function(){
+		$('#kelompokEditLabel').html('Tambah Kelompok');
+		$('.modal-footer button[type=submit]').html('Tambah');
+		$('.modal-body form').attr('action', base+ '/koordinator/addkelompok');
+	});
+
+	$('#kelompok').on('keyup', function() {
+    let namakelompok = $(this);
+    $.ajax({
+      url: base + 'koordinator/checknamakelompok',
+      data: {
+        namakelompok: namakelompok.val()
+      },
+      method: "post",
+      dataType: "json",
+      success: function(data) {
+				if(data==='ada'){
+					namakelompok.addClass('is-invalid');
+					namakelompok.removeClass('is-valid');
+					$('#submit').prop('disabled',true);
+				} else{
+					console.log(namakelompok);
+					namakelompok.removeClass('is-invalid');
+					namakelompok.addClass('is-valid');
+					$('#submit').prop('disabled',false);
+				}
+			},
+    });
+	});
+	
+	$('.editkelompok').on('click', function(){
+		$('#kelompokEditLabel').html('Detail Kelompok');
+		$('.modal-footer button[type=submit]').html('Edit');
+		$('.modal-body form').attr('action', base+ '/koordinator/editkelompok');
+
+		const id = $(this).data('id');
+
+		$.ajax({
+      url: base + 'koordinator/getdetailkelompok',
+      data: {
+        id: id
+      },
+      method: "post",
+      dataType: "json",
+      success: function(data) {
+				$('#kelompok').val(data[0].kelompok);
+				$('#id').val(data[0].id);
+				const jumlahanggota = ($("#anggota .jumlah").length);
+				let html="";
+				$.each(data, function(i, data){
+					if(data.name==null){
+						return true;
+					}
+					html+='<div class="form-row mt-2" id="anggota['+i+']">';
+					html+='<div class="col-6">';
+					html+='<input class="form-control" name="nrp['+i+']" value="'+data.nrp+'" placeholder="NRP" type="text" required>';
+					html+='<div class="valid-feedback feedback['+i+']">asd</div>';
+					html+='<div class="invalid-feedback feedback['+i+']">asd</div>';
+					html+='</div>';
+					html+='<div class="col-5">';
+					html+='<input class="form-control jumlah" id="nama['+i+']"  name="anggotakelompok['+i+']" value="'+data.name+'" type="text" placeholder="Nama" disabled>';
+					html+='</div>';
+					html+='<div class="col">';
+					html+='<a href="#" class="btn btn-danger align-middle" onclick="hapus('+i+')"><i class="fas fa-trash-alt"></i></a>';
+					html+='</div>';
+					html+='</div>';
+				});
+				$("#anggota").html(html);
+			},
+    });
+	});
+	
+	$('#addAnggota').on('click', function(){
+		const jumlahanggota = $("#anggota .jumlah").length;
+		let html='';
+		html+='<div class="form-row mt-2 " id="anggota['+jumlahanggota+']">';
+		html+='<div class="col-6">';
+		html+='<input class="form-control" onkeyup="ceknrp('+jumlahanggota+')" id="nrp['+jumlahanggota+']" name="nrp['+jumlahanggota+']" placeholder="NRP" type="text" required>';
+		html+='<div class="valid-feedback feedback['+jumlahanggota+']"></div>';
+		html+='<div class="invalid-feedback feedback['+jumlahanggota+']"></div>';
+		html+='</div>';
+		html+='<div class="col-5">';
+		html+='<input class="form-control jumlah" id="nama['+jumlahanggota+']" name="anggotakelompok['+jumlahanggota+']" type="text" placeholder="Nama" disabled>';
+		html+='</div>';
+		html+='<div class="col">';
+		html+='<a href="#" class="btn btn-danger align-middle" onclick="hapus('+jumlahanggota+')"><i class="fas fa-trash-alt"></i></a>';
+		html+='</div>';
+		html+='</div>';
+		$("#anggota").append(html);
+	});
+
 });
+
+$('#kelompokEdit').on('hidden.bs.modal', function () {
+  $("#anggota").html("");
+})
+
+function hapus(id){
+	document.getElementById("anggota["+id+"]").remove();
+}
+
+function ceknrp(id){
+	const el = $("#nrp["+id+"]");
+	const id_kel = $("#id").val();
+	const nrp = el.prevObject[0].activeElement.value;
+
+	$.ajax({
+		url: base + 'koordinator/checknrpkelompok',
+		data: {
+			nrp: nrp,
+			id_kel : id_kel
+		},
+		method: "post",
+		dataType: "json",
+		success: function(data) {
+			console.log(id);
+			const input = document.getElementById("nrp["+id+"]");
+			if(data==="Sudah masuk"){
+				const target = document.getElementsByClassName("invalid-feedback feedback["+id+"]");
+				target[0].innerHTML="NRP sudah menjadi anggota kelompok lain.";
+				input.classList.add('is-invalid');
+				document.getElementById('submit').setAttribute('disabled', true);
+				input.classList.remove('is-valid');
+			} else if(data==="Tidak ada"){
+				const target = document.getElementsByClassName("invalid-feedback feedback["+id+"]");
+				target[0].innerHTML="NRP tidak ditemukan.";
+				document.getElementById('submit').setAttribute('disabled', true);
+				input.classList.add('is-invalid');
+				input.classList.remove('is-valid');
+			} else{
+				const target = document.getElementsByClassName("valid-feedback feedback["+id+"]");
+				target[0].innerHTML = "NRP tersedia.";
+				document.getElementById("nama["+id+"]").value = data;
+				document.getElementById('submit').removeAttribute('disabled');
+				input.classList.remove('is-invalid');
+				input.classList.add('is-valid');
+			}
+		},
+	});
+}

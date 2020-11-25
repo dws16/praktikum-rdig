@@ -5,9 +5,27 @@ class Koordinator_model extends CI_Model
 {
   public function listkelompok()
   {
-    $query = 'SELECT `kelompok`.`name`, COUNT(`kelompok_user`.`id`) as `jumlah` 
+    $query = 'SELECT `kelompok`.`name`, `kelompok`.`id`, COUNT(`kelompok_user`.`id`) as `jumlah` 
               FROM `kelompok` LEFT JOIN `kelompok_user` ON `kelompok`.`id` = `kelompok_user`.`kelompok_id`
               GROUP BY `kelompok_user`.`kelompok_id`';
+
+    return $this->db->query($query)->result_array();
+  }
+
+  public function detailkelompok($kelompok_id)
+  {
+    $query = "SELECT  `kelompok`.`name` AS `kelompok`, `kelompok`.`id`, `user`.`name`, `user`.`nrp` 
+              FROM `kelompok` LEFT JOIN `kelompok_user` ON `kelompok`.`id` = `kelompok_user`.`kelompok_id`
+              LEFT JOIN `user` ON `kelompok_user`.`user_nrp` = `user`.`nrp` WHERE `kelompok`.`id` = '$kelompok_id'";
+
+    return $this->db->query($query)->result_array();
+  }
+
+  public function ceknrpkelompok($nrp, $id_kel)
+  {
+    $query = "SELECT `kelompok`.`name` AS `kelompok`, `kelompok`.`id`, `user`.`name`, `user`.`nrp` 
+              FROM `kelompok` INNER JOIN `kelompok_user` ON `kelompok`.`id` = `kelompok_user`.`kelompok_id`
+              INNER JOIN `user` ON `kelompok_user`.`user_nrp` = `user`.`nrp` WHERE `kelompok`.`id` != '1' AND `user`.`nrp`= '$nrp' ";
 
     return $this->db->query($query)->result_array();
   }

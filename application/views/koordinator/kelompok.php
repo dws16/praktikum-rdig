@@ -6,7 +6,7 @@
   <!-- DataTales Example -->
   <div class="row justify-content-center mt-5">
     <div class="col-lg-8">
-      <div class="card shadow mb-4">
+      <div class="card shadow mb-4 border-left-danger">
         <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-danger"><?= $title ?></h6>
         </div>
@@ -33,8 +33,8 @@
                   <tr>
                     <th><?= $k['name']; ?></th>
                     <th><?= $k['jumlah']; ?></th>
-                    <th>
-
+                    <th class="text-center">
+                      <a href="#" class="badge badge-pill badge-info editkelompok" data-toggle="modal" data-id="<?= $k['id']; ?>" data-target="#kelompokEdit"><i class="fas fa-fw fa-info"></i> Detail</a>
                     </th>
                   </tr>
                 <?php endforeach; ?>
@@ -53,10 +53,10 @@
 <!-- End of Main Content -->
 
 <div class="modal fade" id="kelompokEdit" tabindex="-1" role="dialog" aria-labelledby="kelompokEditLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog  modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="kelompokEditLabel">Edit Kelengkapan Buku</h5>
+        <h5 class="modal-title" id="kelompokEditLabel">Edit Kelompok</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -66,14 +66,22 @@
           <div class="form-group">
             <label for="kelompok">Nama Kelompok</label>
             <input class="form-control" id="kelompok" name="kelompok" type="text" required>
-            <input class="form-control" id="id" name="id" type="text" hidden>
             <div class="invalid-feedback">
               Nama kelompok sudah dipakai.
             </div>
             <div class="valid-feedback">
               Nama kelompok tersedia
             </div>
+            <input class="form-control" id="id" name="id" type="text" hidden>
           </div>
+          <div style="margin-bottom:-4px;">
+            <label for="kelompok">Anggota Kelompok</label>
+          </div>
+          <div id="anggota">
+
+          </div>
+
+          <a href="#" class="btn btn-success mt-4" id="addAnggota"><i class="fas fa-user-plus"></i> Tambah Anggota</a>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
