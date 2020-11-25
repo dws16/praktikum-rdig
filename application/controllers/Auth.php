@@ -157,7 +157,7 @@ class Auth extends CI_Controller
         $config2['allowed_types'] = 'pdf|jpg|png|JPG';
         $config2['max_size']     = '2048';
 
-        $this->load->library('upload', $config2);
+        $this->upload->initialize($config2);
 
         if ($this->upload->do_upload('jadwal')) {
           $new_jadwal = $this->upload->data('file_name');
