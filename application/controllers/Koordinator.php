@@ -112,6 +112,7 @@ class Koordinator extends CI_Controller
   {
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['title'] = 'Pembagian Asisten';
+    $data['modul'] = $this->db->get('modul')->result_array();
 
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar', $data);
@@ -132,6 +133,36 @@ class Koordinator extends CI_Controller
     $this->load->view('templates/topbar', $data);
     $this->load->view('koordinator/praktikan', $data);
     $this->load->view('templates/footer');
+  }
+
+  public function modul()
+  {
+    $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+    $data['title'] = 'Manajemen Modul';
+    $data['list'] = $this->db->get('modul')->result_array();
+
+    $this->load->view('templates/header', $data);
+    $this->load->view('templates/sidebar', $data);
+    $this->load->view('templates/topbar', $data);
+    $this->load->view('koordinator/modul', $data);
+    $this->load->view('templates/footer');
+  }
+
+  public function activemodul()
+  {
+    $cek = $this->db->get_where('modul', ['code' => $this->input->post('code')])->row_array();
+    $this->db->where('code', $this->input->post('code'));
+    if ($cek['is_active'] == 1) {
+      $this->db->update('modul', ['is_active' => 0]);
+      $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+              Modul dinonaktifkan!
+              </div>');
+    } else {
+      $this->db->update('modul', ['is_active' => 1]);
+      $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+                      Modul diaktifkan!
+                      </div>');
+    }
   }
 
   // Controller Kelengkapan Praktikum

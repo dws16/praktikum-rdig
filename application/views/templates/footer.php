@@ -80,6 +80,21 @@
       }
     });
   });
+
+  $('.check').on('click', function() {
+    const code = $(this).data('modul');
+
+    $.ajax({
+      url: "<?= base_url('koordinator/activemodul'); ?>",
+      type: 'post',
+      data: {
+        code: code
+      },
+      success: function() {
+        document.location.href = "<?= base_url('koordinator/modul'); ?>";
+      }
+    });
+  });
 </script>
 
 </body>
