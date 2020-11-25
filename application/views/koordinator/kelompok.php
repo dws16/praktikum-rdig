@@ -16,7 +16,10 @@
               <?= $this->session->flashdata('message'); ?>
             </div>
             <div class="col-auto ml-auto">
-              <button class="btn btn-info mt-1 mb-3 tambahkelompok" data-toggle="modal" data-target="#kelompokEdit">Tambah Kelompok</button>
+              <button class="btn btn-info btn-icon-split mt-1 mb-3 tambahkelompok" data-toggle="modal" data-target="#kelompokEdit">
+                <span class="icon"><i class="fas fa-user-friends"></i></span>
+                <span class="text">Tambah Kelompok</span>
+              </button>
             </div>
           </div>
           <div class="table-responsive">
@@ -81,7 +84,10 @@
 
           </div>
 
-          <a href="#" class="btn btn-success mt-4" id="addAnggota"><i class="fas fa-user-plus"></i> Tambah Anggota</a>
+          <a href="#" class="btn btn-success btn-icon-split mt-4" id="addAnggota">
+            <span class="icon"><i class="fas fa-user-plus"></i></span>
+            <span class="text">Tambah Anggota</span>
+          </a>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
