@@ -15,10 +15,6 @@ class Admin extends CI_Controller
     $this->load->model('User_model');
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['list'] = $this->db->get('user')->result_array();
-    $data['detail'] = $this->db->get_where('user', ['id' => $id])->row_array();
-    if ($this->db->get_where('praktikan', ['id' => $id])) {
-      $data['praktikan'] = $this->db->get_where('praktikan', ['id' => $id])->row_array();
-    }
     $data['title'] = 'User List';
 
     $this->load->view('templates/header', $data);
