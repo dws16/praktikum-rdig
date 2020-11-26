@@ -24,16 +24,16 @@
                       <input type="text" class="form-control form-control-user" id="email" name="email" value="<?= set_value('email'); ?>" placeholder="Enter Email Address...">
                       <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                    <button type="submit" class="btn auth btn-user btn-block">
                       Reset Password
                     </button>
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="<?= base_url('auth/registration'); ?>">Create an Account!</a>
+                    <a class="small text-auth" href="<?= base_url('auth/registration'); ?>">Create an Account!</a>
                   </div>
                   <div class="text-center">
-                    <a class="small" href="<?= base_url('auth/login'); ?>">Already have an account? Login!</a>
+                    <a class="small text-auth" href="<?= base_url('auth/login'); ?>">Already have an account? Login!</a>
                   </div>
                 </div>
               </div>

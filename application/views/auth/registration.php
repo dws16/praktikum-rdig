@@ -60,16 +60,16 @@
                     </div>
                   </div>
 
-                  <button type="submit" class="btn btn-primary btn-user btn-block">
+                  <button type="submit" class="btn auth btn-user btn-block">
                     Register Account
                   </button>
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="<?= base_url('auth/forgotpassword'); ?>">Forgot Password?</a>
+                    <a class="small text-auth" href="<?= base_url('auth/forgotpassword'); ?>">Forgot Password?</a>
                   </div>
                   <div class="text-center">
-                    <a class="small" href="<?= base_url('auth/login'); ?>">Already have an account? Login!</a>
+                    <a class="small text-auth" href="<?= base_url('auth/login'); ?>">Already have an account? Login!</a>
                   </div>
                 </div>
               </div>

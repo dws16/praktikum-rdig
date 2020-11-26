@@ -28,7 +28,7 @@
                       <input type="password" class="form-control form-control-user" id="password2" name="password2" placeholder="Repeat Password...">
                       <?= form_error('password2', '<small class="text-danger">', '</small>'); ?>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                    <button type="submit" class="btn auth btn-user btn-block">
                       Change Password
                     </button>
                   </form>

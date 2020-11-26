@@ -18,9 +18,30 @@
   <!-- Custom styles for this template-->
   <link href="<?= base_url(); ?>assets/css/sb-admin-2.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-
   <!-- BOOTSTRAP REF -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style>
+    .auth {
+      background-color: rgb(150, 27, 27);
+      border-color: rgb(150, 27, 27);
+      color: whitesmoke;
+    }
+
+    .auth:hover {
+      background-color: #791616;
+      border-color: #791616;
+      color: whitesmoke;
+    }
+
+    .text-auth {
+      color: #961B1B;
+    }
+
+    .bg-auth {
+      background-color: rgb(150, 27, 27);
+
+    }
+  </style>
