@@ -24,18 +24,22 @@
               <thead>
                 <tr>
                   <th>Modul</th>
+                  <th>Title</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <?php foreach ($file as $f) : ?>
-                  <tr>
-                    <td><?= $f['name']; ?></td>
-                    <td>
-                      <a href="#" class="badge badge-pill badge-info editFilePraktikum" data-toggle="modal" data-id="<?= $f['id']; ?>" data-target="#filePraktikumEdit"><i class="fas fa-fw fa-edit"></i>Edit</a>
-                      <a href="<?= base_url('koordinator/deletefilepraktikum/') . $f['id']; ?>" class="badge badge-pill badge-danger" onclick="return confirm('Yakin?');"><i class="fas fa-fw fa-trash-alt"></i>Delete</a>
-                    </td>
-                  </tr>
+                  <?php if ($f['filename']) : ?>
+                    <tr>
+                      <td><?= $f['name']; ?></td>
+                      <td><?= $f['title']; ?></td>
+                      <td>
+                        <a href="#" class="badge badge-pill badge-info editFilePraktikum" data-toggle="modal" data-id="<?= $f['id']; ?>" data-target="#filePraktikumEdit"><i class="fas fa-fw fa-edit"></i>Edit</a>
+                        <a href="<?= base_url('koordinator/deletefilepraktikum/') . $f['id']; ?>" class="badge badge-pill badge-danger" onclick="return confirm('Yakin?');"><i class="fas fa-fw fa-trash-alt"></i>Delete</a>
+                      </td>
+                    </tr>
+                  <?php endif; ?>
                 <?php endforeach; ?>
               </tbody>
             </table>
@@ -61,11 +65,16 @@
         </button>
       </div>
       <div class="modal-body">
-        <?= form_open_multipart(base_url('koordinator/addfilepraktikum')) ?>
+        <?= form_open_multipart(base_url('koordinator/editfilepraktikum')) ?>
         <div class="form-group">
-          <label for="namafile">Nama File</label>
-          <input class="form-control" id="namafile" name="namafile" type="text">
-          <input class="form-control" id="id" name="id" type="text" hidden>
+          <label for="modul">Modul</label>
+          <select class="form-control" id="modul" name="modul">
+            <?php foreach ($file as $f) : ?>
+              <?php if (!$f['filename']) : ?>
+                <option value="<?= $f['praktikumID'] ?>"><?= $f['name']; ?></option>
+              <?php endif; ?>
+            <?php endforeach; ?>
+          </select>
         </div>
         <div class="custom-file">
           <input type="file" class="custom-file-input" id="filepraktikum" name="filepraktikum">

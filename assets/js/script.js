@@ -114,29 +114,51 @@ $(function () {
 
 	});
 
-	$('.tambahFilePraktikum').on('click', function(){
-		$('#filePraktikumEditLabel').html('Tambah Kelengkapan Praktikum');
+	$('.addModul').on('click', function(){
+		$('#modulEditLabel').html('Tambah Modul Praktikum');
 		$('.modal-footer button[type=submit]').html('Tambah');
-		$('.modal-body form').attr('action', base+ '/koordinator/addfilepraktikum');
+		$('.modal-body form').attr('action', base+ '/koordinator/addmodul');
+		$("#filepraktikum").prop('required',true);
+		$("#status").prop('checked',true).attr('checked','checked');
+		$("#targetcheck").html('On');
 	});
-
-	$('.editFilePraktikum').on('click', function(){
-		$('#filePraktikumEditLabel').html('Edit Kelengkapan Praktikum');
+	
+	$('.editModul').on('click', function(){
+		$('#modulEditLabel').html('Edit Modul Praktikum');
 		$('.modal-footer button[type=submit]').html('Edit');
-		$('.modal-body form').attr('action', base+ '/koordinator/editfilepraktikum');
-
+		$('.modal-body form').attr('action', base+ '/koordinator/editmodul');
+		$("#filepraktikum").prop('required', false);
+		
 		const id = $(this).data('id');
 
 		$.ajax({
-			url: base + 'koordinator/geteditfilepraktikum',
+			url: base + 'koordinator/geteditmodul',
 			data: {
 				id: id
 			},
 			method: "post",
 			dataType: "json",
 			success: function(data){
-				$('#namafile').val(data.name);
-				$('#id').val(data.id);
+				console.log(data);
+				$("#id").val(data.praktikumID);
+				$("#modul").val(data.name);
+				$("#title").val(data.title);
+				$("#desc").val(data.description);
+				if(data.status==1){
+					$("#status").prop('checked',true).attr('checked','checked');
+					$("#targetcheck").html('On');
+				} else{
+					$("#status").prop('checked',false).removeAttr('checked');
+					$("#targetcheck").html('Off');
+				}
+			}
+		});
+
+		$('#status').on('change', function(){
+			if($("#status").is(":checked")){
+				$("#targetcheck").html('On');
+			} else{
+				$("#targetcheck").html('Off');
 			}
 		});
 	});
@@ -189,7 +211,6 @@ $(function () {
 					namakelompok.removeClass('is-valid');
 					$('#submit').prop('disabled',true);
 				} else{
-					console.log(namakelompok);
 					namakelompok.removeClass('is-invalid');
 					namakelompok.addClass('is-valid');
 					$('#submit').prop('disabled',false);
@@ -214,8 +235,10 @@ $(function () {
       dataType: "json",
       success: function(data) {
 				$('#kelompok').val(data[0].kelompok);
-				$('#id').val(data[0].id);
-				const jumlahanggota = ($("#anggota .jumlah").length);
+				$('#id').val(data[0].kelompokID);
+				$('#year').val(data[0].year);
+				$('#term').val(data[0].term);
+				$('#status').val(data[0].status);
 				let html="";
 				$.each(data, function(i, data){
 					if(data.name==null){
@@ -259,6 +282,57 @@ $(function () {
 		$("#anggota").append(html);
 	});
 
+	$('.editAsisten').on('click', function(){
+		const kelompok = $(this).data('kelompok');
+		const modul = $(this).data('modul');
+		$.ajax({
+			url: base + 'koordinator/getdetailkelompok_asisten',
+			data: {
+				kelompok: kelompok,
+				modul: modul
+			},
+			method: "post",
+			dataType: "json",
+			success: function(data){
+				console.log(data);
+				$("#id").val(data.praktikumID);
+				$("#modul").val(data.modul);
+				$("#kelompok").val(data.kelompok);
+				if(data.asisten){
+					$("#nrp_asisten").val(data.nrp);
+					$("#nama").val(data.asisten);
+				}
+			},
+			error: function(data){
+				console.log(data);
+			}
+		});
+	});
+
+	$('#nrp_asisten').on('keyup', function(){
+		const nrp = $(this);
+		$.ajax({
+      url: base + 'koordinator/cekasisten',
+      data: {
+        nrp: nrp.val()
+      },
+      method: "post",
+      dataType: "json",
+      success: function(data) {
+				if(data==='Tidak'){
+					$('#nama').val("");
+					nrp.addClass('is-invalid');
+					nrp.removeClass('is-valid');
+					$(':submit').prop('disabled',true);
+				} else{
+					$('#nama').val(data.name);
+					nrp.removeClass('is-invalid');
+					nrp.addClass('is-valid');
+					$(':submit').prop('disabled',false);
+				}
+			},
+    });
+	});
 });
 
 $('#kelompokEdit').on('hidden.bs.modal', function () {

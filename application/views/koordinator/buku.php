@@ -23,7 +23,7 @@
             <table class="table table-bordered" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Modul</th>
+                  <th>Nama File</th>
                   <th>Action</th>
                 </tr>
               </thead>

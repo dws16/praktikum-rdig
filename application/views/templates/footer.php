@@ -57,6 +57,7 @@
 <script>
   $(document).ready(function() {
     $('#dataTable').DataTable();
+    $('.dataTable').DataTable();
   });
 
   $('.custom-file-input').on('change', function() {

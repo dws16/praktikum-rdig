@@ -37,21 +37,24 @@ class Koordinator extends CI_Controller
   public function addkelompok()
   {
     $data = [
-      'name' => $this->input->post('kelompok')
+      'name' => $this->input->post('kelompok'),
+      'year' => $this->input->post('year'),
+      'term' => $this->input->post('term'),
+      'status' => $this->input->post('status')
     ];
     if ($this->db->insert('kelompok', $data)) {
       if ($this->input->post('nrp')) {
         $kel_id = $this->db->get_where('kelompok', ['name' => $data['name']])->row_array();
         foreach ($this->input->post('nrp') as $nrp) {
-          if ($this->db->get_where('kelompok_user', ['user_nrp' => $nrp])->row_array()) {
+          if ($this->db->get_where('kelompok_praktikan', ['IDUser' => $nrp])->row_array()) {
             continue;
           }
           $data_kel = [];
           $data_kel = [
-            'kelompok_id' => $kel_id['id'],
-            'user_nrp' => $nrp
+            'IDKelompok' => $kel_id['kelompokID'],
+            'IDUser' => $nrp
           ];
-          $this->db->insert('kelompok_user', $data_kel);
+          $this->db->insert('kelompok_praktikan', $data_kel);
         }
       }
       $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Kelompok berhasil ditambahkan!</div>');
@@ -84,25 +87,36 @@ class Koordinator extends CI_Controller
   public function editkelompok()
   {
     $data = [
-      'name' => $this->input->post('kelompok')
+      'name' => $this->input->post('kelompok'),
+      'year' => $this->input->post('year'),
+      'term' => $this->input->post('term'),
+      'status' => $this->input->post('status')
     ];
 
-    $this->db->where('id', $this->input->post('id'));
+    $this->db->where('kelompokID', $this->input->post('id'));
     $this->db->update('kelompok', $data);
 
-    $this->db->where('kelompok_id', $this->input->post('id'));
-    $this->db->delete('kelompok_user');
+    $this->db->where('IDKelompok', $this->input->post('id'));
+    $this->db->delete('kelompok_praktikan');
     foreach ($this->input->post('nrp') as $nrp) {
       $data_kel = [];
       $data_kel = [
-        'kelompok_id' => $this->input->post('id'),
-        'user_nrp' => $nrp
+        'IDKelompok' => $this->input->post('id'),
+        'IDUser' => $nrp
       ];
 
-      $this->db->insert('kelompok_user', $data_kel);
+      $this->db->insert('kelompok_praktikan', $data_kel);
     }
 
     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Kelompok berhasil diubah!</div>');
+    redirect(base_url('koordinator/kelompok'));
+  }
+  public function deletekelompok($id)
+  {
+    $this->db->where('kelompokID', $id);
+    $this->db->delete('kelompok');
+
+    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Kelompok berhasil dihapus!</div>');
     redirect(base_url('koordinator/kelompok'));
   }
   //End of Controller Pembagian Kelompok
@@ -110,9 +124,12 @@ class Koordinator extends CI_Controller
   //Controller Pembagian Asisten
   public function asisten()
   {
+    $this->load->model('Koordinator_model');
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['title'] = 'Pembagian Asisten';
-    $data['modul'] = $this->db->get('modul')->result_array();
+    $data['modul'] = $this->db->get_where('praktikum', ['status' => 1])->result_array();
+    $data['kelompok'] = $this->db->get_where('kelompok', ['status' => 1])->result_array();
+    $data['kelompok_asisten'] = $this->Koordinator_model->listkelompok_asisten();
 
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar', $data);
@@ -120,6 +137,64 @@ class Koordinator extends CI_Controller
     $this->load->view('koordinator/asisten', $data);
     $this->load->view('templates/footer');
   }
+  public function getdetailkelompok_asisten()
+  {
+    $this->load->model('Koordinator_model');
+    $kelompok = $this->input->post('kelompok');
+    $modul = $this->db->get_where('praktikum', ['praktikumID' => $this->input->post('modul')])->row_array();
+    $ada = $this->Koordinator_model->detailkelompok_asisten($kelompok, $this->input->post('modul'));
+    if ($ada) {
+      echo json_encode($ada);
+    } else {
+      $kel = $this->db->get_where('kelompok', ['kelompokID' => $kelompok])->row_array();
+      $data = [
+        'kelompok' => $kel['name'],
+        'praktikumID' => $modul['praktikumID'],
+        'modul' => $modul['name']
+      ];
+      echo json_encode($data);
+    }
+  }
+  public function cekasisten()
+  {
+    $this->db->where_not_in('role_id', array(4));
+    $this->db->where('nrp', $this->input->post('nrp'));
+    $ada = $this->db->get('user')->row_array();
+    if ($ada) {
+      echo json_encode($ada);
+    } else {
+      echo json_encode("Tidak");
+    }
+  }
+  public function editasisten()
+  {
+    $modul = $this->input->post('id');
+    $kelompok = $this->input->post('kelompok');
+    $kelompok = $this->db->get_where('kelompok', ['name' => $kelompok])->row_array();
+    $ada = $this->db->get_where('kelompok_aslab', ['IDPraktikum' => $modul, 'IDKelompok' => $kelompok['kelompokID']])->row_array();
+    if ($ada) {
+      $this->db->where('IDPraktikum', $modul);
+      $this->db->where('IDKelompok', $kelompok['kelompokID']);
+      $this->db->update('kelompok_aslab', ['IDUser' => $this->input->post('nrp')]);
+
+      $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+             Asisten berhasil diubah!
+              </div>');
+      redirect(base_url('koordinator/asisten'));
+    } else {
+      $data = [
+        'IDKelompok' => $kelompok['kelompokID'],
+        'IDUser' => $this->input->post('nrp'),
+        'IDPraktikum' => $modul
+      ];
+      $this->db->insert('kelompok_aslab', $data);
+      $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+      Asisten berhasil ditambahkan!
+      </div>');
+      redirect(base_url('koordinator/asisten'));
+    }
+  }
+  //End of Controlelr Pembagian Asisten
 
   public function praktikan()
   {
@@ -135,11 +210,12 @@ class Koordinator extends CI_Controller
     $this->load->view('templates/footer');
   }
 
+  //Controller Modul
   public function modul()
   {
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['title'] = 'Manajemen Modul';
-    $data['list'] = $this->db->get('modul')->result_array();
+    $data['list'] = $this->db->get('praktikum')->result_array();
 
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar', $data);
@@ -147,85 +223,61 @@ class Koordinator extends CI_Controller
     $this->load->view('koordinator/modul', $data);
     $this->load->view('templates/footer');
   }
-
-  public function activemodul()
+  public function addmodul()
   {
-    $cek = $this->db->get_where('modul', ['code' => $this->input->post('code')])->row_array();
-    $this->db->where('code', $this->input->post('code'));
-    if ($cek['is_active'] == 1) {
-      $this->db->update('modul', ['is_active' => 0]);
-      $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-              Modul dinonaktifkan!
-              </div>');
+    $ext = explode(".", $_FILES['filepraktikum']['name']);
+    $_FILES['filepraktikum']['name'] = $this->input->post('modul') . "_" . time() . "." . end($ext);
+
+
+    $config['upload_path'] = './assets/file/praktikum/';
+    $config['allowed_types'] = 'pdf';
+
+    $this->load->library('upload', $config);
+
+    if ($this->upload->do_upload('filepraktikum')) {
+
+      $new_file = $this->upload->data('file_name');
+
+      $this->db->set('filename', $new_file);
     } else {
-      $this->db->update('modul', ['is_active' => 1]);
-      $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-                      Modul diaktifkan!
-                      </div>');
+      $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $this->upload->display_errors() . '</div>');
+      redirect(base_url('koordinator/modul'));
     }
+
+    if ($this->input->post('status')) {
+      $status = 1;
+    } else {
+      $status = 0;
+    }
+
+    $this->db->set('name', $this->input->post('modul'));
+    $this->db->set('title', $this->input->post('title'));
+    $this->db->set('description', $this->input->post('desc'));
+    $this->db->set('status', $status);
+    $this->db->insert('praktikum');
+
+    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Modul berhasil ditambahkan!</div>');
+    redirect(base_url('koordinator/modul'));
   }
-
-  // Controller Kelengkapan Praktikum
-  public function praktikum()
+  public function geteditmodul()
   {
-    $data['file'] = $this->db->get('filepraktikum')->result_array();
-    $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-    $data['title'] = 'Kelengkapan Praktikum';
-
-    $this->load->view('templates/header', $data);
-    $this->load->view('templates/sidebar', $data);
-    $this->load->view('templates/topbar', $data);
-    $this->load->view('koordinator/praktikum', $data);
-    $this->load->view('templates/footer');
+    echo json_encode($this->db->get_where('praktikum', ['praktikumID' => $this->input->post('id')])->row_array());
   }
-
-  public function geteditfilepraktikum()
+  public function editmodul()
   {
-    echo json_encode($this->db->get_where('filepraktikum', ['id' => $this->input->post('id')])->row_array());
-  }
-
-  public function addfilepraktikum()
-  {
-    $nama = $this->input->post('namafile');
+    $modul_id = $this->input->post('id');
     $file = $_FILES['filepraktikum']['name'];
 
-    if ($file) {
-      $config['upload_path'] = './assets/file/praktikum/';
-      $config['allowed_types'] = 'gif|jpg|png|pdf|cdr|rar|zip|docx';
-
-      $this->load->library('upload', $config);
-
-      if ($this->upload->do_upload('filepraktikum')) {
-
-        $new_file = $this->upload->data('file_name');
-
-        $this->db->set('filename', $new_file);
-        $this->db->set('name', $nama);
-        $this->db->insert('filepraktikum');
-
-        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">File berhasil ditambahkan!</div>');
-        redirect(base_url('koordinator/praktikum'));
-      } else {
-        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $this->upload->display_errors() . '</div>');
-        redirect(base_url('koordinator/praktikum'));
-      }
-    } else {
-      $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Harap tambahkan file!</div>');
-      redirect(base_url('koordinator/praktikum'));
-    }
-  }
-
-  public function editfilepraktikum()
-  {
-    $nama = $this->input->post('namafile');
-    $file = $_FILES['filepraktikum']['name'];
-
-    $lama = $this->db->get_where('filepraktikum', ['id' => $this->input->post('id')])->row_array();
+    $lama = $this->db->get_where('praktikum', ['praktikumID' => $modul_id])->row_array();
 
     if ($file) {
-      unlink(FCPATH . 'assets/file/prakitkum/' . $lama['filename']);
+      unlink(FCPATH . 'assets/file/praktikum/' . $lama['filename']);
+
+      $ext = explode(".", $_FILES['filepraktikum']['name']);
+      $_FILES['filepraktikum']['name'] = $this->input->post('modul') . "_" . time() . "." . end($ext);
+
       $config['upload_path'] = './assets/file/praktikum/';
-      $config['allowed_types'] = 'gif|jpg|png|pdf|cdr|rar|zip|docx';
+      $config['allowed_types'] = 'pdf';
 
       $this->load->library('upload', $config);
 
@@ -236,27 +288,44 @@ class Koordinator extends CI_Controller
         $this->db->set('filename', $new_file);
       } else {
         $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $this->upload->display_errors() . '</div>');
-        redirect(base_url('koordinator/praktikum'));
+        redirect(base_url('koordinator/modul'));
       }
     }
 
-    $this->db->set('name', $nama);
-    $this->db->where('id', $this->input->post('id'));
-    $this->db->update('filepraktikum');
+    if ($this->input->post('status')) {
+      $status = 1;
+    } else {
+      $status = 0;
+    }
 
-    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">File berhasil diubah!</div>');
-    redirect(base_url('koordinator/praktikum'));
+    $this->db->set('name', $this->input->post('modul'));
+    $this->db->set('title', $this->input->post('title'));
+    $this->db->set('description', $this->input->post('desc'));
+    $this->db->set('status', $status);
+    $this->db->where('praktikumID', $modul_id);
+    $this->db->update('praktikum');
+
+    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Modul berhasil diubah!</div>');
+    redirect(base_url('koordinator/modul'));
   }
-
-  public function deletefilepraktikum($id)
+  public function deletemodul($id)
   {
-    $this->db->where('id', $id);
-    $this->db->delete('filepraktikum');
+    $modul = $this->db->get_where('praktikum', ['praktikumID' => $id])->row_array();
+    $loc = FCPATH . 'assets/file/praktikum/' . $modul['filename'];
+    if (file_exists($loc)) {
+      unlink($loc);
+    } else {
+      $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">File modul tidak ditemukan!</div>');
+      redirect(base_url('koordinator/modul'));
+    }
 
-    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">File berhasil dihapus!</div>');
-    redirect(base_url('koordinator/praktikum'));
+    $this->db->where('praktikumID', $id);
+    $this->db->delete('praktikum');
+
+    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Modul berhasil dihapus!</div>');
+    redirect(base_url('koordinator/modul'));
   }
-  // End of Controller Kelengkapan Praktikum
+  //End of Controller Modul
 
   // Controller Kelengkapan Buku
   public function buku()

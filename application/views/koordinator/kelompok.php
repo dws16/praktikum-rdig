@@ -5,7 +5,7 @@
 
   <!-- DataTales Example -->
   <div class="row justify-content-center mt-5">
-    <div class="col-lg-8">
+    <div class="col-lg-10">
       <div class="card shadow mb-4 border-left-danger">
         <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-danger"><?= $title ?></h6>
@@ -28,6 +28,8 @@
                 <tr>
                   <th>Nama Kelompok</th>
                   <th>Jumlah Anggota</th>
+                  <th>Semester - Tahun</th>
+                  <th>Active</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -36,8 +38,11 @@
                   <tr>
                     <th><?= $k['name']; ?></th>
                     <th><?= $k['jumlah']; ?></th>
+                    <th><?= ($k['term'] == 1) ? "Genap" : "Gasal"; ?> - <?= $k['year']; ?></th>
+                    <th><?= ($k['status'] == 1) ? "Aktif" : "Nonaktif"; ?></th>
                     <th class="text-center">
-                      <a href="#" class="badge badge-pill badge-info editkelompok" data-toggle="modal" data-id="<?= $k['id']; ?>" data-target="#kelompokEdit"><i class="fas fa-fw fa-info"></i> Detail</a>
+                      <a href="#" class="badge badge-pill badge-info editkelompok" data-toggle="modal" data-id="<?= $k['kelompokID']; ?>" data-target="#kelompokEdit"><i class="fas fa-fw fa-info"></i> Detail</a>
+                      <a href="<?= base_url('koordinator/deletekelompok/') . $k['kelompokID']; ?>" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-trash"></i> Hapus</a>
                     </th>
                   </tr>
                 <?php endforeach; ?>
@@ -67,15 +72,37 @@
       <div class="modal-body">
         <form action="<?= base_url('koordinator/addkelompok') ?>" method="post">
           <div class="form-group">
-            <label for="kelompok">Nama Kelompok</label>
-            <input class="form-control" id="kelompok" name="kelompok" type="text" required>
-            <div class="invalid-feedback">
-              Nama kelompok sudah dipakai.
+            <div class="form-row">
+              <div class="col">
+                <label for="kelompok">Nama Kelompok</label>
+                <input class="form-control" id="kelompok" name="kelompok" type="text" required>
+                <div class="invalid-feedback">
+                  Nama kelompok sudah dipakai.
+                </div>
+                <div class="valid-feedback">
+                  Nama kelompok tersedia
+                </div>
+                <input class="form-control" id="id" name="id" type="text" hidden>
+              </div>
+              <div class="col-2">
+                <label for="year">Tahun</label>
+                <input type="number" class="form-control" id="year" name="year" required>
+              </div>
+              <div class="col-2">
+                <label for="term">Semester</label>
+                <select class="form-control" name="term" id="term">
+                  <option value="0">Gasal</option>
+                  <option value="1">Genap</option>
+                </select>
+              </div>
+              <div class="col-2">
+                <label for="status">Status</label>
+                <select name="status" id="status" class="form-control">
+                  <option value="0">Nonaktif</option>
+                  <option value="1">Aktif</option>
+                </select>
+              </div>
             </div>
-            <div class="valid-feedback">
-              Nama kelompok tersedia
-            </div>
-            <input class="form-control" id="id" name="id" type="text" hidden>
           </div>
           <div style="margin-bottom:-4px;">
             <label for="kelompok">Anggota Kelompok</label>
