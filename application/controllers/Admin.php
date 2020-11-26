@@ -9,7 +9,7 @@ class Admin extends CI_Controller
     is_logged_in();
   }
 
-  public function index($id = '')
+  public function index()
   {
     #USER#
     $this->load->model('User_model');
