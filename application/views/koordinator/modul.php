@@ -96,9 +96,7 @@
         <div class="form-row ml-1">
           <div class="col-auto">
             <input type="checkbox" name="status" id="status">
-          </div>
-          <div class="col-auto">
-            <span id="targetcheck">On</span>
+            <label class="ml-2" for="status" id="targetcheck">On</label>
           </div>
         </div>
       </div>
