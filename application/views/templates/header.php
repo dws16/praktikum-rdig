@@ -19,9 +19,11 @@
   <link href="<?= base_url(); ?>assets/css/sb-admin-2.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   <link href="<?= base_url(); ?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <script src="<?= base_url(); ?>assets/vendor/jquery/jquery.min.js"></script>
 
   <!-- Custom styles Aik-->
   <link href="<?= base_url(); ?>assets/aik/aik.scss" rel="stylesheet">
+
 </head>
 
 <body id="page-top">

@@ -39,7 +39,7 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="<?= base_url(); ?>assets/vendor/jquery/jquery.min.js"></script>
+
 <script src="<?= base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
@@ -61,6 +61,11 @@
   $(document).ready(function() {
     $('#dataTable').DataTable();
     $('.dataTable').DataTable();
+
+    const show = $(".showtable").val();
+    $(".showed").hide();
+    $("#" + show).show();
+    $('.showtable').val(show);
   });
 
   $('.custom-file-input').on('change', function() {
