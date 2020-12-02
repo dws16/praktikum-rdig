@@ -67,4 +67,100 @@ class Koordinator_model extends CI_Model
 
     return $this->db->query($query)->row_array();
   }
+
+  public function listsesi($id = NULL)
+  {
+    $query = 'SELECT `timeline_praktikum`.`dateID`, `timeline_praktikum`.`date`, 
+              `praktikum`.`name`, `praktikum`.`praktikumID`, `timeline_praktikum`.`ket`
+              FROM `timeline_praktikum` INNER JOIN `praktikum` ON `praktikum`.`praktikumID` = `timeline_praktikum`.`praktikumID`';
+    if ($id) {
+      $query .= "WHERE `timeline_praktikum`.`dateID` = '$id'";
+      return $this->db->query($query)->row_array();
+    }
+
+    return $this->db->query($query)->result_array();
+  }
+
+  public function listjaga()
+  {
+    $query = "SELECT `timeline_praktikum`.`dateID`, `timeline_praktikum`.`date`, COUNT(`timeline_presensi`.`id`) AS `jumlah`,
+              `praktikum`.`name`, `praktikum`.`praktikumID`, `timeline_praktikum`.`ket`
+              FROM `timeline_praktikum` INNER JOIN `praktikum` ON `praktikum`.`praktikumID` = `timeline_praktikum`.`praktikumID`
+              LEFT JOIN `timeline_presensi` ON `timeline_praktikum`.`dateID` = `timeline_presensi`.`dateID`
+              INNER JOIN `user` ON `timeline_presensi`.`nrp` = `user`.`nrp`
+              WHERE `user`.`role_id` !='4'
+              GROUP BY `timeline_praktikum`.`dateID`
+              ";
+
+    return $this->db->query($query)->result_array();
+  }
+  public function detailjaga($id)
+  {
+    $query = "SELECT `timeline_presensi`.`dateID`, `timeline_presensi`.`id`, `timeline_praktikum`.`date`, `timeline_praktikum`.`ket`,
+              `timeline_presensi`.`nrp`, `user`.`name`, `praktikum`.`name` AS `modul` FROM `timeline_presensi`
+              LEFT JOIN `timeline_praktikum` ON `timeline_presensi`.`dateID` = `timeline_praktikum`.`dateID`
+              LEFT JOIN `user` ON `timeline_presensi`.`nrp` = `user`.`nrp`
+              LEFT JOIN `praktikum` ON `timeline_praktikum`.`praktikumID` = `praktikum`.`praktikumID`
+              WHERE `timeline_presensi`.`dateID` = '$id' AND `user`.`role_id`!=4";
+
+    return $this->db->query($query)->result_array();
+  }
+
+  public function jadwalkelompok()
+  {
+    $query = "SELECT `kelompok`.`name` AS `kelompok`, `kelompok`.`kelompokID`, `praktikum`.`name`, `praktikum`.`praktikumID`,
+              `timeline_praktikum`.`date`, `timeline_presensi_kelompok`.`id` FROM `timeline_presensi_kelompok`
+              INNER JOIN `kelompok` ON `timeline_presensi_kelompok`.`kelompokID` = `kelompok`.`kelompokID`
+              INNER JOIN `timeline_praktikum` ON `timeline_presensi_kelompok`.`dateID` = `timeline_praktikum`.`dateID`
+              INNER JOIN `praktikum` ON `timeline_praktikum`.`praktikumID` = `praktikum`.`praktikumID`";
+
+    return $this->db->query($query)->result_array();
+  }
+
+  public function cekjadwalkelompok($modul, $kelompok)
+  {
+    $query = "SELECT `timeline_presensi_kelompok`.`kelompokID` FROM `timeline_presensi_kelompok`
+              INNER JOIN `timeline_praktikum` ON `timeline_presensi_kelompok`.`dateID` = `timeline_praktikum`.`dateID`
+              WHERE `timeline_presensi_kelompok`.`kelompokID` = '$kelompok' AND `timeline_praktikum`.`praktikumID` = '$modul'";
+
+    return $this->db->query($query)->row_array();
+  }
+  public function detailjadwalkelompok($id)
+  {
+    $query = "SELECT `kelompok`.`name`, `kelompok`.`kelompokID`, `praktikum`.`name` AS `modul`, 
+              `praktikum`.`praktikumID`, `timeline_praktikum`.`dateID`
+              FROM `timeline_presensi_kelompok`
+              INNER JOIN `timeline_praktikum` ON `timeline_presensi_kelompok`.`dateID` = `timeline_praktikum`.`dateID`
+              INNER JOIN `praktikum` ON `timeline_praktikum`.`praktikumID` = `praktikum`.`praktikumID`
+              INNER JOIN `kelompok` ON `timeline_presensi_kelompok`.`kelompokID` = `kelompok`.`kelompokID`
+              WHERE `timeline_presensi_kelompok`.`id` = '$id'";
+
+    return $this->db->query($query)->row_array();
+  }
+
+  public function jadwalpraktikan($id = NULL)
+  {
+    $query = "SELECT `user`.`name` AS `praktikan`, `user`.`nrp`, `kelompok`.`name` AS `kelompok`, `kelompok`.`kelompokID`, 
+              `praktikum`.`name` AS `modul`, `praktikum`.`praktikumID`, `timeline_praktikum`.`dateID`,
+              `timeline_praktikum`.`ket`, `timeline_presensi`.`id`, `timeline_presensi`.`ket` AS `absen` FROM `timeline_presensi`
+              INNER JOIN `timeline_praktikum` ON `timeline_presensi`.`dateID` = `timeline_praktikum`.`dateID`
+              INNER JOIN `praktikum` ON `timeline_praktikum`.`praktikumID` = `praktikum`.`praktikumID`
+              INNER JOIN `kelompok_praktikan` ON `timeline_presensi`.`nrp` = `kelompok_praktikan`.`IDUser`
+              INNER JOIN `kelompok` ON `kelompok_praktikan`.`IDKelompok` = `kelompok`.`kelompokID`
+              INNER JOIN `user` ON `timeline_presensi`.`nrp`= `user`.`nrp`";
+    if ($id) {
+      $query .= "WHERE `timeline_presensi`.`id`='$id'";
+      return $this->db->query($query)->row_array();
+    }
+
+    return $this->db->query($query)->result_array();
+  }
+  public function cekjadwalpraktikan($modul, $nrp)
+  {
+    $query = "SELECT `timeline_presensi`.`id` FROM `timeline_presensi`
+              INNER JOIN `timeline_praktikum` ON `timeline_presensi`.`dateID` = `timeline_praktikum`.`dateID`
+              WHERE `timeline_presensi`.`nrp`= '$nrp' AND `timeline_praktikum`.`praktikumID`='$modul'";
+
+    return $this->db->query($query)->row_array();
+  }
 }

@@ -340,12 +340,10 @@ class Koordinator extends CI_Controller
     $this->load->view('koordinator/buku', $data);
     $this->load->view('templates/footer');
   }
-
   public function geteditfilebuku()
   {
     echo json_encode($this->db->get_where('filebuku', ['id' => $this->input->post('id')])->row_array());
   }
-
   public function addfilebuku()
   {
     $nama = $this->input->post('namafile');
@@ -376,7 +374,6 @@ class Koordinator extends CI_Controller
       redirect(base_url('koordinator/buku'));
     }
   }
-
   public function editfilebuku()
   {
     $nama = $this->input->post('namafile');
@@ -409,7 +406,6 @@ class Koordinator extends CI_Controller
     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">File berhasil diubah!</div>');
     redirect(base_url('koordinator/buku'));
   }
-
   public function deletefilebuku($id)
   {
     $this->db->where('id', $id);
@@ -420,15 +416,275 @@ class Koordinator extends CI_Controller
   }
   // End of Controller Kelengkapan Buku
 
+  //Controller Penjadwalan
   public function penjadwalan()
   {
+    $this->load->model('Koordinator_model');
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['title'] = 'Penjadwalan';
-
+    $data['sesi'] = $this->Koordinator_model->listsesi();
+    $data['modul'] = $this->db->get_where('praktikum', ['status' => 1])->result_array();
+    $data['jadwalKelompok'] = $this->Koordinator_model->jadwalkelompok();
+    $data['listKelompok'] = $this->db->get_where('kelompok', ['status' => 1])->result_array();
+    $data['listJadwal'] = $this->db->get('timeline_praktikum');
+    $data['listJaga'] = $this->Koordinator_model->listjaga();
+    $data['listPraktikan'] = $this->Koordinator_model->jadwalpraktikan();
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar', $data);
     $this->load->view('templates/topbar', $data);
     $this->load->view('koordinator/penjadwalan', $data);
     $this->load->view('templates/footer');
+  }
+  public function addsesi()
+  {
+    $data = [
+      'date' => $this->input->post('date'),
+      'praktikumID' => $this->input->post('praktikumID'),
+      'ket' => $this->input->post('ket')
+    ];
+
+    $this->db->insert('timeline_praktikum', $data);
+    $this->session->set_flashdata('messageSesi', '<div class="alert alert-success" role="alert">Jadwal berhasil ditambahkan!</div>');
+    redirect(base_url('koordinator/penjadwalan'));
+  }
+  public function geteditsesi()
+  {
+    $this->load->model('Koordinator_model');
+
+    echo json_encode($this->Koordinator_model->listsesi($this->input->post('id')));
+  }
+  public function editsesi()
+  {
+    $data = [
+      'date' => $this->input->post('date'),
+      'praktikumID' => $this->input->post('praktikumID'),
+      'ket' => $this->input->post('ket')
+    ];
+    $this->db->where('dateID', $this->input->post('id'));
+    $this->db->update('timeline_praktikum', $data);
+    $this->session->set_flashdata('messageSesi', '<div class="alert alert-success" role="alert">Jadwal berhasil diubah!</div>');
+    redirect(base_url('koordinator/penjadwalan'));
+  }
+  public function deletesesi($id)
+  {
+    $this->db->where('dateID', $id);
+    $this->db->delete('timeline_praktikum');
+
+    $this->session->set_flashdata('messageSesi', '<div class="alert alert-success" role="alert">Jadwal berhasil dihapus!</div>');
+    redirect(base_url('koordinator/penjadwalan'));
+  }
+  public function getlistjadwal()
+  {
+    $id = $this->input->post('modul');
+    $ada = $this->db->get_where('timeline_praktikum', ['praktikumID' => $id])->result_array();
+    if ($ada) {
+      echo json_encode($ada);
+    } else {
+      echo json_encode("Belum");
+    }
+  }
+  public function cekjadwalkelompok()
+  {
+    $this->load->model('Koordinator_model');
+    $modul = $this->input->post('modul');
+    $kelompok = $this->input->post('kelompok');
+    $ada = $this->Koordinator_model->cekjadwalkelompok($modul, $kelompok);
+    if ($ada) {
+      echo json_encode("Sudah");
+    } else {
+      echo json_encode("Belum");
+    }
+  }
+  public function addjadwalkelompok()
+  {
+    $this->load->model('Koordinator_model');
+    $data = [
+      'dateID' => $this->input->post('dateID'),
+      'kelompokID' => $this->input->post('kelompokID')
+    ];
+    $this->db->insert('timeline_presensi_kelompok', $data);
+
+    $praktikan = $this->db->get_where('kelompok_praktikan', ['IDKelompok' => $data['kelompokID']])->result_array();
+    foreach ($praktikan as $p) {
+      $presensi = [];
+      $ada = $this->Koordinator_model->cekjadwalpraktikan($this->input->post('IDPraktikum'), $p['IDUser']);
+      if ($ada) {
+        $presensi = [
+          'dateID' => $data['dateID']
+        ];
+        $this->db->where('id', $ada['id']);
+        $this->db->update('timeline_presensi', $presensi);
+      } else {
+        $cek = $this->db->get_where('timeline_praktikum', ['praktikumID' => $this->input->post('IDpraktikum')])->result_array();
+        foreach ($cek as $c) {
+          $sudah = $this->db->get_where('timeline_presensi', ['dateID' => $c['dateID'], 'nrp' => $p['IDUser']])->row_array();
+
+          if ($sudah) {
+            $presensi = [
+              'dateID' => $data['dateID']
+            ];
+            $this->db->where('id', $sudah['id']);
+            $this->db->update('timeline_presensi', $presensi);
+          } else {
+            if ($c['dateID'] == $data['dateID']) {
+              continue;
+            }
+            $presensi = [
+              'dateID' => $data['dateID'],
+              'nrp' => $p['IDUser']
+            ];
+            $this->db->insert('timeline_presensi', $presensi);
+          }
+        }
+      }
+    }
+    $this->session->set_flashdata('messageKelompok', '<div class="alert alert-success" role="alert">Jadwal Kelompok berhasil ditambahkan!</div>');
+    redirect(base_url('koordinator/penjadwalan'));
+  }
+  public function getdetailjadwalkelompok()
+  {
+    $this->load->model('Koordinator_model');
+
+    echo json_encode($this->Koordinator_model->detailjadwalkelompok($this->input->post('id')));
+  }
+  public function editjadwalkelompok()
+  {
+    $data = [
+      'dateID' => $this->input->post('dateID'),
+    ];
+    $kelompok = $this->db->get_where('timeline_presensi_kelompok', ['id' => $this->input->post('jadwalkelompokID')])->row_array();
+    $praktikan = $this->db->get_where('kelompok_praktikan', ['IDKelompok' => $kelompok['kelompokID']])->result_array();
+    $cek = $this->db->get_where('timeline_praktikum', ['praktikumID' => $this->input->post('IDModul')])->result_array();
+    $this->db->where('id', $kelompok['id']);
+    $this->db->update('timeline_presensi_kelompok', $data);
+    $i = 0;
+    foreach ($praktikan as $p) {
+      foreach ($cek as $c) {
+        $ada = $this->db->get_where('timeline_presensi', ['dateID' => $c['dateID'], 'nrp' => $p['IDUser']])->row_array();
+        $presensi = [];
+        if ($ada) {
+          $presensi = [
+            'dateID' => $data['dateID']
+          ];
+          $this->db->where('dateID', $c['dateID']);
+          $this->db->where('nrp', $p['IDUser']);
+          $this->db->update('timeline_presensi', $presensi);
+          $i = 1;
+        }
+      }
+    }
+    if ($i == 0) {
+      $presensi = [
+        'dateID' => $data['dateID'],
+        'nrp' => $p['IDUser']
+      ];
+      $this->db->insert('timeline_presensi', $presensi);
+    }
+    $this->session->set_flashdata('messageKelompok', '<div class="alert alert-success" role="alert">Jadwal Kelompok berhasil diubah!</div>');
+    redirect(base_url('koordinator/penjadwalan'));
+  }
+  public function deletejadwalkelompok($id)
+  {
+    $kelompok = $this->db->get_where('timeline_presensi_kelompok', ['id' => $id])->row_array();
+    $praktikan = $this->db->get_where('kelompok_praktikan', ['IDKelompok' => $kelompok['kelompokID']])->result_array();
+    foreach ($praktikan as $p) {
+      $this->db->where('dateID', $kelompok['dateID']);
+      $this->db->where('nrp', $p['IDUser']);
+      $this->db->delete('timeline_presensi');
+    }
+    $this->db->where('id', $id);
+    $this->db->delete('timeline_presensi_kelompok');
+
+    $this->session->set_flashdata('messageKelompok', '<div class="alert alert-success" role="alert">Jadwal Kelompok berhasil dihapus!</div>');
+    redirect(base_url('koordinator/penjadwalan'));
+  }
+  public function cekjadwalpraktikan()
+  {
+    $this->load->model('Koordinator_model');
+    $modul = $this->input->post('modul');
+    $nrp = $this->input->post('nrp');
+    $ada = $this->Koordinator_model->cekjadwalpraktikan($modul, $nrp);
+    if ($ada == NULL) {
+      echo json_encode("Belum");
+    } else {
+      echo json_encode("Sudah");
+    }
+  }
+  public function addjadwalpraktikan()
+  {
+    $data = [
+      'dateID' => $this->input->post('datePraktikanID'),
+      'nrp' => $this->input->post('nrp')
+    ];
+    $this->db->insert('timeline_presensi', $data);
+
+    $this->session->set_flashdata('messagePraktikan', '<div class="alert alert-success" role="alert">Jadwal praktikan berhasil ditambahkan!</div>');
+    redirect(base_url('koordinator/penjadwalan'));
+  }
+  public function getdetailjadwalpraktikan()
+  {
+    $this->load->model('Koordinator_model');
+
+    echo json_encode($this->Koordinator_model->jadwalpraktikan($this->input->post('id')));
+  }
+  public function editjadwalpraktikan()
+  {
+    $data = [
+      'dateID' => $this->input->post('datePraktikanID'),
+      'ket' => $this->input->post('keterangan')
+    ];
+    $this->db->where('id', $this->input->post('jadwalID'));
+    $this->db->update('timeline_presensi', $data);
+
+    $this->session->set_flashdata('messagePraktikan', '<div class="alert alert-success" role="alert">Jadwal praktikan berhasil diubah!</div>');
+    redirect(base_url('koordinator/penjadwalan'));
+  }
+  public function deletejadwalpraktikan($id)
+  {
+    $this->db->where('id', $id);
+    $this->db->delete('timeline_presensi');
+
+    $this->session->set_flashdata('messagePraktikan', '<div class="alert alert-success" role="alert">Jadwal praktikan berhasil dihapus!</div>');
+    redirect(base_url('koordinator/penjadwalan'));
+  }
+  public function getdetailjaga()
+  {
+    $this->load->model('Koordinator_model');
+    $ada = $this->Koordinator_model->detailjaga($this->input->post('id'));
+    if ($ada) {
+      echo json_encode($ada);
+    } else {
+      echo json_encode("Tidak");
+    }
+  }
+  public function editjaga()
+  {
+    $date = $this->input->post('idSesi');
+
+    $query = "DELETE `timeline_presensi`.* FROM `timeline_presensi` INNER JOIN `user` ON `timeline_presensi`.`nrp` = `user`.`nrp`
+              WHERE `timeline_presensi`.`dateID` ='$date' AND NOT `user`.`role_id` = '4'";
+    $this->db->query($query);
+
+    foreach ($this->input->post('asisten') as $p) {
+      $asisten = [];
+      if ($this->db->get_where('timeline_presensi', ['dateID' => $date, 'nrp' => $p])->row_array()) {
+        continue;
+      } else {
+        $asisten = [
+          'dateID' => $date,
+          'nrp' => $p
+        ];
+        $this->db->insert('timeline_presensi', $asisten);
+      }
+    }
+
+    $this->session->set_flashdata('messageJaga', '<div class="alert alert-success" role="alert">Jadwal jaga berhasil diubah!</div>');
+    redirect(base_url('koordinator/penjadwalan'));
+  }
+  public function getlistasisten()
+  {
+    $this->db->where_not_in('role_id', array(4));
+    $list = $this->db->get('user')->result_array();
+    echo json_encode($list);
   }
 }
