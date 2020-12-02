@@ -1,3 +1,4 @@
+// ? JSON
 function aikConsoleURL(url) {
     var xhr = new XMLHttpRequest();
     var url = url;
@@ -26,12 +27,6 @@ function aikRetrieveJSONCustom(url, functionCB){
         window[functionCB](json);
     });
 }
-function aikRetrieveJSONCustomSession(url, functionCB, param){
-    // $.getJSON(url+param, function(json){
-    //     window[functionCB](json);
-    // });
-    console.log(param);
-}
 async function aikFetchJSON(url){
     // await response of fetch call
     let response = await fetch(url);
@@ -49,6 +44,53 @@ async function aikFetchJSON(url){
     //     .then(data => console.log(data))
     //     .catch(reason => console.log(reason.message))
 }
+
+// ? DataTable
+function aikTableIndex(dataTableName){
+    dataTableName.on( 'order.dt search.dt', function () {
+        dataTableName.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = i+1;
+        } );
+    } ).draw();
+}
+function aikTableOptionsDefault(type){
+    aikOptions = {
+        order: [[ 1, 'asc' ]],
+        columnDefs: [ {
+            "searchable": false,
+            "orderable": false,
+            "targets": [0, -1]
+        } ],
+    }
+    if(type == 1){
+        aikOptions['columnDefs'] = [ {
+            "searchable": false,
+            "orderable": false,
+            "targets": [0]
+        } ];
+    }
+    return aikOptions;
+}
+
+// ? Submit Button
+function aikdisableSubmitButton() {
+    function disableField() {
+        const invalidForm = document.querySelector('form:invalid');
+        const submitBtn = document.getElementById('submitNilai');
+        if (invalidForm) {
+            submitBtn.setAttribute('disabled', true);
+        } else {
+            submitBtn.disabled = false;
+        }
+        }
+        disableField();
+        const inputs = document.getElementsByTagName("input");
+        for (let input of inputs) {
+            input.addEventListener('change', disableField);
+    }
+}
+
+// ? Additional
 function timer(count, data){
     let timer;
     window.clearInterval(timer);

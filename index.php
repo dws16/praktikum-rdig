@@ -306,6 +306,18 @@ switch (ENVIRONMENT)
 	define('VIEWPATH', $view_folder.DIRECTORY_SEPARATOR);
 
 /*
+	* --------------------------------------------------------------------
+	* LOAD PHP DOT ENV FILE
+	* --------------------------------------------------------------------
+	*
+	* And away we go...
+	*
+	*/
+require __DIR__ . '/vendor/autoload.php';
+use Dotenv\Dotenv;
+$dotenv = Dotenv::createUnsafeImmutable(__DIR__);
+$dotenv->load();
+/*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE
  * --------------------------------------------------------------------

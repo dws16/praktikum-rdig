@@ -61,6 +61,12 @@
   $(document).ready(function() {
     $('#dataTable').DataTable();
     $('.dataTable').DataTable();
+    var tableAik = $('#dataTableAik').DataTable(aikTableOptionsDefault());
+    aikTableIndex(tableAik);
+    var tableAik = $('#dataTableAik1').DataTable(aikTableOptionsDefault());
+    aikTableIndex(tableAik);
+    var tableAik = $('#dataTableAikType1').DataTable(aikTableOptionsDefault(1));
+    aikTableIndex(tableAik);
   });
 
   $('.custom-file-input').on('change', function() {

@@ -24,7 +24,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |
 */
 // $config['base_url'] = 'http://praktikum.b401telematics.com/';
-$config['base_url'] = 'http://praktikum.b401telematics.com:8378/';
+$config['base_url'] = getenv('baseURL');
 
 /*
 |--------------------------------------------------------------------------
