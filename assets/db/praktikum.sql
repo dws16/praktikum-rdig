@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2020 at 12:54 AM
+-- Generation Time: Dec 07, 2020 at 06:17 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -99,7 +99,6 @@ CREATE TABLE `kelompok_praktikan` (
 --
 
 INSERT INTO `kelompok_praktikan` (`IDKelompok`, `IDUser`) VALUES
-(1, '07211640000014'),
 (4, '07211740000014');
 
 -- --------------------------------------------------------
@@ -112,20 +111,72 @@ CREATE TABLE `penilaian` (
   `penilaianID` int(11) NOT NULL,
   `kriteria` varchar(64) NOT NULL,
   `rangeKriteria` tinyint(3) UNSIGNED NOT NULL DEFAULT 100,
-  `descKriteria` text NOT NULL,
-  `statusKriteria` tinyint(1) NOT NULL DEFAULT 0
+  `descKriteria` text DEFAULT NULL,
+  `statusKriteria` tinyint(1) NOT NULL DEFAULT 0,
+  `IDType` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `penilaian`
 --
 
-INSERT INTO `penilaian` (`penilaianID`, `kriteria`, `rangeKriteria`, `descKriteria`, `statusKriteria`) VALUES
-(1, 'Pendahuluan', 80, '', 1),
-(2, 'Proses Praktikum', 100, '', 1),
-(3, 'Laporan', 100, '', 1),
-(4, 'Asistensi', 100, '', 1),
-(5, 'Orisinalitas', 100, '', 1);
+INSERT INTO `penilaian` (`penilaianID`, `kriteria`, `rangeKriteria`, `descKriteria`, `statusKriteria`, `IDType`) VALUES
+(1, 'Pendahuluan', 80, '', 0, 1),
+(2, 'Proses Praktikum', 100, '', 1, 1),
+(3, 'Laporan', 100, '', 1, 1),
+(4, 'Asistensi', 100, '', 1, 1),
+(5, 'Orisinalitas', 100, '', 1, 1),
+(6, 'Kelengkapan', 100, 'Kelengkapan Pembukuan Lapres', 1, 2),
+(7, 'Keteraturan', 100, NULL, 1, 2),
+(8, 'Format', 100, NULL, 1, 2),
+(9, 'Krtieria FP', 100, NULL, 1, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `penilaian_pelanggaran`
+--
+
+CREATE TABLE `penilaian_pelanggaran` (
+  `pelanggaranID` int(11) NOT NULL,
+  `kriteriaPelanggaran` varchar(64) NOT NULL,
+  `nilaiPelanggaran` tinyint(2) UNSIGNED NOT NULL DEFAULT 15,
+  `descPelanggaran` text DEFAULT NULL,
+  `statusPelanggaran` tinyint(1) NOT NULL DEFAULT 0,
+  `IDType` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `penilaian_pelanggaran`
+--
+
+INSERT INTO `penilaian_pelanggaran` (`pelanggaranID`, `kriteriaPelanggaran`, `nilaiPelanggaran`, `descPelanggaran`, `statusPelanggaran`, `IDType`) VALUES
+(1, 'Terlambat Praktikum', 15, 'Praktikan datang terlambat saat praktikum', 1, 1),
+(2, 'Terlambat Pengumpulan', 5, 'Terlambat mengumpulkan lapres', 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `penilaian_pengurangan`
+--
+
+CREATE TABLE `penilaian_pengurangan` (
+  `IDPelanggaran` int(11) NOT NULL,
+  `IDPraktikum` int(11) NOT NULL,
+  `praktikan` varchar(128) CHARACTER SET latin1 NOT NULL,
+  `aslab` varchar(128) CHARACTER SET latin1 NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `penilaian_pengurangan`
+--
+
+INSERT INTO `penilaian_pengurangan` (`IDPelanggaran`, `IDPraktikum`, `praktikan`, `aslab`, `status`) VALUES
+(1, 1, '07211740000010', '67890987654321', 1),
+(1, 1, '07211740000040', '67890987654321', 0),
+(2, 1, '07211740000010', '67890987654321', 1),
+(2, 1, '07211740000040', '67890987654321', 0);
 
 -- --------------------------------------------------------
 
@@ -147,10 +198,37 @@ CREATE TABLE `penilaian_praktikum` (
 
 INSERT INTO `penilaian_praktikum` (`IDPenilaian`, `IDPraktikum`, `praktikan`, `aslab`, `nilai`) VALUES
 (1, 1, '07211740000040', '67890987654321', 0),
-(2, 1, '07211740000040', '67890987654321', 2),
-(3, 1, '07211740000040', '67890987654321', 3),
-(4, 1, '07211740000040', '67890987654321', 4),
-(5, 1, '07211740000040', '67890987654321', 5);
+(2, 1, '07211740000010', '67890987654321', 0),
+(2, 1, '07211740000040', '67890987654321', 12),
+(3, 1, '07211740000010', '67890987654321', 0),
+(3, 1, '07211740000040', '67890987654321', 34),
+(4, 1, '07211740000010', '67890987654321', 3),
+(4, 1, '07211740000040', '67890987654321', 56),
+(4, 9, '07211740000040', '67890987654321', 4),
+(5, 1, '07211740000010', '67890987654321', 0),
+(5, 1, '07211740000040', '67890987654321', 78),
+(5, 10, '07211740000040', '67890987654321', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `penilaian_rekap`
+--
+
+CREATE TABLE `penilaian_rekap` (
+  `IDPraktikum` int(11) NOT NULL,
+  `IDUser` varchar(128) CHARACTER SET latin1 NOT NULL,
+  `nilai` tinyint(4) NOT NULL,
+  `IDType` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `penilaian_rekap`
+--
+
+INSERT INTO `penilaian_rekap` (`IDPraktikum`, `IDUser`, `nilai`, `IDType`) VALUES
+(1, '07211740000040', 0, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -163,17 +241,38 @@ CREATE TABLE `praktikum` (
   `title` varchar(128) NOT NULL,
   `filename` varchar(128) NOT NULL,
   `description` varchar(128) NOT NULL,
-  `status` tinyint(1) NOT NULL
+  `status` tinyint(1) NOT NULL,
+  `IDType` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `praktikum`
 --
 
-INSERT INTO `praktikum` (`praktikumID`, `name`, `title`, `filename`, `description`, `status`) VALUES
-(1, 'P1', 'Dasar Rangkaian Digital', 'toefl.pdf', '', 1),
-(9, 'P2', 'Decoder, Demultiplexer & Multiplexer', 'P2_1606385242.pdf', '', 1),
-(10, 'P4', 'Rangkaian Sekuensial', 'P4_1606542643.pdf', '', 1);
+INSERT INTO `praktikum` (`praktikumID`, `name`, `title`, `filename`, `description`, `status`, `IDType`) VALUES
+(1, 'P1', 'Dasar Rangkaian Digital', 'toefl.pdf', '', 1, 1),
+(9, 'FP', 'Final Project', 'P2_1606385242.pdf', '', 1, 3),
+(10, 'Lapres', 'Buku Lapres', '', '', 1, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `praktikum_type`
+--
+
+CREATE TABLE `praktikum_type` (
+  `typeID` int(11) NOT NULL,
+  `typeName` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `praktikum_type`
+--
+
+INSERT INTO `praktikum_type` (`typeID`, `typeName`) VALUES
+(1, 'Praktikum'),
+(2, 'Buku Lapres'),
+(3, 'Final Project');
 
 -- --------------------------------------------------------
 
@@ -217,8 +316,6 @@ CREATE TABLE `timeline_presensi` (
 --
 
 INSERT INTO `timeline_presensi` (`id`, `dateID`, `nrp`, `hadir`, `ket`) VALUES
-(53, 8, '07211640000014', 0, ''),
-(54, 10, '07211640000014', 0, NULL),
 (65, 8, '07211740000014', 0, NULL),
 (68, 8, '07211740000043', 0, NULL),
 (69, 8, '07211640000015', 0, NULL),
@@ -278,7 +375,8 @@ INSERT INTO `user` (`id`, `name`, `nrp`, `email`, `password`, `role_id`, `is_act
 (14, 'Muhammad Dzulfiqar', '07211740000043', 'mfikar.md@gmail.com', '$2y$10$JCdOmvll1.XuGV4aeOqbXuKGPkgCz85oIgXanbOFZoa7NDVzSDYvK', 3, 1, '1555357134802.jpg', '1556562188746.jpg', 1580651215),
 (15, 'Mpu Hambyah Syah Bagaskara Aji', '07211740000010', 'mpu.hambyah@gmail.com', '$2y$10$XabUxcv1fDAv2v33AZxs1.gvCWoRqHgKPdypUkadaMMO6h4JwW8Yy', 4, 1, '07211740000010_Mpu_Hambyah_Syah_Bagaskara_Aji.pdf', '07211740000010_Mpu_Hambyah_Syah_Bagaskara_Aji1.pdf', 1594780376),
 (16, 'Nia Angellina', '07211740000014', 'niaaldy99@gmail.com', '$2y$10$PeZNEKFGpyTHSgYoyKisf.M2PP/253qOMYsAeHaa.jjcHofqr3J/O', 4, 0, 'Capture.JPG', 'Capture1.JPG', 1595149534),
-(17, 'Firdaus Pradanggapasti', '07211640000014', 'dauuuussss@gmail.com', '$2y$10$4crH9BW9UxAjyDVb3/zJzOMeYg.j75nHdqXAOF1PGkQyR0MqAskf.', 4, 0, 'cool-background.png', 'cool-background_(1).png', 1597486903);
+(17, 'Firdaus Pradanggapasti', '07211640000014', 'dauuuussss@gmail.com', '$2y$10$4crH9BW9UxAjyDVb3/zJzOMeYg.j75nHdqXAOF1PGkQyR0MqAskf.', 4, 0, 'cool-background.png', 'cool-background_(1).png', 1597486903),
+(18, 'Aik - Admin', '67890987654321', 'a@a.a', '$2y$10$APhLpoqdmQjXvWWec1dECOuQlrK3Ge5ywnhjUfDh6WxPIt/qZr9f2', 1, 1, NULL, NULL, 1597486903);
 
 -- --------------------------------------------------------
 
@@ -392,7 +490,8 @@ INSERT INTO `user_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_active
 (21, 2, 'Kelengkapan Buku', 'koordinator/buku', 'fas fa-fw fa-book', 1),
 (22, 2, 'Penjadwalan', 'koordinator/penjadwalan', 'fas fa-fw fa-calendar-day', 1),
 (23, 2, 'Data Praktikan', 'koordinator/praktikan', 'fas fa-fw fa-robot', 1),
-(24, 2, 'Manajemen Modul', 'koordinator/modul', 'fas fa-fw fa-book-open', 1);
+(24, 2, 'Manajemen Modul', 'koordinator/modul', 'fas fa-fw fa-book-open', 1),
+(25, 2, 'Final Project', 'koordinator/finalproject', 'fas fa-fw fa-project-diagram', 1);
 
 -- --------------------------------------------------------
 
@@ -463,19 +562,47 @@ ALTER TABLE `kelompok_praktikan`
 -- Indexes for table `penilaian`
 --
 ALTER TABLE `penilaian`
-  ADD PRIMARY KEY (`penilaianID`);
+  ADD PRIMARY KEY (`penilaianID`),
+  ADD KEY `IDType` (`IDType`);
+
+--
+-- Indexes for table `penilaian_pelanggaran`
+--
+ALTER TABLE `penilaian_pelanggaran`
+  ADD PRIMARY KEY (`pelanggaranID`),
+  ADD KEY `IDType` (`IDType`);
+
+--
+-- Indexes for table `penilaian_pengurangan`
+--
+ALTER TABLE `penilaian_pengurangan`
+  ADD UNIQUE KEY `Penilaian Pengurangan` (`IDPelanggaran`,`IDPraktikum`,`praktikan`,`aslab`);
 
 --
 -- Indexes for table `penilaian_praktikum`
 --
 ALTER TABLE `penilaian_praktikum`
-  ADD UNIQUE KEY `penilaian_praktikum` (`IDPenilaian`,`IDPraktikum`,`praktikan`,`aslab`);
+  ADD UNIQUE KEY `penilaian_praktikum` (`IDPenilaian`,`IDPraktikum`,`praktikan`,`aslab`) USING BTREE;
+
+--
+-- Indexes for table `penilaian_rekap`
+--
+ALTER TABLE `penilaian_rekap`
+  ADD UNIQUE KEY `Penilaian Rekap` (`IDPraktikum`,`IDUser`,`IDType`) USING BTREE,
+  ADD KEY `IDType` (`IDType`);
 
 --
 -- Indexes for table `praktikum`
 --
 ALTER TABLE `praktikum`
-  ADD PRIMARY KEY (`praktikumID`);
+  ADD PRIMARY KEY (`praktikumID`),
+  ADD KEY `IDType` (`IDType`);
+
+--
+-- Indexes for table `praktikum_type`
+--
+ALTER TABLE `praktikum_type`
+  ADD PRIMARY KEY (`typeID`);
 
 --
 -- Indexes for table `timeline_praktikum`
@@ -557,7 +684,13 @@ ALTER TABLE `kelompok`
 -- AUTO_INCREMENT for table `penilaian`
 --
 ALTER TABLE `penilaian`
-  MODIFY `penilaianID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `penilaianID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `penilaian_pelanggaran`
+--
+ALTER TABLE `penilaian_pelanggaran`
+  MODIFY `pelanggaranID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `praktikum`
@@ -611,7 +744,7 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `user_sub_menu`
 --
 ALTER TABLE `user_sub_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `user_token`
@@ -637,6 +770,30 @@ ALTER TABLE `kelompok_aslab`
 ALTER TABLE `kelompok_praktikan`
   ADD CONSTRAINT `kelompok_praktikan_ibfk_1` FOREIGN KEY (`IDUser`) REFERENCES `user` (`nrp`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `kelompok_praktikan_ibfk_2` FOREIGN KEY (`IDKelompok`) REFERENCES `kelompok` (`kelompokID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `penilaian`
+--
+ALTER TABLE `penilaian`
+  ADD CONSTRAINT `penilaian_ibfk_1` FOREIGN KEY (`IDType`) REFERENCES `praktikum_type` (`typeID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `penilaian_pelanggaran`
+--
+ALTER TABLE `penilaian_pelanggaran`
+  ADD CONSTRAINT `penilaian_pelanggaran_ibfk_1` FOREIGN KEY (`IDType`) REFERENCES `praktikum_type` (`typeID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `penilaian_rekap`
+--
+ALTER TABLE `penilaian_rekap`
+  ADD CONSTRAINT `penilaian_rekap_ibfk_1` FOREIGN KEY (`IDType`) REFERENCES `praktikum_type` (`typeID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `praktikum`
+--
+ALTER TABLE `praktikum`
+  ADD CONSTRAINT `praktikum_ibfk_1` FOREIGN KEY (`IDType`) REFERENCES `praktikum_type` (`typeID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `timeline_praktikum`
