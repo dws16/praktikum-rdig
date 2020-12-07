@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 // $db['default'] = array(
 // 	'dsn'	=> '',
-// 	'hostname' => 'localhost',
-// 	'username' => 'u639542248_praktikum',
-// 	'password' => 'informatikadigital',
-// 	'database' => 'u639542248_praktikum',
+// 	'hostname' => getenv('DB_HOST'),
+// 	'username' => getenv('DB_USERNAME'),
+// 	'password' => getenv('DB_PASSWORD'),
+// 	'database' => getenv('DB_DATABASE'),
 // 	'dbdriver' => 'mysqli',
 // 	'dbprefix' => '',
 // 	'pconnect' => FALSE,
