@@ -8,16 +8,24 @@
     <div class="col-lg-7">
       <div class="card shadow mb-4 border-left-danger">
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-danger"><?= $title ?></h6>
+          <div class="row">
+            <div class="col" style="margin: auto;">
+              <h6 class="m-0 align-middle font-weight-bold text-danger"><?= $title ?></h6>
+            </div>
+            <div class="col-auto ml-auto">
+              <button class="btn btn-info btn-sm btn-icon-split tambahFileBuku" data-toggle="modal" data-target="#fileBukuEdit">
+                <span class="icon"><i class="fas fa-file"></i></span>
+                <span class="text">Tambah File</span>
+              </button>
+            </div>
+          </div>
         </div>
         <div class="card-body">
           <div class="row">
             <div class="col mt-1 mb-3">
               <?= $this->session->flashdata('message'); ?>
             </div>
-            <div class="col-auto ml-auto">
-              <button class="btn btn-info mt-1 mb-3 tambahFileBuku" data-toggle="modal" data-target="#fileBukuEdit">Tambah File</button>
-            </div>
+
           </div>
           <div class="table-responsive">
             <table class="table table-bordered" width="100%" cellspacing="0">

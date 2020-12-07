@@ -8,19 +8,24 @@
     <div class="col-lg-10">
       <div class="card shadow mb-4 border-left-danger">
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-danger"><?= $title ?></h6>
+          <div class="row">
+            <div class="col" style="margin: auto;">
+              <h6 class="m-0 align-middle font-weight-bold text-danger"><?= $title ?></h6>
+            </div>
+            <div class="col-auto ml-auto">
+              <button class="btn btn-info btn-sm btn-icon-split tambahkelompok" data-toggle="modal" data-target="#kelompokEdit">
+                <span class="icon"><i class="fas fa-user-friends"></i></span>
+                <span class="text">Tambah Kelompok</span>
+              </button>
+            </div>
+          </div>
         </div>
         <div class="card-body">
           <div class="row">
             <div class="col mt-1 mb-3">
               <?= $this->session->flashdata('message'); ?>
             </div>
-            <div class="col-auto ml-auto">
-              <button class="btn btn-info btn-icon-split mt-1 mb-3 tambahkelompok" data-toggle="modal" data-target="#kelompokEdit">
-                <span class="icon"><i class="fas fa-user-friends"></i></span>
-                <span class="text">Tambah Kelompok</span>
-              </button>
-            </div>
+
           </div>
           <div class="table-responsive">
             <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
@@ -41,7 +46,7 @@
                     <th><?= ($k['term'] == 1) ? "Genap" : "Gasal"; ?> - <?= $k['year']; ?></th>
                     <th><?= ($k['status'] == 1) ? "Aktif" : "Nonaktif"; ?></th>
                     <th class="text-center">
-                      <a href="#" class="badge badge-pill badge-info editkelompok" data-toggle="modal" data-id="<?= $k['kelompokID']; ?>" data-target="#kelompokEdit"><i class="fas fa-fw fa-info"></i> Detail</a>
+                      <a href="#" class="badge badge-pill badge-info editkelompok" data-toggle="modal" data-id="<?= $k['kelompokID']; ?>" data-target="#kelompokEdit"><i class="fas fa-fw fa-edit"></i> Edit</a>
                       <a href="<?= base_url('koordinator/deletekelompok/') . $k['kelompokID']; ?>" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-trash"></i> Hapus</a>
                     </th>
                   </tr>

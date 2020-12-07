@@ -8,15 +8,22 @@
     <div class="col-lg-10">
       <div class="card shadow mb-4 border-left-danger">
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-danger"><?= $title ?></h6>
+          <div class="row">
+            <div class="col">
+              <h6 class="m-0 font-weight-bold text-danger"><?= $title ?></h6>
+            </div>
+            <div class="col-auto ml-auto">
+              <button class="btn btn-info btn-sm btn-icon-split addModul" data-toggle="modal" data-target="#modulEdit">
+                <span class="icon"><i class="fas fa-book-open"></i></span>
+                <span class="text">Tambah Modul</span>
+              </button>
+            </div>
+          </div>
         </div>
         <div class="card-body">
           <div class="row">
             <div class="col mt-1 mb-3">
               <?= $this->session->flashdata('message'); ?>
-            </div>
-            <div class="col-auto ml-auto">
-              <button class="btn btn-info mt-1 mb-3 addModul" data-toggle="modal" data-target="#modulEdit">Tambah Modul</button>
             </div>
           </div>
           <div class="table-responsive">

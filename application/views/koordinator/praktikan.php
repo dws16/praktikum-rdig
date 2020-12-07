@@ -8,7 +8,17 @@
     <div class="col-lg-10">
       <div class="card shadow mb-4 border-left-danger">
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-danger"><?= $title ?></h6>
+          <div class="row">
+            <div class="col">
+              <h6 class="m-0 font-weight-bold text-danger"><?= $title ?></h6>
+            </div>
+            <div class="col-auto ml-auto">
+              <button class="btn btn-danger btn-sm btn-icon-split" data-toggle="modal" data-target="#deletePraktikan">
+                <span class="icon"><i class="fas fa-robot"></i></span>
+                <span class="text">Hapus Seluruh Praktikan</span>
+              </button>
+            </div>
+          </div>
         </div>
         <div class="card-body">
           <div class="row">
@@ -91,6 +101,26 @@
         <button type="submit" id="submit" class="btn btn-primary">Edit</button>
       </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deletePraktikan" tabindex="-1" role="dialog" aria-labelledby="deletePraktikanLabel" aria-hidden="true">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deletePraktikanLabel">Hapus Seluruh Praktikan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6>Yakin ingin menghapus seluruh data praktikan?</h6>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+        <a href="<?= base_url('koordinator/deletePraktikan') ?>" class="btn btn-danger">Ya</a>
+      </div>
     </div>
   </div>
 </div>
