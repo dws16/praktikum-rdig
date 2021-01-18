@@ -67,6 +67,18 @@ class Koordinator_model extends CI_Model
 
     return $this->db->query($query)->row_array();
   }
+  public function detailkelompok_asistenFP($kelompok, $modul)
+  {
+    $query = "SELECT `user`.`name` as `asisten`, `user`.`nrp`, `kelompok`.`name` as `kelompok`, `kelompok_aslab`.`IDPraktikum`,
+              `kelompok`.`kelompokID`, `praktikum`.`praktikumID`, `praktikum`.`name` as `modul`
+              FROM `kelompok_aslab` INNER JOIN `kelompok` ON `kelompok`.`kelompokID` = `kelompok_aslab`.`IDKelompok`
+              INNER JOIN `user` ON `user`.`nrp` = `kelompok_aslab`.`IDUser`
+              INNER JOIN `praktikum` ON `kelompok_aslab`.`IDPraktikum` = `praktikum`.`praktikumID`
+              WHERE `kelompok_aslab`.`IDKelompok` = '$kelompok'
+              AND `kelompok_aslab`.`IDPraktikum` = '$modul'";
+
+    return $this->db->query($query)->result_array();
+  }
 
   public function listsesi($id = NULL)
   {

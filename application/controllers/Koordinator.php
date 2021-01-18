@@ -127,9 +127,13 @@ class Koordinator extends CI_Controller
     $this->load->model('Koordinator_model');
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['title'] = 'Pembagian Asisten';
-    $data['modul'] = $this->db->get_where('praktikum', ['status' => 1])->result_array();
+    $this->db->where('status', 1);
+    $this->db->order_by('IDType', 'ASC');
+    $data['modul'] = $this->db->get('praktikum')->result_array();
     $data['kelompok'] = $this->db->get_where('kelompok', ['status' => 1])->result_array();
     $data['kelompok_asisten'] = $this->Koordinator_model->listkelompok_asisten();
+    $this->db->where_not_in('role_id', array(4));
+    $data['asisten'] = $this->db->get('user')->result_array();
 
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar', $data);
@@ -155,6 +159,49 @@ class Koordinator extends CI_Controller
       echo json_encode($data);
     }
   }
+  public function getdetailkelompok_asistenFP()
+  {
+    $this->load->model('Koordinator_model');
+    $kelompok = $this->input->post('kelompok');
+    $modul = $this->db->get_where('praktikum', ['praktikumID' => $this->input->post('modul')])->row_array();
+    $ada = $this->Koordinator_model->detailkelompok_asistenFP($kelompok, $this->input->post('modul'));
+    if ($ada) {
+      echo json_encode($ada);
+    } else {
+      $kel = $this->db->get_where('kelompok', ['kelompokID' => $kelompok])->row_array();
+      $data = [
+        'kelompok' => $kel['name'],
+        'praktikumID' => $modul['praktikumID'],
+        'modul' => $modul['name']
+      ];
+      echo json_encode($data);
+    }
+  }
+
+  public function editasistenFP()
+  {
+    $kelompok = $this->input->post('kelompok');
+    $kelompok = $this->db->get_where('kelompok', ['name' => $kelompok])->row_array();
+    $modul = $this->input->post('modul');
+
+    $this->db->where('IDKelompok', $kelompok['kelompokID']);
+    $this->db->where('IDPraktikum', $this->input->post('id'));
+    $this->db->delete('kelompok_aslab');
+
+    foreach ($this->input->post('nrpAsisten') as $nrp) {
+      $data = [
+        'IDPraktikum' => $this->input->post('id'),
+        'IDKelompok' => $kelompok['kelompokID'],
+        'IDUser' => $nrp
+      ];
+      $this->db->insert('kelompok_aslab', $data);
+    }
+    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+             Asisten berhasil diubah!
+              </div>');
+    redirect(base_url('koordinator/asisten'));
+  }
+
   public function cekasisten()
   {
     $this->db->where_not_in('role_id', array(4));
@@ -210,12 +257,24 @@ class Koordinator extends CI_Controller
     $this->load->view('templates/footer');
   }
 
+  public function deletePraktikan()
+  {
+    $jumlah = $this->db->get_where('user', ['role_id' => 4])->num_rows();
+    $this->db->where('role_id', 4);
+    $this->db->delete('user');
+
+    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">'
+      . $jumlah . ' data praktikan berhasil dihapus!
+      </div>');
+    redirect(base_url('koordinator/praktikan'));
+  }
+
   //Controller Modul
   public function modul()
   {
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['title'] = 'Manajemen Modul';
-    $data['list'] = $this->db->get('praktikum')->result_array();
+    $data['list'] = $this->db->get_where('praktikum', ['IDType' => 1])->result_array();
 
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar', $data);
@@ -254,6 +313,7 @@ class Koordinator extends CI_Controller
     $this->db->set('title', $this->input->post('title'));
     $this->db->set('description', $this->input->post('desc'));
     $this->db->set('status', $status);
+    $this->db->set('IDType', 1);
     $this->db->insert('praktikum');
 
     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Modul berhasil ditambahkan!</div>');
@@ -686,5 +746,19 @@ class Koordinator extends CI_Controller
     $this->db->where_not_in('role_id', array(4));
     $list = $this->db->get('user')->result_array();
     echo json_encode($list);
+  }
+  // End of Controller Penjadwalan
+
+  public function finalproject()
+  {
+    $data['file'] = $this->db->get('filebuku')->result_array();
+    $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+    $data['title'] = 'Final Project';
+
+    $this->load->view('templates/header', $data);
+    $this->load->view('templates/sidebar', $data);
+    $this->load->view('templates/topbar', $data);
+    $this->load->view('koordinator/finalproject', $data);
+    $this->load->view('templates/footer');
   }
 }

@@ -285,6 +285,13 @@ $(function () {
 	$('.editAsisten').on('click', function () {
 		const kelompok = $(this).data('kelompok');
 		const modul = $(this).data('modul');
+		$("#finalproject").hide();
+		$("#praktikum").show();
+		$(".selectAsistenFP").prop('required', false);
+		$("#nrp_asisten").prop('required', true);
+		$('.modal-body form').attr('action', base + '/koordinator/editasisten');
+
+
 		$.ajax({
 			url: base + 'koordinator/getdetailkelompok_asisten',
 			data: {
@@ -302,6 +309,57 @@ $(function () {
 				if (data.asisten) {
 					$("#nrp_asisten").val(data.nrp);
 					$("#nama").val(data.asisten);
+				}
+			},
+			error: function (data) {
+				console.log(data);
+			}
+		});
+	});
+
+	$('.editAsistenFP').on('click', function () {
+		const kelompok = $(this).data('kelompok');
+		const modul = $(this).data('modul');
+		$("#finalproject").show();
+		$("#praktikum").hide();
+		$(".selectAsistenFP").prop('required', true);
+		$("#nrp_asisten").prop('required', false);
+		$('.modal-body form').attr('action', base + '/koordinator/editasistenFP');
+
+		$.ajax({
+			url: base + 'koordinator/getdetailkelompok_asistenFP',
+			data: {
+				kelompok: kelompok,
+				modul: modul
+			},
+			method: "post",
+			dataType: "json",
+			success: function (data) {
+				console.log(data);
+				if (data.length == undefined) {
+					$("#id").val(data.praktikumID);
+					$("#modul").val(data.modul);
+					$("#kelompok").val(data.kelompok);
+					$("#nrp_asisten").val("");
+					$("#nama").val("");
+					if (data.asisten) {
+						$.each(data, function (i, data) {
+							let target = document.getElementById("nrpAsisten[" + i + "]");
+							$(target).val(data.nrp);
+						});
+					}
+				} else {
+					$("#id").val(data[0].praktikumID);
+					$("#modul").val(data[0].modul);
+					$("#kelompok").val(data[0].kelompok);
+					$("#nrp_asisten").val("");
+					$("#nama").val("");
+					if (data[0].asisten) {
+						$.each(data, function (i, data) {
+							let target = document.getElementById("nrp[" + i + "]");
+							$(target).val(data.nrp);
+						});
+					}
 				}
 			},
 			error: function (data) {

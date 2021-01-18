@@ -52,6 +52,7 @@
 </script>
 <script src="<?= base_url(); ?>assets/js/script.js"></script>
 <script src="<?= base_url(); ?>assets/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="https://cdn.rawgit.com/ashl1/datatables-rowsgroup/fbd569b8768155c7a9a62568e66a64115887d7d0/dataTables.rowsGroup.js"></script>
 <script src="<?= base_url(); ?>assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
 <!-- Aik JS -->
@@ -61,6 +62,9 @@
   $(document).ready(function() {
     $('#dataTable').DataTable();
     $('.dataTable').DataTable();
+    let tableFP = $('#dataTableFP').DataTable({
+      'rowsGroup': [0, 2]
+    });
     var tableAik = $('#dataTableAik').DataTable(aikTableOptionsDefault());
     aikTableIndex(tableAik);
     var tableAik = $('#dataTableAik1').DataTable(aikTableOptionsDefault());
