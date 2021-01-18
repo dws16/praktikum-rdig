@@ -753,6 +753,39 @@ $(function () {
 		});
 	});
 
+	$(".tambahFP").on('click', function () {
+		$("#addFPLabel").html('Tambah Final Project');
+		$('.modal-footer button[type=submit]').html('Tambah');
+		$('.modal-body form').attr('action', base + '/koordinator/addfp');
+	});
+
+	$(".editFP").on('click', function () {
+		$("#addFPLabel").html('Edit Final Project');
+		$('.modal-footer button[type=submit]').html('Edit');
+		$('.modal-body form').attr('action', base + '/koordinator/editfp');
+
+		const id = $(this).data('id');
+		$.ajax({
+			url: base + 'koordinator/getdetailfp',
+			data: {
+				id: id
+			},
+			method: "post",
+			dataType: "json",
+			success: function (data) {
+				$("#rangkaian").val(data.name);
+				$("#id").val(data.id);
+				$("#type").val(data.type);
+				$("#input").val(data.input);
+				$("#output").val(data.output);
+				$("#selector").val(data.selector);
+				$("#status").val(data.status);
+				$("#enable").val(data.enable);
+				$("#gate").val(data.gate);
+			}
+		});
+	});
+
 	cekpraktikan = function (id) {
 		$.ajax({
 			url: base + 'koordinator/getdetailkelompok',
