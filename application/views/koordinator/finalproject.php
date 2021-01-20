@@ -5,7 +5,7 @@
 
   <!-- DataTales Example -->
   <div class="row justify-content-center mt-5">
-    <div class="col-lg-7">
+    <div class="col-lg-11">
       <div class="card shadow mb-4 border-left-danger">
         <div class="card-header py-3">
           <div class="row">
