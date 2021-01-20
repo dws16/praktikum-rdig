@@ -34,7 +34,7 @@
                   <th>Nama Kelompok</th>
                   <th>Jumlah Anggota</th>
                   <th>Semester - Tahun</th>
-                  <th>Active</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
