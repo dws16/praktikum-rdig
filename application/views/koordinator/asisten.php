@@ -5,7 +5,7 @@
 
   <!-- DataTales Example -->
   <div class="row justify-content-center mt-5">
-    <div class="col-lg-10">
+    <div class="col-lg-12">
       <div class="card shadow mb-4 border-left-danger">
         <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-danger"><?= $title ?></h6>
@@ -30,42 +30,86 @@
               <div class="tab-content" id="nav-tabContent">
                 <?php $true = true; ?>
                 <?php foreach ($modul as $m) : ?>
-                  <div class="tab-pane fade <?= ($true) ? "show active" : ""; ?>" id="list-<?= $m['praktikumID']; ?>" role="tabpanel" aria-labelledby="list-<?= $m['praktikumID']; ?>-list">
-                    <div class="table-responsive">
-                      <table class="table table-striped table-bordered dataTable" width="100%" cellspacing="0">
-                        <thead>
-                          <tr>
-                            <th>Nama Kelompok</th>
-                            <th>Nama Asisten</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <?php foreach ($kelompok as $k) : ?>
+                  <?php if ($m['IDType'] == 3) : ?>
+                    <div class="tab-pane fade <?= ($true) ? "show active" : ""; ?>" id="list-<?= $m['praktikumID']; ?>" role="tabpanel" aria-labelledby="list-<?= $m['praktikumID']; ?>-list">
+                      <div class="table-responsive">
+                        <table class="table table-striped table-bordered" id="dataTableFP" width="100%" cellspacing="0">
+                          <thead>
                             <tr>
-                              <th><?= $k['name']; ?></th>
+                              <th>Nama Kelompok</th>
+                              <th>Nama Asisten</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php foreach ($kelompok as $k) : ?>
                               <?php $i = 0; ?>
                               <?php foreach ($kelompok_asisten as $ka) : ?>
                                 <?php if ($ka['IDPraktikum'] == $m['praktikumID'] && $ka['IDKelompok'] == $k['kelompokID']) : ?>
-                                  <?php $i = 1; ?>
-                                  <th><?= $ka['asisten']; ?></th>
+                                  <?php $i += 1; ?>
+                                  <tr>
+                                    <th class="text-center align-middle"><?= $k['name']; ?></th>
+                                    <th><?= $ka['asisten']; ?></th>
+                                    <th class="text-center align-middle">
+                                      <a href="#" class=" badge badge-pill badge-info editAsistenFP" data-toggle="modal" data-modul="<?= $m['praktikumID']; ?>" data-kelompok="<?= $k['kelompokID']; ?>" data-target="#asistenEdit"><i class="fas fa-fw fa-edit"></i> Edit</a>
+                                    </th>
+                                  </tr>
+                                <?php endif; ?>
+                              <?php endforeach; ?>
+                              <?php if ($i == 0) : ?>
+                                <?php for ($z = 0; $z < 3; $z++) { ?>
+                                  <tr>
+                                    <th class="text-center align-middle"><?= $k['name']; ?></th>
+                                    <th>Belum ada asisten</th>
+                                    <th class="text-center align-middle">
+                                      <a href="#" class="badge badge-pill badge-info editAsistenFP" data-toggle="modal" data-modul="<?= $m['praktikumID']; ?>" data-kelompok="<?= $k['kelompokID']; ?>" data-target="#asistenEdit"><i class="fas fa-fw fa-edit"></i> Edit</a>
+                                    </th>
+                                  </tr>
+                                <?php } ?>
+                              <?php endif; ?>
+                            <?php endforeach; ?>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  <?php else : ?>
+                    <div class="tab-pane fade <?= ($true) ? "show active" : ""; ?>" id="list-<?= $m['praktikumID']; ?>" role="tabpanel" aria-labelledby="list-<?= $m['praktikumID']; ?>-list">
+                      <div class="table-responsive">
+                        <table class="table table-striped table-bordered dataTable" width="100%" cellspacing="0">
+                          <thead>
+                            <tr>
+                              <th>Nama Kelompok</th>
+                              <th>Nama Asisten</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php foreach ($kelompok as $k) : ?>
+                              <tr>
+                                <th><?= $k['name']; ?></th>
+                                <?php $i = 0; ?>
+                                <?php foreach ($kelompok_asisten as $ka) : ?>
+                                  <?php if ($ka['IDPraktikum'] == $m['praktikumID'] && $ka['IDKelompok'] == $k['kelompokID']) : ?>
+                                    <?php $i = 1; ?>
+                                    <th><?= $ka['asisten']; ?></th>
+                                    <th class="text-center">
+                                      <a href="#" class="badge badge-pill badge-info editAsisten" data-toggle="modal" data-modul="<?= $m['praktikumID']; ?>" data-kelompok="<?= $k['kelompokID']; ?>" data-target="#asistenEdit"><i class="fas fa-fw fa-edit"></i> Edit</a>
+                                    </th>
+                                  <?php endif; ?>
+                                <?php endforeach; ?>
+                                <?php if ($i == 0) : ?>
+                                  <th>Belum ada asisten</th>
                                   <th class="text-center">
                                     <a href="#" class="badge badge-pill badge-info editAsisten" data-toggle="modal" data-modul="<?= $m['praktikumID']; ?>" data-kelompok="<?= $k['kelompokID']; ?>" data-target="#asistenEdit"><i class="fas fa-fw fa-edit"></i> Edit</a>
                                   </th>
                                 <?php endif; ?>
-                              <?php endforeach; ?>
-                              <?php if ($i == 0) : ?>
-                                <th>Belum ada asisten</th>
-                                <th class="text-center">
-                                  <a href="#" class="badge badge-pill badge-info editAsisten" data-toggle="modal" data-modul="<?= $m['praktikumID']; ?>" data-kelompok="<?= $k['kelompokID']; ?>" data-target="#asistenEdit"><i class="fas fa-fw fa-edit"></i> Edit</a>
-                                </th>
-                              <?php endif; ?>
-                            </tr>
-                          <?php endforeach; ?>
-                        </tbody>
-                      </table>
+                              </tr>
+                            <?php endforeach; ?>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                  </div>
+                  <?php endif; ?>
                   <?php $true = false; ?>
                 <?php endforeach; ?>
               </div>
@@ -97,7 +141,7 @@
             <label for="kelompok">Kelompok</label>
             <div class="form-row mt-2 ">
               <input class="form-control" id="id" name="id" type="text" hidden>
-              <div class="col-2">
+              <div class="col-3">
                 <input class="form-control" id="modul" name="modul" type="text" readonly>
               </div>
               <div class="col">
@@ -107,20 +151,49 @@
           </div>
           <div class="form-group">
             <label for="nrp_asisten">Asisten</label>
-            <div class="form-row mt-2 ">
-              <div class="col-5"><input class="form-control" id="nrp_asisten" name="nrp" placeholder="NRP" type="text" required>
-                <div class="valid-feedback">Asisten tersedia.</div>
-                <div class="invalid-feedback">NRP tidak ditemukan.</div>
+            <div id="praktikum">
+              <div class="form-group mt-2">
+                <select class="form-control selectAsistenFP selectpicker" name="nrp" id="nrp_asisten" data-live-search="true" required>
+                  <option data-tokens=""></option>
+                  <?php foreach ($asisten as $a) : ?>
+                    <option data-tokens="<?= $a['nrp']; ?>" value="<?= $a['nrp']; ?>"><?= $a['name']; ?></option>
+                  <?php endforeach; ?>
+                </select>
               </div>
-              <div class="col"><input class="form-control" id="nama" name="nama" type="text" placeholder="Nama" readonly></div>
+            </div>
+            <div id="finalproject">
+              <div class="form-group mt-2">
+                <select class="form-control selectAsistenFP selectpicker" name="nrpAsisten[0]" id="nrpAsisten[0]" data-live-search="true" required>
+                  <option data-tokens=""></option>
+                  <?php foreach ($asisten as $a) : ?>
+                    <option data-tokens="<?= $a['nrp']; ?>" value="<?= $a['nrp']; ?>"><?= $a['name']; ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="form-group mt-2">
+                <select class="form-control selectAsistenFP selectpicker" name="nrpAsisten[1]" id="nrpAsisten[1]" data-live-search="true" required>
+                  <option data-tokens=""></option>
+                  <?php foreach ($asisten as $a) : ?>
+                    <option data-tokens="<?= $a['nrp']; ?>" value="<?= $a['nrp']; ?>"><?= $a['name']; ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="form-group mt-2">
+                <select class="form-control selectAsistenFP selectpicker" name="nrpAsisten[2]" id="nrpAsisten[2]" data-live-search="true" required>
+                  <option data-tokens=""></option>
+                  <?php foreach ($asisten as $a) : ?>
+                    <option data-tokens="<?= $a['nrp']; ?>" value="<?= $a['nrp']; ?>"><?= $a['name']; ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
             </div>
           </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            <button type="submit" class="btn btn-primary">Edit</button>
+          </div>
+        </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-        <button type="submit" class="btn btn-primary">Edit</button>
-      </div>
-      </form>
     </div>
   </div>
 </div>

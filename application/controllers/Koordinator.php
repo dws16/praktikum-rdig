@@ -9,7 +9,7 @@ class Koordinator extends CI_Controller
     is_logged_in();
   }
 
-  //Controller Pembagian Kelompok
+  //Function Pembagian Kelompok
   public function kelompok()
   {
     $this->load->model('Koordinator_model');
@@ -119,17 +119,21 @@ class Koordinator extends CI_Controller
     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Kelompok berhasil dihapus!</div>');
     redirect(base_url('koordinator/kelompok'));
   }
-  //End of Controller Pembagian Kelompok
+  //End of Function Pembagian Kelompok
 
-  //Controller Pembagian Asisten
+  //Function Pembagian Asisten
   public function asisten()
   {
     $this->load->model('Koordinator_model');
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['title'] = 'Pembagian Asisten';
-    $data['modul'] = $this->db->get_where('praktikum', ['status' => 1])->result_array();
+    $this->db->where('status', 1);
+    $this->db->order_by('IDType', 'ASC');
+    $data['modul'] = $this->db->get('praktikum')->result_array();
     $data['kelompok'] = $this->db->get_where('kelompok', ['status' => 1])->result_array();
     $data['kelompok_asisten'] = $this->Koordinator_model->listkelompok_asisten();
+    $this->db->where_not_in('role_id', array(4));
+    $data['asisten'] = $this->db->get('user')->result_array();
 
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar', $data);
@@ -155,6 +159,49 @@ class Koordinator extends CI_Controller
       echo json_encode($data);
     }
   }
+  public function getdetailkelompok_asistenFP()
+  {
+    $this->load->model('Koordinator_model');
+    $kelompok = $this->input->post('kelompok');
+    $modul = $this->db->get_where('praktikum', ['praktikumID' => $this->input->post('modul')])->row_array();
+    $ada = $this->Koordinator_model->detailkelompok_asistenFP($kelompok, $this->input->post('modul'));
+    if ($ada) {
+      echo json_encode($ada);
+    } else {
+      $kel = $this->db->get_where('kelompok', ['kelompokID' => $kelompok])->row_array();
+      $data = [
+        'kelompok' => $kel['name'],
+        'praktikumID' => $modul['praktikumID'],
+        'modul' => $modul['name']
+      ];
+      echo json_encode($data);
+    }
+  }
+
+  public function editasistenFP()
+  {
+    $kelompok = $this->input->post('kelompok');
+    $kelompok = $this->db->get_where('kelompok', ['name' => $kelompok])->row_array();
+    $modul = $this->input->post('modul');
+
+    $this->db->where('IDKelompok', $kelompok['kelompokID']);
+    $this->db->where('IDPraktikum', $this->input->post('id'));
+    $this->db->delete('kelompok_aslab');
+
+    foreach ($this->input->post('nrpAsisten') as $nrp) {
+      $data = [
+        'IDPraktikum' => $this->input->post('id'),
+        'IDKelompok' => $kelompok['kelompokID'],
+        'IDUser' => $nrp
+      ];
+      $this->db->insert('kelompok_aslab', $data);
+    }
+    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+             Asisten berhasil diubah!
+              </div>');
+    redirect(base_url('koordinator/asisten'));
+  }
+
   public function cekasisten()
   {
     $this->db->where_not_in('role_id', array(4));
@@ -194,7 +241,7 @@ class Koordinator extends CI_Controller
       redirect(base_url('koordinator/asisten'));
     }
   }
-  //End of Controlelr Pembagian Asisten
+  //End of Function Pembagian Asisten
 
   public function praktikan()
   {
@@ -210,12 +257,24 @@ class Koordinator extends CI_Controller
     $this->load->view('templates/footer');
   }
 
-  //Controller Modul
+  public function deletePraktikan()
+  {
+    $jumlah = $this->db->get_where('user', ['role_id' => 4])->num_rows();
+    $this->db->where('role_id', 4);
+    $this->db->delete('user');
+
+    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">'
+      . $jumlah . ' data praktikan berhasil dihapus!
+      </div>');
+    redirect(base_url('koordinator/praktikan'));
+  }
+
+  //Function Modul
   public function modul()
   {
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['title'] = 'Manajemen Modul';
-    $data['list'] = $this->db->get('praktikum')->result_array();
+    $data['list'] = $this->db->get_where('praktikum', ['IDType' => 1])->result_array();
 
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar', $data);
@@ -254,6 +313,7 @@ class Koordinator extends CI_Controller
     $this->db->set('title', $this->input->post('title'));
     $this->db->set('description', $this->input->post('desc'));
     $this->db->set('status', $status);
+    $this->db->set('IDType', 1);
     $this->db->insert('praktikum');
 
     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Modul berhasil ditambahkan!</div>');
@@ -325,9 +385,9 @@ class Koordinator extends CI_Controller
     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Modul berhasil dihapus!</div>');
     redirect(base_url('koordinator/modul'));
   }
-  //End of Controller Modul
+  //End of Function Modul
 
-  // Controller Kelengkapan Buku
+  // Function Kelengkapan Buku
   public function buku()
   {
     $data['file'] = $this->db->get('filebuku')->result_array();
@@ -414,9 +474,9 @@ class Koordinator extends CI_Controller
     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">File berhasil dihapus!</div>');
     redirect(base_url('koordinator/buku'));
   }
-  // End of Controller Kelengkapan Buku
+  // End of Function Kelengkapan Buku
 
-  //Controller Penjadwalan
+  //Function Penjadwalan
   public function penjadwalan()
   {
     $this->load->model('Koordinator_model');
@@ -686,5 +746,71 @@ class Koordinator extends CI_Controller
     $this->db->where_not_in('role_id', array(4));
     $list = $this->db->get('user')->result_array();
     echo json_encode($list);
+  }
+  // End of Function Penjadwalan
+
+  public function finalproject()
+  {
+    $data['file'] = $this->db->get('filebuku')->result_array();
+    $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+    $data['title'] = 'Final Project';
+    $data['finalproject'] = $this->db->get('finalproject')->result_array();
+
+    $this->load->view('templates/header', $data);
+    $this->load->view('templates/sidebar', $data);
+    $this->load->view('templates/topbar', $data);
+    $this->load->view('koordinator/finalproject', $data);
+    $this->load->view('templates/footer');
+  }
+
+  public function addfp()
+  {
+    $data = [
+      'name' => $this->input->post('rangkaian'),
+      'type' => $this->input->post('type'),
+      'input' => $this->input->post('input'),
+      'output' => $this->input->post('output'),
+      'selector' => $this->input->post('selector'),
+      'enable' => $this->input->post('enable'),
+      'gate' => $this->input->post('gate'),
+      'status' => $this->input->post('status'),
+    ];
+
+    $this->db->insert('finalproject', $data);
+    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Final Project berhasil ditambahkan!</div>');
+    redirect(base_url('koordinator/finalproject'));
+  }
+
+  public function getdetailfp()
+  {
+    echo json_encode($this->db->get_where('finalproject', ['id' => $this->input->post('id')])->row_array());
+  }
+
+  public function editfp()
+  {
+    $data = [
+      'name' => $this->input->post('rangkaian'),
+      'type' => $this->input->post('type'),
+      'input' => $this->input->post('input'),
+      'output' => $this->input->post('output'),
+      'selector' => $this->input->post('selector'),
+      'enable' => $this->input->post('enable'),
+      'gate' => $this->input->post('gate'),
+      'status' => $this->input->post('status'),
+    ];
+
+    $this->db->where('id', $this->input->post('id'));
+    $this->db->update('finalproject', $data);
+    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Final Project berhasil diubah!</div>');
+    redirect(base_url('koordinator/finalproject'));
+  }
+
+  public function deletefp($id)
+  {
+    $this->db->where('id', $id);
+    $this->db->delete('finalproject');
+
+    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Final Project berhasil dihapus!</div>');
+    redirect(base_url('koordinator/finalproject'));
   }
 }

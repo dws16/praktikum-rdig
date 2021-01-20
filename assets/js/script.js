@@ -12,7 +12,6 @@ $(function () {
 			method: 'post',
 			dataType: 'json',
 			success: function (data) {
-				console.log(data);
 				$('#name').val(data.name);
 				$('#nrp').val(data.nrp);
 				$('#email').val(data.email);
@@ -38,7 +37,6 @@ $(function () {
 			method: 'post',
 			dataType: 'json',
 			success: function (data) {
-				console.log(data);
 				$('#menu').val(data.menu);
 				$('#id').val(data.id);
 			}
@@ -67,7 +65,6 @@ $(function () {
 			method: 'post',
 			dataType: 'json',
 			success: function (data) {
-				console.log(data);
 				$('#title').val(data.title);
 				$('#menu_id').val(data.menu_id);
 				$('#url').val(data.url);
@@ -100,7 +97,6 @@ $(function () {
 			method: 'post',
 			dataType: 'json',
 			success: function (data) {
-				console.log(data);
 				$('#role').val(data.role);
 				$('#id').val(data.id);
 			}
@@ -139,7 +135,6 @@ $(function () {
 			method: "post",
 			dataType: "json",
 			success: function (data) {
-				console.log(data);
 				$("#id").val(data.praktikumID);
 				$("#modul").val(data.name);
 				$("#title").val(data.title);
@@ -285,6 +280,13 @@ $(function () {
 	$('.editAsisten').on('click', function () {
 		const kelompok = $(this).data('kelompok');
 		const modul = $(this).data('modul');
+		$("#finalproject").hide();
+		$("#praktikum").show();
+		$(".selectAsistenFP").prop('required', false);
+		$("#nrp_asisten").prop('required', true);
+		$('.modal-body form').attr('action', base + '/koordinator/editasisten');
+
+
 		$.ajax({
 			url: base + 'koordinator/getdetailkelompok_asisten',
 			data: {
@@ -310,30 +312,56 @@ $(function () {
 		});
 	});
 
-	$('#nrp_asisten').on('keyup', function () {
-		const nrp = $(this);
+	$('.editAsistenFP').on('click', function () {
+		const kelompok = $(this).data('kelompok');
+		const modul = $(this).data('modul');
+		$("#finalproject").show();
+		$("#praktikum").hide();
+		$(".selectAsistenFP").prop('required', true);
+		$("#nrp_asisten").prop('required', false);
+		$('.modal-body form').attr('action', base + '/koordinator/editasistenFP');
+
 		$.ajax({
-			url: base + 'koordinator/cekasisten',
+			url: base + 'koordinator/getdetailkelompok_asistenFP',
 			data: {
-				nrp: nrp.val()
+				kelompok: kelompok,
+				modul: modul
 			},
 			method: "post",
 			dataType: "json",
 			success: function (data) {
-				if (data === 'Tidak') {
-					$('#nama').val("");
-					nrp.addClass('is-invalid');
-					nrp.removeClass('is-valid');
-					$(':submit').prop('disabled', true);
+				if (data.length == undefined) {
+					$("#id").val(data.praktikumID);
+					$("#modul").val(data.modul);
+					$("#kelompok").val(data.kelompok);
+					$("#nrp_asisten").val("");
+					$("#nama").val("");
+					if (data.asisten) {
+						$.each(data, function (i, data) {
+							let target = document.getElementById("nrpAsisten[" + i + "]");
+							$(target).val(data.nrp);
+						});
+					}
 				} else {
-					$('#nama').val(data.name);
-					nrp.removeClass('is-invalid');
-					nrp.addClass('is-valid');
-					$(':submit').prop('disabled', false);
+					$("#id").val(data[0].praktikumID);
+					$("#modul").val(data[0].modul);
+					$("#kelompok").val(data[0].kelompok);
+					$("#nrp_asisten").val("");
+					$("#nama").val("");
+					if (data[0].asisten) {
+						$.each(data, function (i, data) {
+							let target = document.getElementById("nrp[" + i + "]");
+							$(target).val(data.nrp);
+						});
+					}
 				}
 			},
+			error: function (data) {
+				console.log(data);
+			}
 		});
 	});
+
 
 	$(".tambahSesi").on('click', function () {
 		$('#sesiEditLabel').html('Tambah Jadwal');
@@ -547,7 +575,6 @@ $(function () {
 		$(".invalidModulPraktikan").html('');
 
 		const id = $(this).data('id');
-		console.log(id);
 
 		$.ajax({
 			url: base + 'koordinator/getdetailjadwalpraktikan',
@@ -691,6 +718,39 @@ $(function () {
 						$(document.getElementById("nama[" + i + "]")).val(data.nrp);
 					});
 				}
+			}
+		});
+	});
+
+	$(".tambahFP").on('click', function () {
+		$("#addFPLabel").html('Tambah Final Project');
+		$('.modal-footer button[type=submit]').html('Tambah');
+		$('.modal-body form').attr('action', base + '/koordinator/addfp');
+	});
+
+	$(".editFP").on('click', function () {
+		$("#addFPLabel").html('Edit Final Project');
+		$('.modal-footer button[type=submit]').html('Edit');
+		$('.modal-body form').attr('action', base + '/koordinator/editfp');
+
+		const id = $(this).data('id');
+		$.ajax({
+			url: base + 'koordinator/getdetailfp',
+			data: {
+				id: id
+			},
+			method: "post",
+			dataType: "json",
+			success: function (data) {
+				$("#rangkaian").val(data.name);
+				$("#id").val(data.id);
+				$("#type").val(data.type);
+				$("#input").val(data.input);
+				$("#output").val(data.output);
+				$("#selector").val(data.selector);
+				$("#status").val(data.status);
+				$("#enable").val(data.enable);
+				$("#gate").val(data.gate);
 			}
 		});
 	});
