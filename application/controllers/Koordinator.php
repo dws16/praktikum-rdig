@@ -84,6 +84,16 @@ class Koordinator extends CI_Controller
     $this->load->model('Koordinator_model');
     echo json_encode($this->Koordinator_model->detailkelompok($this->input->post('id')));
   }
+
+  public function getallpraktikan()
+  {
+    echo json_encode($this->db->get_where('user', ['role_id' => 4])->result_array());
+  }
+
+  public function getpraktikan()
+  {
+    echo json_encode($this->db->get_where('kelompok_praktikan', ['IDUser' => $this->input->post('nrp')])->num_rows());
+  }
   public function editkelompok()
   {
     $data = [
