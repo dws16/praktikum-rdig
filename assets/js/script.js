@@ -12,7 +12,6 @@ $(function () {
 			method: 'post',
 			dataType: 'json',
 			success: function (data) {
-				console.log(data);
 				$('#name').val(data.name);
 				$('#nrp').val(data.nrp);
 				$('#email').val(data.email);
@@ -38,7 +37,6 @@ $(function () {
 			method: 'post',
 			dataType: 'json',
 			success: function (data) {
-				console.log(data);
 				$('#menu').val(data.menu);
 				$('#id').val(data.id);
 			}
@@ -67,7 +65,6 @@ $(function () {
 			method: 'post',
 			dataType: 'json',
 			success: function (data) {
-				console.log(data);
 				$('#title').val(data.title);
 				$('#menu_id').val(data.menu_id);
 				$('#url').val(data.url);
@@ -100,7 +97,6 @@ $(function () {
 			method: 'post',
 			dataType: 'json',
 			success: function (data) {
-				console.log(data);
 				$('#role').val(data.role);
 				$('#id').val(data.id);
 			}
@@ -139,7 +135,6 @@ $(function () {
 			method: "post",
 			dataType: "json",
 			success: function (data) {
-				console.log(data);
 				$("#id").val(data.praktikumID);
 				$("#modul").val(data.name);
 				$("#title").val(data.title);
@@ -335,7 +330,6 @@ $(function () {
 			method: "post",
 			dataType: "json",
 			success: function (data) {
-				console.log(data);
 				if (data.length == undefined) {
 					$("#id").val(data.praktikumID);
 					$("#modul").val(data.modul);
@@ -368,30 +362,6 @@ $(function () {
 		});
 	});
 
-	$('#nrp_asisten').on('keyup', function () {
-		const nrp = $(this);
-		$.ajax({
-			url: base + 'koordinator/cekasisten',
-			data: {
-				nrp: nrp.val()
-			},
-			method: "post",
-			dataType: "json",
-			success: function (data) {
-				if (data === 'Tidak') {
-					$('#nama').val("");
-					nrp.addClass('is-invalid');
-					nrp.removeClass('is-valid');
-					$(':submit').prop('disabled', true);
-				} else {
-					$('#nama').val(data.name);
-					nrp.removeClass('is-invalid');
-					nrp.addClass('is-valid');
-					$(':submit').prop('disabled', false);
-				}
-			},
-		});
-	});
 
 	$(".tambahSesi").on('click', function () {
 		$('#sesiEditLabel').html('Tambah Jadwal');
@@ -605,7 +575,6 @@ $(function () {
 		$(".invalidModulPraktikan").html('');
 
 		const id = $(this).data('id');
-		console.log(id);
 
 		$.ajax({
 			url: base + 'koordinator/getdetailjadwalpraktikan',

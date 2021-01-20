@@ -60,6 +60,9 @@
 
 <script>
   $(document).ready(function() {
+    $(function() {
+      $('.selectpicker').selectpicker();
+    });
     $('#dataTable').DataTable();
     $('.dataTable').DataTable();
     let tableFP = $('#dataTableFP').DataTable({
