@@ -218,6 +218,7 @@ $(function () {
 		$('#kelompokEditLabel').html('Detail Kelompok');
 		$('.modal-footer button[type=submit]').html('Edit');
 		$('.modal-body form').attr('action', base + '/koordinator/editkelompok');
+		$("#submitKelompok").prop('disabled', false);
 
 		const id = $(this).data('id');
 		const list = listpraktikan();
@@ -253,7 +254,7 @@ $(function () {
 					});
 					html += '</select>';
 					html += '<small id="valid-feedback[' + i + ']" class="text-success" hidden>Praktikan tersedia</small>';
-					html += '<small id="invalid-feedback[' + i + ']" class="text-danger" hidden>Praktikan sudah menjadi anggota kelompok lain</small>';
+					html += '<small id="invalid-feedback[' + i + ']" class="text-danger invalid" hidden>Praktikan sudah menjadi anggota kelompok lain</small>';
 					html += '</div>';
 					html += '<div class="col">';
 					html += '<a href="#" class="btn btn-danger align-middle" onclick="hapus(' + i + ')"><i class="fas fa-trash-alt"></i></a>';
@@ -281,7 +282,7 @@ $(function () {
 		});
 		html += '</select>';
 		html += '<small id="valid-feedback[' + jumlahanggota + ']" class="text-success" hidden>Praktikan tersedia</small>';
-		html += '<small id="invalid-feedback[' + jumlahanggota + ']" class="text-danger" hidden>Praktikan sudah menjadi anggota kelompok lain</small>';
+		html += '<small id="invalid-feedback[' + jumlahanggota + ']" class="text-danger invalid" hidden>Praktikan sudah menjadi anggota kelompok lain</small>';
 		html += '</div>';
 		html += '<div class="col">';
 		html += '<a href="#" class="btn btn-danger align-middle" onclick="hapus(' + jumlahanggota + ')"><i class="fas fa-trash-alt"></i></a>';
@@ -850,9 +851,11 @@ $(function () {
 				if (data > 0) {
 					$(invalid).attr('hidden', false);
 					$(valid).attr('hidden', true);
+					$(document.getElementById("submitKelompok")).prop('disabled', true);
 				} else {
 					$(invalid).attr('hidden', true);
 					$(valid).attr('hidden', false);
+					$(document.getElementById("submitKelompok")).prop('disabled', false);
 				}
 			}
 		});
@@ -986,6 +989,18 @@ $("#jagaEdit").on('hidden.bs.modal', function () {
 
 function hapus(id) {
 	document.getElementById("anggota[" + id + "]").remove();
+	let cek = document.getElementsByClassName("invalid");
+	let ada = 0;
+	$.each(cek, function (i, data) {
+		if (!data.hasAttribute('hidden')) {
+			ada = 1;
+		}
+	});
+	if (ada == 0) {
+		$(document.getElementById("submitKelompok")).prop('disabled', false);
+	} else {
+		$(document.getElementById("submitKelompok")).prop('disabled', true);
+	}
 }
 
 function hapusAsisten(id) {
