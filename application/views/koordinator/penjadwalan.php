@@ -408,8 +408,13 @@
               </div>
             </div>
           </div>
-          <div style="margin-bottom:-4px;">
-            <label for="anggota">Asisten</label>
+          <div class="form-row" style="margin-bottom:-4px;">
+            <div class="col-8">
+              <label for="anggota">Asisten</label>
+            </div>
+            <div class="col-1">
+              <label for="pj">PJ</label>
+            </div>
           </div>
           <div id="asisten">
 

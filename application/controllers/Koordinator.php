@@ -640,15 +640,17 @@ class Koordinator extends CI_Controller
           $this->db->where('nrp', $p['IDUser']);
           $this->db->update('timeline_presensi', $presensi);
           $i = 1;
+          var_dump("masuk");
+          die;
         }
       }
-    }
-    if ($i == 0) {
-      $presensi = [
-        'dateID' => $data['dateID'],
-        'nrp' => $p['IDUser']
-      ];
-      $this->db->insert('timeline_presensi', $presensi);
+      if ($i == 0) {
+        $presensi = [
+          'dateID' => $data['dateID'],
+          'nrp' => $p['IDUser']
+        ];
+        $this->db->insert('timeline_presensi', $presensi);
+      }
     }
     $this->session->set_flashdata('messageKelompok', '<div class="alert alert-success" role="alert">Jadwal Kelompok berhasil diubah!</div>');
     redirect(base_url('koordinator/penjadwalan'));
@@ -731,22 +733,26 @@ class Koordinator extends CI_Controller
   {
     $date = $this->input->post('idSesi');
 
-    $query = "DELETE `timeline_presensi`.* FROM `timeline_presensi` INNER JOIN `user` ON `timeline_presensi`.`nrp` = `user`.`nrp`
-              WHERE `timeline_presensi`.`dateID` ='$date' AND NOT `user`.`role_id` = '4'";
+    $query = "DELETE `presensi_aslab`.* FROM `presensi_aslab` INNER JOIN `user` ON `presensi_aslab`.`nrp` = `user`.`nrp`
+              WHERE `presensi_aslab`.`dateID` ='$date'";
     $this->db->query($query);
 
     foreach ($this->input->post('asisten') as $p) {
       $asisten = [];
-      if ($this->db->get_where('timeline_presensi', ['dateID' => $date, 'nrp' => $p])->row_array()) {
+      if ($this->db->get_where('presensi_aslab', ['dateID' => $date, 'nrp' => $p])->row_array()) {
         continue;
       } else {
         $asisten = [
           'dateID' => $date,
           'nrp' => $p
         ];
-        $this->db->insert('timeline_presensi', $asisten);
+        $this->db->insert('presensi_aslab', $asisten);
       }
     }
+
+    $this->db->where('dateID', $date);
+    $this->db->where('nrp', $this->input->post('pj'));
+    $this->db->update('presensi_aslab', ['pj' => 1]);
 
     $this->session->set_flashdata('messageJaga', '<div class="alert alert-success" role="alert">Jadwal jaga berhasil diubah!</div>');
     redirect(base_url('koordinator/penjadwalan'));

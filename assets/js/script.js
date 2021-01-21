@@ -705,11 +705,20 @@ $(function () {
 				if (data != "Tidak") {
 					let html = "";
 					$.each(data, function (i, data) {
-						html += '<div class="form-row mt-2 " id="asisten[' + i + ']">';
-						html += '<div class="col-8">';
-						html += '<select class="form-control cekAsisten selectpicker" data-live-search="true" id="nama[' + i + ']" name="asisten[' + i + ']" required></select>';
+						html += '<div class="form-row mt-2" id="asisten[' + i + ']">';
+						html += '<div class="col-8 my-1 cekAsisten">';
+						html += '<select class="form-control selectpicker asistenList" onchange="appendRadioValue(' + i + ')" data-live-search="true" id="nama[' + i + ']" name="asisten[' + i + ']" required></select>';
 						html += '</div>';
-						html += '<div class="col">';
+						html += '<div class="col-auto my-1">';
+						html += '<div class="form-check">';
+						html += '<input class="form-check-input" type="radio" id="pj[' + i + ']" style="margin-top:12px;" name="pj" value="' + data.nrp + '" required ';
+						if (data.pj == '1') {
+							html += 'checked';
+						}
+						html += '>';
+						html += '</div>';
+						html += '</div>';
+						html += '<div class="col my-1">';
 						html += '<a href="#" class="btn btn-danger align-middle" onclick="hapusAsisten(' + i + ')"><i class="fas fa-trash-alt"></i></a>';
 						html += '</div>';
 						html += '</div>';
@@ -725,7 +734,7 @@ $(function () {
 							$.each(data, function (i, data) {
 								html += "<option data-tokens=" + data.nrp + " value=" + data.nrp + ">" + data.name + "</option>";
 							});
-							$(".cekAsisten").html(html);
+							$(".asistenList").html(html);
 						},
 					});
 					$.each(data, function (i, data) {
@@ -880,14 +889,25 @@ $(function () {
 		return result;
 	}
 
+	appendRadioValue = function (id) {
+		const target = document.getElementById("nama[" + id + "]");
+		const radio = document.getElementById("pj[" + id + "]");
+		$(radio).val($(target).val());
+	}
+
 	$('#addAsisten').on('click', function () {
 		const jumlahasisten = $("#asisten .cekAsisten").length;
 		let html = '';
 		html += '<div class="form-row mt-2 " id="asisten[' + jumlahasisten + ']">';
-		html += '<div class="col-8 cekAsisten">';
-		html += '<select class="form-control selectpicker" data-live-search="true" id="nama[' + jumlahasisten + ']" name="asisten[' + jumlahasisten + ']" required></select>';
+		html += '<div class="col-8 my-1 cekAsisten">';
+		html += '<select class="form-control selectpicker" onchange="appendRadioValue(' + jumlahasisten + ')" data-live-search="true" id="nama[' + jumlahasisten + ']" name="asisten[' + jumlahasisten + ']" required></select>';
 		html += '<div class="valid-feedback feedback[' + jumlahasisten + ']"></div>';
 		html += '<div class="invalid-feedback feedback[' + jumlahasisten + ']"></div>';
+		html += '</div>';
+		html += '<div class="col-auto my-1">';
+		html += '<div class="form-check">';
+		html += '<input class="form-check-input" type="radio" id="pj[' + jumlahasisten + ']" style="margin-top:12px;" name="pj" required>'
+		html += '</div>';
 		html += '</div>';
 		html += '<div class="col">';
 		html += '<a href="#" class="btn btn-danger align-middle" onclick="hapusAsisten(' + jumlahasisten + ')"><i class="fas fa-trash-alt"></i></a>';
@@ -900,6 +920,7 @@ $(function () {
 			dataType: "json",
 			success: function (data) {
 				let html = "";
+				html += "<option value=''></option>";
 				$.each(data, function (i, data) {
 					html += "<option value=" + data.nrp + ">" + data.name + "</option>";
 				});
