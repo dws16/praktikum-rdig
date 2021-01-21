@@ -6198,8 +6198,8 @@ a.badge-dark:focus {
 .list-group-item.active {
 	z-index: 2;
 	color: #fff;
-	background-color: #4e73df;
-	border-color: #4e73df
+	background-color: #E74A3B;
+	border-color: #E74A3B
 }
 
 .list-group-horizontal {
