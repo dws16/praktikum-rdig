@@ -243,7 +243,7 @@ $(function () {
 					html += '<div class="form-row mt-2" id="anggota[' + i + ']">';
 					html += '<div class="col-11 jumlah">';
 
-					html += '<select class="form-control selectAsistenFP selectpicker" onchange="cekanggota(' + i + ')" name="nrp[' + i + ']" id="nrp[' + i + ']" data-live-search="true" required>';
+					html += '<select class="form-control selectpicker" onchange="cekanggota(' + i + ')" name="nrp[' + i + ']" id="nrp[' + i + ']" data-live-search="true" required>';
 					$.each(list, function (key, data2) {
 						html += '<option data-tokens="' + data2.nrp + '" value="' + data2.nrp + '"';
 						if (data.nrp == data2.nrp) {
@@ -300,6 +300,16 @@ $(function () {
 		$("#nrp_asisten").prop('required', true);
 		$('.modal-body form').attr('action', base + '/koordinator/editasisten');
 
+		const list = listasisten();
+		console.log(list);
+		let html = '';
+		html += '<div class="form-group mt-2">';
+		html += '<select class="form-control selectpicker" name="nrp" id="nrp_asisten" data-live-search="true" required>';
+		html += '<option data-tokens=""></option>'
+		$.each(list, function (i, data) {
+			html += '<option data-tokens="' + data.nrp + '" value="' + data.nrp + '">' + data.nrp + ' - ' + data.name + '</option>';
+		});
+		$("#praktikum").html(html);
 
 		$.ajax({
 			url: base + 'koordinator/getdetailkelompok_asisten',
@@ -309,21 +319,24 @@ $(function () {
 			},
 			method: "post",
 			dataType: "json",
+			async: false,
 			success: function (data) {
+				console.log(data);
 				$("#id").val(data.praktikumID);
 				$("#modul").val(data.modul);
 				$("#kelompok").val(data.kelompok);
-				$("#nrp_asisten").val("");
-				$("#nama").val("");
 				if (data.asisten) {
 					$("#nrp_asisten").val(data.nrp);
-					$("#nama").val(data.asisten);
+					console.log($("#nrp_asisten").val());
+				} else {
+					$("#nrp_asisten").val("");
 				}
 			},
 			error: function (data) {
 				console.log(data);
 			}
 		});
+		$(".selectpicker").selectpicker();
 	});
 
 	$('.editAsistenFP').on('click', function () {
@@ -334,7 +347,19 @@ $(function () {
 		$(".selectAsistenFP").prop('required', true);
 		$("#nrp_asisten").prop('required', false);
 		$('.modal-body form').attr('action', base + '/koordinator/editasistenFP');
-
+		const asisten = listasisten();
+		let html = '';
+		for (let i = 0; i < 3; i++) {
+			html += '<div class="form-group mt-2">';
+			html += '<select class="form-control selectAsistenFP selectpicker" name="nrpAsisten[' + i + ']" id="nrpAsisten[' + i + ']" data-live-search="true" required>';
+			html += '<option data-tokens=""></option>';
+			$.each(asisten, function (key, value) {
+				html += '<option data-tokens="' + value.nrp + '" value="' + value.nrp + '">' + value.name + '</option>';
+			});
+			html += '</select>';
+			html += '</div>';
+		}
+		$("#finalproject").html(html);
 		$.ajax({
 			url: base + 'koordinator/getdetailkelompok_asistenFP',
 			data: {
@@ -343,6 +368,7 @@ $(function () {
 			},
 			method: "post",
 			dataType: "json",
+			async: false,
 			success: function (data) {
 				if (data.length == undefined) {
 					$("#id").val(data.praktikumID);
@@ -364,7 +390,7 @@ $(function () {
 					$("#nama").val("");
 					if (data[0].asisten) {
 						$.each(data, function (i, data) {
-							let target = document.getElementById("nrp[" + i + "]");
+							let target = document.getElementById("nrpAsisten[" + i + "]");
 							$(target).val(data.nrp);
 						});
 					}
@@ -374,6 +400,7 @@ $(function () {
 				console.log(data);
 			}
 		});
+		$(".selectpicker").selectpicker();
 	});
 
 
@@ -783,6 +810,20 @@ $(function () {
 		let list = 0;
 		$.ajax({
 			url: base + 'koordinator/getallpraktikan',
+			method: "post",
+			dataType: "json",
+			async: false,
+			success: function (data) {
+				list = data;
+			}
+		});
+		return list;
+	}
+
+	listasisten = function () {
+		let list = 0;
+		$.ajax({
+			url: base + 'koordinator/getallasisten',
 			method: "post",
 			dataType: "json",
 			async: false,

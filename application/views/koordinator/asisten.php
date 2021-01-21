@@ -152,40 +152,10 @@
           <div class="form-group">
             <label for="nrp_asisten">Asisten</label>
             <div id="praktikum">
-              <div class="form-group mt-2">
-                <select class="form-control selectAsistenFP selectpicker" name="nrp" id="nrp_asisten" data-live-search="true" required>
-                  <option data-tokens=""></option>
-                  <?php foreach ($asisten as $a) : ?>
-                    <option data-tokens="<?= $a['nrp']; ?>" value="<?= $a['nrp']; ?>"><?= $a['name']; ?></option>
-                  <?php endforeach; ?>
-                </select>
-              </div>
+
             </div>
             <div id="finalproject">
-              <div class="form-group mt-2">
-                <select class="form-control selectAsistenFP selectpicker" name="nrpAsisten[0]" id="nrpAsisten[0]" data-live-search="true" required>
-                  <option data-tokens=""></option>
-                  <?php foreach ($asisten as $a) : ?>
-                    <option data-tokens="<?= $a['nrp']; ?>" value="<?= $a['nrp']; ?>"><?= $a['name']; ?></option>
-                  <?php endforeach; ?>
-                </select>
-              </div>
-              <div class="form-group mt-2">
-                <select class="form-control selectAsistenFP selectpicker" name="nrpAsisten[1]" id="nrpAsisten[1]" data-live-search="true" required>
-                  <option data-tokens=""></option>
-                  <?php foreach ($asisten as $a) : ?>
-                    <option data-tokens="<?= $a['nrp']; ?>" value="<?= $a['nrp']; ?>"><?= $a['name']; ?></option>
-                  <?php endforeach; ?>
-                </select>
-              </div>
-              <div class="form-group mt-2">
-                <select class="form-control selectAsistenFP selectpicker" name="nrpAsisten[2]" id="nrpAsisten[2]" data-live-search="true" required>
-                  <option data-tokens=""></option>
-                  <?php foreach ($asisten as $a) : ?>
-                    <option data-tokens="<?= $a['nrp']; ?>" value="<?= $a['nrp']; ?>"><?= $a['name']; ?></option>
-                  <?php endforeach; ?>
-                </select>
-              </div>
+
             </div>
           </div>
           <div class="modal-footer">

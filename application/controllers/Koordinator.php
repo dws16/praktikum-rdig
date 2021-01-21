@@ -90,6 +90,13 @@ class Koordinator extends CI_Controller
     echo json_encode($this->db->get_where('user', ['role_id' => 4])->result_array());
   }
 
+  public function getallasisten()
+  {
+    $this->db->where('role_id !=', 4);
+    $data = $this->db->get('user')->result_array();
+    echo json_encode($data);
+  }
+
   public function getpraktikan()
   {
     echo json_encode($this->db->get_where('kelompok_praktikan', ['IDUser' => $this->input->post('nrp')])->num_rows());
