@@ -47,7 +47,7 @@
                     <td><?= $f['description']; ?></td>
                     <td class="text-center"><?= $f['status'] == 1 ? "Aktif" : "Nonaktif"; ?></td>
                     <td class="text-center"><a href="#" class="badge badge-pill badge-info editModul" data-id="<?= $f['praktikumID'] ?>" data-toggle="modal" data-target="#modulEdit"><i class="fas fa-edit"></i> Edit</a>
-                      <a href="<?= base_url('koordinator/deletemodul/') . $f['praktikumID']; ?>" class="badge badge-pill badge-danger"><i class="fas fa-trash"></i> Delete</a>
+                      <a href="<?= base_url('koordinator/deletemodul/') . $f['praktikumID']; ?>" onclick="return confirm('Yakin?');" class="badge badge-pill badge-danger"><i class="fas fa-trash"></i> Delete</a>
                     </td>
                   </tr>
                 <?php endforeach; ?>

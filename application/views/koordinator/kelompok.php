@@ -47,7 +47,7 @@
                     <th><?= ($k['status'] == 1) ? "Aktif" : "Nonaktif"; ?></th>
                     <th class="text-center">
                       <a href="#" class="badge badge-pill badge-info editkelompok" data-toggle="modal" data-id="<?= $k['kelompokID']; ?>" data-target="#kelompokEdit"><i class="fas fa-fw fa-edit"></i> Edit</a>
-                      <a href="<?= base_url('koordinator/deletekelompok/') . $k['kelompokID']; ?>" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-trash"></i> Hapus</a>
+                      <a href="<?= base_url('koordinator/deletekelompok/') . $k['kelompokID']; ?>" onclick="return confirm('Yakin?');" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-trash"></i> Hapus</a>
                     </th>
                   </tr>
                 <?php endforeach; ?>
