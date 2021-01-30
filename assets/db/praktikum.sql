@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 07, 2020 at 06:17 AM
+-- Generation Time: Jan 30, 2021 at 03:56 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -44,6 +44,42 @@ INSERT INTO `filebuku` (`id`, `name`, `filename`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `finalproject`
+--
+
+CREATE TABLE `finalproject` (
+  `id` int(11) NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `type` char(2) NOT NULL,
+  `input` varchar(128) NOT NULL,
+  `output` varchar(128) NOT NULL,
+  `selector` varchar(128) NOT NULL,
+  `enable` varchar(128) NOT NULL,
+  `gate` varchar(128) NOT NULL,
+  `status` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `finalproject`
+--
+
+INSERT INTO `finalproject` (`id`, `name`, `type`, `input`, `output`, `selector`, `enable`, `gate`, `status`) VALUES
+(1, 'Tes', 'A', 'Active High', 'Active High', 'Active High', 'Active High', 'Basic Gate', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fp_kelompok`
+--
+
+CREATE TABLE `fp_kelompok` (
+  `fpID` int(11) NOT NULL,
+  `kelompokID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `kelompok`
 --
 
@@ -60,7 +96,6 @@ CREATE TABLE `kelompok` (
 --
 
 INSERT INTO `kelompok` (`kelompokID`, `name`, `year`, `term`, `status`) VALUES
-(1, 'Tes', 2020, 0, 1),
 (4, 'Halo', 2020, 0, 1),
 (5, 'Halo2', 2020, 0, 1);
 
@@ -81,7 +116,15 @@ CREATE TABLE `kelompok_aslab` (
 --
 
 INSERT INTO `kelompok_aslab` (`IDPraktikum`, `IDKelompok`, `IDUser`) VALUES
-(1, 1, '07211640000015');
+(1, 4, '07211640000015'),
+(10, 5, '07211640000015'),
+(1, 5, '07211740000043'),
+(9, 4, '07211640000015'),
+(9, 4, '07211740000043'),
+(9, 4, '67890987654321'),
+(9, 5, '07211640000015'),
+(9, 5, '07211740000043'),
+(9, 5, '07211640000015');
 
 -- --------------------------------------------------------
 
@@ -99,7 +142,11 @@ CREATE TABLE `kelompok_praktikan` (
 --
 
 INSERT INTO `kelompok_praktikan` (`IDKelompok`, `IDUser`) VALUES
-(4, '07211740000014');
+(4, '07211740000014'),
+(4, '07211740000005'),
+(4, '07211640000014'),
+(5, '07211740000010'),
+(5, '07211740000040');
 
 -- --------------------------------------------------------
 
@@ -110,9 +157,9 @@ INSERT INTO `kelompok_praktikan` (`IDKelompok`, `IDUser`) VALUES
 CREATE TABLE `penilaian` (
   `penilaianID` int(11) NOT NULL,
   `kriteria` varchar(64) NOT NULL,
-  `rangeKriteria` tinyint(3) UNSIGNED NOT NULL DEFAULT 100,
-  `descKriteria` text DEFAULT NULL,
-  `statusKriteria` tinyint(1) NOT NULL DEFAULT 0,
+  `rangeKriteria` tinyint(3) UNSIGNED NOT NULL DEFAULT '100',
+  `descKriteria` text,
+  `statusKriteria` tinyint(1) NOT NULL DEFAULT '0',
   `IDType` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -140,9 +187,9 @@ INSERT INTO `penilaian` (`penilaianID`, `kriteria`, `rangeKriteria`, `descKriter
 CREATE TABLE `penilaian_pelanggaran` (
   `pelanggaranID` int(11) NOT NULL,
   `kriteriaPelanggaran` varchar(64) NOT NULL,
-  `nilaiPelanggaran` tinyint(2) UNSIGNED NOT NULL DEFAULT 15,
-  `descPelanggaran` text DEFAULT NULL,
-  `statusPelanggaran` tinyint(1) NOT NULL DEFAULT 0,
+  `nilaiPelanggaran` tinyint(2) UNSIGNED NOT NULL DEFAULT '15',
+  `descPelanggaran` text,
+  `statusPelanggaran` tinyint(1) NOT NULL DEFAULT '0',
   `IDType` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -165,7 +212,7 @@ CREATE TABLE `penilaian_pengurangan` (
   `IDPraktikum` int(11) NOT NULL,
   `praktikan` varchar(128) CHARACTER SET latin1 NOT NULL,
   `aslab` varchar(128) CHARACTER SET latin1 NOT NULL,
-  `status` int(11) NOT NULL DEFAULT 0
+  `status` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -189,7 +236,7 @@ CREATE TABLE `penilaian_praktikum` (
   `IDPraktikum` int(11) NOT NULL,
   `praktikan` varchar(128) CHARACTER SET latin1 NOT NULL,
   `aslab` varchar(128) CHARACTER SET latin1 NOT NULL,
-  `nilai` int(11) NOT NULL DEFAULT 0
+  `nilai` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -239,8 +286,8 @@ CREATE TABLE `praktikum` (
   `praktikumID` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
   `title` varchar(128) NOT NULL,
-  `filename` varchar(128) NOT NULL,
-  `description` varchar(128) NOT NULL,
+  `filename` varchar(128) DEFAULT NULL,
+  `description` varchar(128) DEFAULT NULL,
   `status` tinyint(1) NOT NULL,
   `IDType` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -277,6 +324,34 @@ INSERT INTO `praktikum_type` (`typeID`, `typeName`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `presensi_aslab`
+--
+
+CREATE TABLE `presensi_aslab` (
+  `id` int(11) NOT NULL,
+  `dateID` int(11) NOT NULL,
+  `nrp` varchar(128) NOT NULL,
+  `hadir` tinyint(1) NOT NULL,
+  `pj` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `presensi_aslab`
+--
+
+INSERT INTO `presensi_aslab` (`id`, `dateID`, `nrp`, `hadir`, `pj`) VALUES
+(8, 8, '07211640000015', 0, 0),
+(9, 8, '07211740000043', 0, 1),
+(10, 8, '67890987654321', 0, 0),
+(14, 9, '07211640000015', 0, 1),
+(15, 9, '07211740000043', 0, 0),
+(16, 9, '67890987654321', 0, 0),
+(19, 11, '07211740000043', 0, 1),
+(20, 11, '07211640000015', 0, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `timeline_praktikum`
 --
 
@@ -294,7 +369,6 @@ CREATE TABLE `timeline_praktikum` (
 INSERT INTO `timeline_praktikum` (`dateID`, `date`, `praktikumID`, `ket`) VALUES
 (8, '2020-11-28 16:34:00', 1, 'Sesi 1'),
 (9, '2020-12-09 22:40:00', 1, 'Sesi 2'),
-(10, '2020-11-28 17:02:00', 9, 'Sesi 1'),
 (11, '2020-12-12 17:54:00', 9, 'Sesi 2');
 
 -- --------------------------------------------------------
@@ -316,13 +390,9 @@ CREATE TABLE `timeline_presensi` (
 --
 
 INSERT INTO `timeline_presensi` (`id`, `dateID`, `nrp`, `hadir`, `ket`) VALUES
-(65, 8, '07211740000014', 0, NULL),
-(68, 8, '07211740000043', 0, NULL),
-(69, 8, '07211640000015', 0, NULL),
-(82, 11, '07211640000015', 0, NULL),
-(83, 11, '07211740000043', 0, NULL),
-(84, 10, '07211740000043', 0, NULL),
-(85, 9, '07211740000043', 0, NULL);
+(93, 8, '07211740000014', 0, NULL),
+(94, 8, '07211740000005', 0, NULL),
+(95, 8, '07211640000014', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -341,8 +411,6 @@ CREATE TABLE `timeline_presensi_kelompok` (
 --
 
 INSERT INTO `timeline_presensi_kelompok` (`id`, `dateID`, `kelompokID`) VALUES
-(34, 9, 1),
-(35, 10, 1),
 (40, 8, 4);
 
 -- --------------------------------------------------------
@@ -405,9 +473,9 @@ INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
 (8, 2, 2),
 (9, 3, 3),
 (10, 1, 3),
-(12, 1, 4),
 (13, 1, 2),
-(14, 2, 3);
+(14, 2, 3),
+(15, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -538,6 +606,19 @@ ALTER TABLE `filebuku`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `finalproject`
+--
+ALTER TABLE `finalproject`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fp_kelompok`
+--
+ALTER TABLE `fp_kelompok`
+  ADD UNIQUE KEY `fpID` (`fpID`),
+  ADD UNIQUE KEY `kelompokID` (`kelompokID`);
+
+--
 -- Indexes for table `kelompok`
 --
 ALTER TABLE `kelompok`
@@ -603,6 +684,14 @@ ALTER TABLE `praktikum`
 --
 ALTER TABLE `praktikum_type`
   ADD PRIMARY KEY (`typeID`);
+
+--
+-- Indexes for table `presensi_aslab`
+--
+ALTER TABLE `presensi_aslab`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `dateID` (`dateID`),
+  ADD KEY `nrp` (`nrp`);
 
 --
 -- Indexes for table `timeline_praktikum`
@@ -675,6 +764,12 @@ ALTER TABLE `filebuku`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `finalproject`
+--
+ALTER TABLE `finalproject`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `kelompok`
 --
 ALTER TABLE `kelompok`
@@ -699,6 +794,12 @@ ALTER TABLE `praktikum`
   MODIFY `praktikumID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT for table `presensi_aslab`
+--
+ALTER TABLE `presensi_aslab`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
 -- AUTO_INCREMENT for table `timeline_praktikum`
 --
 ALTER TABLE `timeline_praktikum`
@@ -708,7 +809,7 @@ ALTER TABLE `timeline_praktikum`
 -- AUTO_INCREMENT for table `timeline_presensi`
 --
 ALTER TABLE `timeline_presensi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 
 --
 -- AUTO_INCREMENT for table `timeline_presensi_kelompok`
@@ -720,13 +821,13 @@ ALTER TABLE `timeline_presensi_kelompok`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `user_access_menu`
 --
 ALTER TABLE `user_access_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `user_menu`
@@ -755,6 +856,13 @@ ALTER TABLE `user_token`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `fp_kelompok`
+--
+ALTER TABLE `fp_kelompok`
+  ADD CONSTRAINT `fp_kelompok_ibfk_1` FOREIGN KEY (`fpID`) REFERENCES `finalproject` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fp_kelompok_ibfk_2` FOREIGN KEY (`kelompokID`) REFERENCES `kelompok` (`kelompokID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `kelompok_aslab`
@@ -794,6 +902,13 @@ ALTER TABLE `penilaian_rekap`
 --
 ALTER TABLE `praktikum`
   ADD CONSTRAINT `praktikum_ibfk_1` FOREIGN KEY (`IDType`) REFERENCES `praktikum_type` (`typeID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `presensi_aslab`
+--
+ALTER TABLE `presensi_aslab`
+  ADD CONSTRAINT `presensi_aslab_ibfk_1` FOREIGN KEY (`dateID`) REFERENCES `timeline_praktikum` (`dateID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `presensi_aslab_ibfk_2` FOREIGN KEY (`nrp`) REFERENCES `user` (`nrp`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `timeline_praktikum`
