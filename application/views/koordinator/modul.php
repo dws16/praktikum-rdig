@@ -34,7 +34,7 @@
                   <th>Title</th>
                   <th>Modul</th>
                   <th>Desc</th>
-                  <th>Active</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -45,9 +45,9 @@
                     <td><?= $f['title']; ?></td>
                     <td class="text-center"><a href="<?= base_url('assets/file/praktikum/') . $f['filename']; ?>" class="badge badge-pill badge-info"><i class="fas fa-download"></i> Unduh</a></td>
                     <td><?= $f['description']; ?></td>
-                    <td class="text-center"><?= $f['status']; ?></td>
+                    <td class="text-center"><?= $f['status'] == 1 ? "Aktif" : "Nonaktif"; ?></td>
                     <td class="text-center"><a href="#" class="badge badge-pill badge-info editModul" data-id="<?= $f['praktikumID'] ?>" data-toggle="modal" data-target="#modulEdit"><i class="fas fa-edit"></i> Edit</a>
-                      <a href="<?= base_url('koordinator/deletemodul/') . $f['praktikumID']; ?>" class="badge badge-pill badge-danger"><i class="fas fa-trash"></i> Delete</a>
+                      <a href="<?= base_url('koordinator/deletemodul/') . $f['praktikumID']; ?>" onclick="return confirm('Yakin?');" class="badge badge-pill badge-danger"><i class="fas fa-trash"></i> Delete</a>
                     </td>
                   </tr>
                 <?php endforeach; ?>

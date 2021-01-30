@@ -95,25 +95,26 @@ class Koordinator_model extends CI_Model
 
   public function listjaga()
   {
-    $query = "SELECT `timeline_praktikum`.`dateID`, `timeline_praktikum`.`date`, COUNT(`timeline_presensi`.`id`) AS `jumlah`,
+    $query = "SELECT `timeline_praktikum`.`dateID`, `timeline_praktikum`.`date`, COUNT(`presensi_aslab`.`id`) AS `jumlah`,
               `praktikum`.`name`, `praktikum`.`praktikumID`, `timeline_praktikum`.`ket`
               FROM `timeline_praktikum` INNER JOIN `praktikum` ON `praktikum`.`praktikumID` = `timeline_praktikum`.`praktikumID`
-              LEFT JOIN `timeline_presensi` ON `timeline_praktikum`.`dateID` = `timeline_presensi`.`dateID`
-              INNER JOIN `user` ON `timeline_presensi`.`nrp` = `user`.`nrp`
+              LEFT JOIN `presensi_aslab` ON `timeline_praktikum`.`dateID` = `presensi_aslab`.`dateID`
+              INNER JOIN `user` ON `presensi_aslab`.`nrp` = `user`.`nrp`
               WHERE `user`.`role_id` !='4'
               GROUP BY `timeline_praktikum`.`dateID`
               ";
 
     return $this->db->query($query)->result_array();
   }
+
   public function detailjaga($id)
   {
-    $query = "SELECT `timeline_presensi`.`dateID`, `timeline_presensi`.`id`, `timeline_praktikum`.`date`, `timeline_praktikum`.`ket`,
-              `timeline_presensi`.`nrp`, `user`.`name`, `praktikum`.`name` AS `modul` FROM `timeline_presensi`
-              LEFT JOIN `timeline_praktikum` ON `timeline_presensi`.`dateID` = `timeline_praktikum`.`dateID`
-              LEFT JOIN `user` ON `timeline_presensi`.`nrp` = `user`.`nrp`
+    $query = "SELECT `presensi_aslab`.`dateID`, `presensi_aslab`.`id`, `presensi_aslab`.`pj`, `timeline_praktikum`.`date`, `timeline_praktikum`.`ket`,
+              `presensi_aslab`.`nrp`, `user`.`name`, `praktikum`.`name` AS `modul` FROM `presensi_aslab`
+              LEFT JOIN `timeline_praktikum` ON `presensi_aslab`.`dateID` = `timeline_praktikum`.`dateID`
+              LEFT JOIN `user` ON `presensi_aslab`.`nrp` = `user`.`nrp`
               LEFT JOIN `praktikum` ON `timeline_praktikum`.`praktikumID` = `praktikum`.`praktikumID`
-              WHERE `timeline_presensi`.`dateID` = '$id' AND `user`.`role_id`!=4";
+              WHERE `presensi_aslab`.`dateID` = '$id' AND `user`.`role_id`!=4";
 
     return $this->db->query($query)->result_array();
   }

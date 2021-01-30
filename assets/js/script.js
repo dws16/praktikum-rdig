@@ -218,8 +218,10 @@ $(function () {
 		$('#kelompokEditLabel').html('Detail Kelompok');
 		$('.modal-footer button[type=submit]').html('Edit');
 		$('.modal-body form').attr('action', base + '/koordinator/editkelompok');
+		$("#submitKelompok").prop('disabled', false);
 
 		const id = $(this).data('id');
+		const list = listpraktikan();
 
 		$.ajax({
 			url: base + 'koordinator/getdetailkelompok',
@@ -240,13 +242,19 @@ $(function () {
 						return true;
 					}
 					html += '<div class="form-row mt-2" id="anggota[' + i + ']">';
-					html += '<div class="col-6">';
-					html += '<input class="form-control" name="nrp[' + i + ']" value="' + data.nrp + '" placeholder="NRP" type="text" required>';
-					html += '<div class="valid-feedback feedback[' + i + ']">asd</div>';
-					html += '<div class="invalid-feedback feedback[' + i + ']">asd</div>';
-					html += '</div>';
-					html += '<div class="col-5">';
-					html += '<input class="form-control jumlah" id="nama[' + i + ']"  name="anggotakelompok[' + i + ']" value="' + data.name + '" type="text" placeholder="Nama" disabled>';
+					html += '<div class="col-11 jumlah">';
+
+					html += '<select class="form-control selectpicker" onchange="cekanggota(' + i + ')" name="nrp[' + i + ']" id="nrp[' + i + ']" data-live-search="true" required>';
+					$.each(list, function (key, data2) {
+						html += '<option data-tokens="' + data2.nrp + '" value="' + data2.nrp + '"';
+						if (data.nrp == data2.nrp) {
+							html += 'selected';
+						}
+						html += '>' + data2.nrp + ' - ' + data2.name + '</option>';
+					});
+					html += '</select>';
+					html += '<small id="valid-feedback[' + i + ']" class="text-success" hidden>Praktikan tersedia</small>';
+					html += '<small id="invalid-feedback[' + i + ']" class="text-danger invalid" hidden>Praktikan sudah menjadi anggota kelompok lain</small>';
 					html += '</div>';
 					html += '<div class="col">';
 					html += '<a href="#" class="btn btn-danger align-middle" onclick="hapus(' + i + ')"><i class="fas fa-trash-alt"></i></a>';
@@ -254,27 +262,34 @@ $(function () {
 					html += '</div>';
 				});
 				$("#anggota").html(html);
+				$('.selectpicker').selectpicker();
 			},
 		});
 	});
 
 	$('#addAnggota').on('click', function () {
+		const list = listpraktikan();
 		const jumlahanggota = $("#anggota .jumlah").length;
 		let html = '';
 		html += '<div class="form-row mt-2 " id="anggota[' + jumlahanggota + ']">';
-		html += '<div class="col-6">';
-		html += '<input class="form-control" onkeyup="ceknrp(' + jumlahanggota + ')" id="nrp[' + jumlahanggota + ']" name="nrp[' + jumlahanggota + ']" placeholder="NRP" type="text" required>';
-		html += '<div class="valid-feedback feedback[' + jumlahanggota + ']"></div>';
-		html += '<div class="invalid-feedback feedback[' + jumlahanggota + ']"></div>';
-		html += '</div>';
-		html += '<div class="col-5">';
-		html += '<input class="form-control jumlah" id="nama[' + jumlahanggota + ']" name="anggotakelompok[' + jumlahanggota + ']" type="text" placeholder="Nama" disabled>';
+
+		html += '<div class="col-11 jumlah">';
+
+		html += '<select class="form-control selectAsistenFP selectpicker" onchange="cekanggota(' + jumlahanggota + ')" name="nrp[' + jumlahanggota + ']" id="nrp[' + jumlahanggota + ']" data-live-search="true" required>';
+		html += '<option data-tokens="" value=""></option>';
+		$.each(list, function (i, data) {
+			html += '<option data-tokens="' + data.nrp + '" value="' + data.nrp + '">' + data.nrp + ' - ' + data.name + '</option>';
+		});
+		html += '</select>';
+		html += '<small id="valid-feedback[' + jumlahanggota + ']" class="text-success" hidden>Praktikan tersedia</small>';
+		html += '<small id="invalid-feedback[' + jumlahanggota + ']" class="text-danger invalid" hidden>Praktikan sudah menjadi anggota kelompok lain</small>';
 		html += '</div>';
 		html += '<div class="col">';
 		html += '<a href="#" class="btn btn-danger align-middle" onclick="hapus(' + jumlahanggota + ')"><i class="fas fa-trash-alt"></i></a>';
 		html += '</div>';
 		html += '</div>';
 		$("#anggota").append(html);
+		$('.selectpicker').selectpicker();
 	});
 
 	$('.editAsisten').on('click', function () {
@@ -286,6 +301,16 @@ $(function () {
 		$("#nrp_asisten").prop('required', true);
 		$('.modal-body form').attr('action', base + '/koordinator/editasisten');
 
+		const list = listasisten();
+		console.log(list);
+		let html = '';
+		html += '<div class="form-group mt-2">';
+		html += '<select class="form-control selectpicker" name="nrp" id="nrp_asisten" data-live-search="true" required>';
+		html += '<option data-tokens=""></option>'
+		$.each(list, function (i, data) {
+			html += '<option data-tokens="' + data.nrp + '" value="' + data.nrp + '">' + data.nrp + ' - ' + data.name + '</option>';
+		});
+		$("#praktikum").html(html);
 
 		$.ajax({
 			url: base + 'koordinator/getdetailkelompok_asisten',
@@ -295,21 +320,24 @@ $(function () {
 			},
 			method: "post",
 			dataType: "json",
+			async: false,
 			success: function (data) {
+				console.log(data);
 				$("#id").val(data.praktikumID);
 				$("#modul").val(data.modul);
 				$("#kelompok").val(data.kelompok);
-				$("#nrp_asisten").val("");
-				$("#nama").val("");
 				if (data.asisten) {
 					$("#nrp_asisten").val(data.nrp);
-					$("#nama").val(data.asisten);
+					console.log($("#nrp_asisten").val());
+				} else {
+					$("#nrp_asisten").val("");
 				}
 			},
 			error: function (data) {
 				console.log(data);
 			}
 		});
+		$(".selectpicker").selectpicker();
 	});
 
 	$('.editAsistenFP').on('click', function () {
@@ -320,7 +348,19 @@ $(function () {
 		$(".selectAsistenFP").prop('required', true);
 		$("#nrp_asisten").prop('required', false);
 		$('.modal-body form').attr('action', base + '/koordinator/editasistenFP');
-
+		const asisten = listasisten();
+		let html = '';
+		for (let i = 0; i < 3; i++) {
+			html += '<div class="form-group mt-2">';
+			html += '<select class="form-control selectAsistenFP selectpicker" name="nrpAsisten[' + i + ']" id="nrpAsisten[' + i + ']" data-live-search="true" required>';
+			html += '<option data-tokens=""></option>';
+			$.each(asisten, function (key, value) {
+				html += '<option data-tokens="' + value.nrp + '" value="' + value.nrp + '">' + value.name + '</option>';
+			});
+			html += '</select>';
+			html += '</div>';
+		}
+		$("#finalproject").html(html);
 		$.ajax({
 			url: base + 'koordinator/getdetailkelompok_asistenFP',
 			data: {
@@ -329,6 +369,7 @@ $(function () {
 			},
 			method: "post",
 			dataType: "json",
+			async: false,
 			success: function (data) {
 				if (data.length == undefined) {
 					$("#id").val(data.praktikumID);
@@ -350,7 +391,7 @@ $(function () {
 					$("#nama").val("");
 					if (data[0].asisten) {
 						$.each(data, function (i, data) {
-							let target = document.getElementById("nrp[" + i + "]");
+							let target = document.getElementById("nrpAsisten[" + i + "]");
 							$(target).val(data.nrp);
 						});
 					}
@@ -360,6 +401,7 @@ $(function () {
 				console.log(data);
 			}
 		});
+		$(".selectpicker").selectpicker();
 	});
 
 
@@ -691,11 +733,20 @@ $(function () {
 				if (data != "Tidak") {
 					let html = "";
 					$.each(data, function (i, data) {
-						html += '<div class="form-row mt-2 " id="asisten[' + i + ']">';
-						html += '<div class="col-8">';
-						html += '<select class="form-control cekAsisten" id="nama[' + i + ']" name="asisten[' + i + ']" required></select>';
+						html += '<div class="form-row mt-2" id="asisten[' + i + ']">';
+						html += '<div class="col-8 my-1 cekAsisten">';
+						html += '<select class="form-control selectpicker asistenList" onchange="appendRadioValue(' + i + ')" data-live-search="true" id="nama[' + i + ']" name="asisten[' + i + ']" required></select>';
 						html += '</div>';
-						html += '<div class="col">';
+						html += '<div class="col-auto my-1">';
+						html += '<div class="form-check">';
+						html += '<input class="form-check-input" type="radio" id="pj[' + i + ']" style="margin-top:12px;" name="pj" value="' + data.nrp + '" required ';
+						if (data.pj == '1') {
+							html += 'checked';
+						}
+						html += '>';
+						html += '</div>';
+						html += '</div>';
+						html += '<div class="col my-1">';
 						html += '<a href="#" class="btn btn-danger align-middle" onclick="hapusAsisten(' + i + ')"><i class="fas fa-trash-alt"></i></a>';
 						html += '</div>';
 						html += '</div>';
@@ -709,14 +760,15 @@ $(function () {
 						success: function (data) {
 							let html = "";
 							$.each(data, function (i, data) {
-								html += "<option value=" + data.nrp + ">" + data.name + "</option>";
+								html += "<option data-tokens=" + data.nrp + " value=" + data.nrp + ">" + data.name + "</option>";
 							});
-							$(".cekAsisten").html(html);
+							$(".asistenList").html(html);
 						},
 					});
 					$.each(data, function (i, data) {
 						$(document.getElementById("nama[" + i + "]")).val(data.nrp);
 					});
+					$(".selectpicker").selectpicker();
 				}
 			}
 		});
@@ -754,6 +806,60 @@ $(function () {
 			}
 		});
 	});
+
+	listpraktikan = function () {
+		let list = 0;
+		$.ajax({
+			url: base + 'koordinator/getallpraktikan',
+			method: "post",
+			dataType: "json",
+			async: false,
+			success: function (data) {
+				list = data;
+			}
+		});
+		return list;
+	}
+
+	listasisten = function () {
+		let list = 0;
+		$.ajax({
+			url: base + 'koordinator/getallasisten',
+			method: "post",
+			dataType: "json",
+			async: false,
+			success: function (data) {
+				list = data;
+			}
+		});
+		return list;
+	}
+
+	cekanggota = function (id) {
+		const target = document.getElementById("nrp[" + id + "]");
+		const nrp = $(target).val();
+		$.ajax({
+			url: base + 'koordinator/getpraktikan',
+			data: {
+				nrp: nrp
+			},
+			method: "post",
+			dataType: "json",
+			success: function (data) {
+				const invalid = document.getElementById("invalid-feedback[" + id + "]");
+				const valid = document.getElementById("valid-feedback[" + id + "]");
+				if (data > 0) {
+					$(invalid).attr('hidden', false);
+					$(valid).attr('hidden', true);
+					$(document.getElementById("submitKelompok")).prop('disabled', true);
+				} else {
+					$(invalid).attr('hidden', true);
+					$(valid).attr('hidden', false);
+					$(document.getElementById("submitKelompok")).prop('disabled', false);
+				}
+			}
+		});
+	}
 
 	cekpraktikan = function (id) {
 		$.ajax({
@@ -827,14 +933,25 @@ $(function () {
 		return result;
 	}
 
+	appendRadioValue = function (id) {
+		const target = document.getElementById("nama[" + id + "]");
+		const radio = document.getElementById("pj[" + id + "]");
+		$(radio).val($(target).val());
+	}
+
 	$('#addAsisten').on('click', function () {
 		const jumlahasisten = $("#asisten .cekAsisten").length;
 		let html = '';
 		html += '<div class="form-row mt-2 " id="asisten[' + jumlahasisten + ']">';
-		html += '<div class="col-8">';
-		html += '<select class="form-control cekAsisten" id="nama[' + jumlahasisten + ']" name="asisten[' + jumlahasisten + ']" required></select>';
+		html += '<div class="col-8 my-1 cekAsisten">';
+		html += '<select class="form-control selectpicker" onchange="appendRadioValue(' + jumlahasisten + ')" data-live-search="true" id="nama[' + jumlahasisten + ']" name="asisten[' + jumlahasisten + ']" required></select>';
 		html += '<div class="valid-feedback feedback[' + jumlahasisten + ']"></div>';
 		html += '<div class="invalid-feedback feedback[' + jumlahasisten + ']"></div>';
+		html += '</div>';
+		html += '<div class="col-auto my-1">';
+		html += '<div class="form-check">';
+		html += '<input class="form-check-input" type="radio" id="pj[' + jumlahasisten + ']" style="margin-top:12px;" name="pj" required>'
+		html += '</div>';
 		html += '</div>';
 		html += '<div class="col">';
 		html += '<a href="#" class="btn btn-danger align-middle" onclick="hapusAsisten(' + jumlahasisten + ')"><i class="fas fa-trash-alt"></i></a>';
@@ -847,11 +964,14 @@ $(function () {
 			dataType: "json",
 			success: function (data) {
 				let html = "";
+				html += "<option value=''></option>";
 				$.each(data, function (i, data) {
 					html += "<option value=" + data.nrp + ">" + data.name + "</option>";
 				});
 				const select = document.getElementById('nama[' + jumlahasisten + ']');
 				$(select).html(html);
+				const target = document.getElementsByClassName('selectpicker');
+				$(target).selectpicker();
 			},
 		});
 	});
@@ -869,48 +989,20 @@ $("#jagaEdit").on('hidden.bs.modal', function () {
 
 function hapus(id) {
 	document.getElementById("anggota[" + id + "]").remove();
+	let cek = document.getElementsByClassName("invalid");
+	let ada = 0;
+	$.each(cek, function (i, data) {
+		if (!data.hasAttribute('hidden')) {
+			ada = 1;
+		}
+	});
+	if (ada == 0) {
+		$(document.getElementById("submitKelompok")).prop('disabled', false);
+	} else {
+		$(document.getElementById("submitKelompok")).prop('disabled', true);
+	}
 }
 
 function hapusAsisten(id) {
 	document.getElementById("asisten[" + id + "]").remove();
-}
-
-function ceknrp(id) {
-	const el = $("#nrp[" + id + "]");
-	const id_kel = $("#id").val();
-	const nrp = el.prevObject[0].activeElement.value;
-
-	$.ajax({
-		url: base + 'koordinator/checknrpkelompok',
-		data: {
-			nrp: nrp,
-			id_kel: id_kel
-		},
-		method: "post",
-		dataType: "json",
-		success: function (data) {
-			console.log(id);
-			const input = document.getElementById("nrp[" + id + "]");
-			if (data === "Sudah masuk") {
-				const target = document.getElementsByClassName("invalid-feedback feedback[" + id + "]");
-				target[0].innerHTML = "NRP sudah menjadi anggota kelompok lain.";
-				input.classList.add('is-invalid');
-				document.getElementById('submit').setAttribute('disabled', true);
-				input.classList.remove('is-valid');
-			} else if (data === "Tidak ada") {
-				const target = document.getElementsByClassName("invalid-feedback feedback[" + id + "]");
-				target[0].innerHTML = "NRP tidak ditemukan.";
-				document.getElementById('submit').setAttribute('disabled', true);
-				input.classList.add('is-invalid');
-				input.classList.remove('is-valid');
-			} else {
-				const target = document.getElementsByClassName("valid-feedback feedback[" + id + "]");
-				target[0].innerHTML = "NRP tersedia.";
-				document.getElementById("nama[" + id + "]").value = data;
-				document.getElementById('submit').removeAttribute('disabled');
-				input.classList.remove('is-invalid');
-				input.classList.add('is-valid');
-			}
-		},
-	});
 }

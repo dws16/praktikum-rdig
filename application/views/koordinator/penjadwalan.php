@@ -57,7 +57,7 @@
                         <th><?= $s['ket']; ?></th>
                         <th class="text-center">
                           <a href="#" class="badge badge-pill badge-info editSesi" data-toggle="modal" data-id="<?= $s['dateID']; ?>" data-target="#sesiEdit"><i class="fas fa-fw fa-edit"></i> Edit</a>
-                          <a href="<?= base_url('koordinator/deletesesi/') . $s['dateID']; ?>" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-trash"></i> Hapus</a>
+                          <a href="<?= base_url('koordinator/deletesesi/') . $s['dateID']; ?>" class="badge badge-pill badge-danger" onclick="return confirm('Yakin?');"><i class="fas fa-fw fa-trash"></i> Hapus</a>
                         </th>
                       </tr>
                     <?php endforeach; ?>
@@ -171,7 +171,7 @@
                           <th><?= $s['date']; ?></th>
                           <th class="text-center">
                             <a href="#" class="badge badge-pill badge-info editJadwalKelompok" data-toggle="modal" data-id="<?= $s['id']; ?>" data-target="#jadwalKelompokEdit"><i class="fas fa-fw fa-edit"></i> Edit</a>
-                            <a href="<?= base_url('koordinator/deletejadwalkelompok/') . $s['id']; ?>" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-trash"></i> Hapus</a>
+                            <a href="<?= base_url('koordinator/deletejadwalkelompok/') . $s['id']; ?>" onclick="return confirm('Yakin?');" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-trash"></i> Hapus</a>
                           </th>
                         </tr>
                       <?php endforeach; ?>
@@ -408,8 +408,13 @@
               </div>
             </div>
           </div>
-          <div style="margin-bottom:-4px;">
-            <label for="anggota">Asisten</label>
+          <div class="form-row" style="margin-bottom:-4px;">
+            <div class="col-8">
+              <label for="anggota">Asisten</label>
+            </div>
+            <div class="col-1">
+              <label for="pj">PJ</label>
+            </div>
           </div>
           <div id="asisten">
 
