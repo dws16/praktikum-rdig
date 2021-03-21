@@ -1,8 +1,6 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-  <!-- Page Heading -->
-  <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
 
   <!-- DataTales Example -->
   <div class="row justify-content-center mt-5">
@@ -21,34 +19,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Cover Buku</td>
-                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
-                </tr>
-                <tr>
-                  <td>Pembatas Modul</td>
-                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
-                </tr>
-                </tr>
-                <tr>
-                  <td>Foto Aslab</td>
-                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
-                </tr>
-                </tr>
-                <tr>
-                  <td>Petunjuk Pembukuan</td>
-                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
-                </tr>
-                </tr>
-                <tr>
-                  <td>Cover dan Lembar Monitoring</td>
-                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
-                </tr>
-                </tr>
-                <tr>
-                  <td>Surat Pergantian Shift</td>
-                  <td><a href="#" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
-                </tr>
+                <?php foreach ($buku as $b) : ?>
+                  <tr>
+                    <td><?= $b['name'] ?></td>
+                    <td><a href="<?= base_url('assets/file/buku/') . $b['filename']; ?>" class="badge badge-pill badge-danger"><i class="fas fa-fw fa-arrow-down"></i>Download</a>
+                  </tr>
+                <?php endforeach; ?>
               </tbody>
             </table>
           </div>
