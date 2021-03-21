@@ -2,87 +2,32 @@
 <div class="container-fluid">
 
   <!-- Page Heading -->
-  <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
 
-  <div class="row justify-content-center">
+  <div class="row justify-content-center mt-5">
     <div class="col-xl-3 col-md-6 mb-4">
-
-      <!-- P1 Card -->
-      <div class="card border-left-info shadow py-2 my-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Jadwal</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">Asisten</div>
-            </div>
-            <div class="col-auto">
-              <div class="h5 mb-0 font-weight-bold text-gray-800">P1</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- P2 Card -->
-      <div class="card border-left-info shadow py-2 my-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Jadwal</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">Asisten</div>
-            </div>
-            <div class="col-auto">
-              <div class="h5 mb-0 font-weight-bold text-gray-800">P2</div>
+      <?php foreach ($praktikum as $p) : ?>
+        <!-- P1 Card -->
+        <div class="card border-left-info shadow py-2 my-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-s font-weight-bold text-info text-uppercase mb-1"><?= $p['date'] ?></div>
+                <div class="text-xs text-dark font-weight-bold mt-4">ASISTEN:</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800" style="text-overflow: ellipsis;"><?= $p['asisten'] ?></div>
+              </div>
+              <div class="col-auto">
+                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $p['name'] ?></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <!-- P3 Card -->
-      <div class="card border-left-info shadow py-2 my-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Jadwal</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">Asisten</div>
-            </div>
-            <div class="col-auto">
-              <div class="h5 mb-0 font-weight-bold text-gray-800">P3</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- P4 Card -->
-      <div class="card border-left-info shadow py-2 my-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Jadwal</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">Asisten</div>
-            </div>
-            <div class="col-auto">
-              <div class="h5 mb-0 font-weight-bold text-gray-800">P4</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- P5 Card -->
-      <div class="card border-left-info shadow py-2 my-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Jadwal</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">Asisten</div>
-            </div>
-            <div class="col-auto">
-              <div class="h5 mb-0 font-weight-bold text-gray-800">P5</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <?php endforeach; ?>
     </div>
 
     <div class="col-xl-8 col-md-6 mb-4">
       <div class="card shadow mb-4">
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-danger">Nama Kelompok</h6>
+          <h6 class="m-0 font-weight-bold text-danger">Kelompok <?= $kelompok['name'] ?></h6>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -94,10 +39,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td></td>
-                  <td></td>
-                </tr>
+                <?php foreach ($anggota as $a) : ?>
+                  <tr>
+                    <td><?= $a['name'] ?></td>
+                    <td><?= $a['nrp'] ?></td>
+                  </tr>
+                <?php endforeach; ?>
               </tbody>
             </table>
           </div>
